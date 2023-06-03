@@ -1,5 +1,6 @@
 <?php
 
+use App\Library\RoleTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
@@ -37,6 +38,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // sanctum auth
-Route::middleware(['auth:sanctum', 'permission:admin'])->group(function () {
+Route::middleware(['auth:sanctum', 'role:' . RoleTag::SUPERADMIN . '|' . RoleTag::ADMIN])->group(function () {
     Route::get('/admin-test', [AdminController::class, 'index']);
 });

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 
 class RoleTagSeeder extends Seeder
@@ -17,7 +18,16 @@ class RoleTagSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'user']);
+        $accessSuperAdminPermissions = Permission::updateOrCreate(['name' => 'access_super_admin_settings']);
+        $accessAdminPermissions = Permission::updateOrCreate(['name' => 'access_admin_settings']);
+        $accessUserPermissions = Permission::updateOrCreate(['name' => 'access_user_settings']);
+
+        $superAdminRole = Role::updateOrCreate(['name' => 'superadmin']);
+        $adminRole = Role::updateOrCreate(['name' => 'admin']);
+        $userRole = Role::updateOrCreate(['name' => 'user']);
+
+        $superAdminRole->givePermissionTo($accessSuperAdminPermissions);
+        $adminRole->givePermissionTo($accessAdminPermissions);
+        $userRole->givePermissionTo($accessUserPermissions);
     }
 }

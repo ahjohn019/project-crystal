@@ -1,9 +1,10 @@
 <?php
 
+use App\Library\RoleTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // sanctum auth
-Route::middleware(['auth:sanctum', 'permission:web'])->group(function () {
+Route::middleware('auth:sanctum', 'role:' . RoleTag::USER)->group(function () {
     Route::get('/user-test', [UserController::class, 'index']);
 });

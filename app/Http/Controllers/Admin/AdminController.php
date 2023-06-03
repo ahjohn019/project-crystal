@@ -11,4 +11,27 @@ class AdminController extends Controller
     {
         return auth()->user();
     }
+
+    public function list()
+    {
+        //
+    }
+
+    public function store()
+    {
+        //
+    }
+
+    public function show()
+    {
+        //
+    }
+
+    public function update()
+    {
+    }
+
+    public function delete()
+    {
+    }
 }

@@ -16,6 +16,16 @@ class Controller extends BaseController
         return response()->json([
             'message' => $message,
             'data' => $result,
+            'code' => $code
+        ], $code);
+    }
+
+    public static function failedResponse(String $message, $result = null, $code = Response::HTTP_FORBIDDEN)
+    {
+        return response()->json([
+            'message' => $message,
+            'data' => $result,
+            'code' => $code
         ], $code);
     }
 }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Library\RoleTag;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -16,11 +17,18 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //
+        DB::table('users')->truncate();
+
         User::insert(
             [
                 [
                     'name' => 'Admin',
                     'email' => 'admin_one@example.com',
+                    'password' => bcrypt('1111aaaa'),
+                ],
+                [
+                    'name' => 'Super Admin',
+                    'email' => 'super_admin@example.com',
                     'password' => bcrypt('1111aaaa'),
                 ],
                 [
@@ -32,6 +40,7 @@ class UserSeeder extends Seeder
         );
 
         User::find(1)->assignRole(RoleTag::ADMIN);
-        User::find(2)->assignRole(RoleTag::USER);
+        User::find(2)->assignRole(RoleTag::SUPERADMIN);
+        User::find(3)->assignRole(RoleTag::USER);
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NavBar />
+        <nav-bar />
         <h1>This is dashboard</h1>
         <el-row class="mb-4">
           <el-button>Default</el-button>
@@ -21,3 +21,13 @@
         </el-row>
     </div>
 </template>
+
+<script lang="ts">
+import NavBar from '@admin/components/NavBar.vue'
+
+export default {
+  components: {
+    NavBar
+  }
+}
+</script>

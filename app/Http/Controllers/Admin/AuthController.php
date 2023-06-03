@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Library\PermissionTag;
 use App\Http\Services\AuthService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Exceptions\BadRequestExceptions;
 use App\Http\Requests\Admin\LoginFormRequest;
 use App\Http\Requests\Admin\RegisterFormRequest;
 use App\Http\Requests\Admin\ResetPasswordRequest;
 use App\Http\Requests\Admin\ForgotPasswordRequest;
 use App\Http\Requests\Admin\AuthPasswordUpdateFormRequest;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class AuthController extends Controller
 {
@@ -28,6 +29,10 @@ class AuthController extends Controller
 
             return DB::transaction(function () use ($payload) {
                 $token = AuthService::login($payload);
+
+                if (!auth()->user()->hasAnyPermission([PermissionTag::ACCESS_ADMIN_SETTINGS, PermissionTag::ACCESS_SUPER_ADMIN_SETTINGS])) {
+                    return self::failedResponse('Unauthorized', 'You are not allowed to use the admin system.');
+                }
 
                 return self::successResponse('Success', [
                     'token' => $token->plainTextToken,
@@ -73,12 +78,12 @@ class AuthController extends Controller
 
         // check current password
         if (!Hash::check($request['current_password'], $authUser->password)) {
-            throw new BadRequestException('Current Password is invalid.');
+            throw new BadRequestExceptions('Current Password is invalid.');
         }
 
         // see if old and new password are equal
         if (Hash::check($request['password'], $authUser->password)) {
-            throw new BadRequestException('New password cannot be the same as current password.');
+            throw new BadRequestExceptions('New password cannot be the same as current password.');
         }
 
         $result = AuthService::updateUser($authUser, [
