@@ -40,4 +40,12 @@ Route::middleware('auth:sanctum')->group(function () {
 // sanctum auth
 Route::middleware(['auth:sanctum', 'role:' . RoleTag::SUPERADMIN . '|' . RoleTag::ADMIN])->group(function () {
     Route::get('/admin-test', [AdminController::class, 'index']);
+
+    Route::prefix('admin')->group(function () {
+        Route::get('/list', [AdminController::class, 'list'])->name('admin.list');
+        Route::post('/store', [AdminController::class, 'store'])->name('admin.store');
+        Route::get('/show/{id}', [AdminController::class, 'show'])->name('admin.show');
+        Route::put('/update', [AdminController::class, 'update'])->name('admin.update');
+        Route::delete('/delete/{id}', [AdminController::class, 'delete'])->name('admin.delete');
+    });
 });

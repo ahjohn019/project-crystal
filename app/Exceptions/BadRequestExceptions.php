@@ -9,6 +9,8 @@ class BadRequestExceptions extends Exception
     //
     public function render()
     {
-        return response()->json(["error" => true, "message" => $this->getMessage()]);
+        $error_code = 40000;
+
+        return response()->json(["code" => $error_code, "message" => $this->getMessage()]);
     }
 }
