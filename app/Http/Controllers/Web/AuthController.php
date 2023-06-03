@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Library\PermissionTag;
 use App\Http\Services\AuthService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -28,6 +29,10 @@ class AuthController extends Controller
 
             return DB::transaction(function () use ($payload) {
                 $token = AuthService::login($payload);
+
+                if (!auth()->user()->hasPermissionTo(PermissionTag::ACCESS_USER_SETTINGS)) {
+                    return self::failedResponse('Unauthorized', 'You are not allowed to use the user system.');
+                }
 
                 return self::successResponse('Success', [
                     'token' => $token->plainTextToken,
