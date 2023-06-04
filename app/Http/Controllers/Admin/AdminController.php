@@ -51,7 +51,9 @@ class AdminController extends Controller
         $payload = $request->validated();
 
         return DB::transaction(function () use ($payload) {
-            $result = User::where('id', $payload['id'])->update($payload);
+
+            $user = User::where('id', $payload['id'])->firstOrThrowError();
+            $result = $user->update($payload);
 
             return self::successResponse('Admin Update Successfully.', $result);
         });
@@ -59,8 +61,11 @@ class AdminController extends Controller
 
     public function delete($id)
     {
-        $payload = User::find($id)->delete();
+        return DB::transaction(function () use ($id) {
+            $user = User::where('id', $id)->firstOrThrowError();
+            $payload = $user->delete();
 
-        return self::successResponse('Admin Deleted Successfully.', $payload);
+            return self::successResponse('Admin Deleted Successfully.', $payload);
+        });
     }
 }
