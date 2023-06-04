@@ -12,16 +12,10 @@ use App\Http\Requests\Admin\Admin\UpdateFormRequest;
 
 class AdminController extends Controller
 {
-    //
-    public function index()
-    {
-        return auth()->user();
-    }
-
     public function list()
     {
         //
-        $adminList = UserService::allAdminRoles()->get();
+        $adminList = UserService::allAdminRoles()->paginate(15);
 
         return self::successResponse('Success', $adminList);
     }

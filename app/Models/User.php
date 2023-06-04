@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\ServerFile;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\Models\HasModelTrait;
 use Spatie\Permission\Traits\HasRoles;
@@ -47,4 +48,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function image()
+    {
+        return $this->morphOne(ServerFile::class, 'uploadable');
+    }
 }

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BannerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,13 +40,19 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // sanctum auth
 Route::middleware(['auth:sanctum', 'role:' . RoleTag::SUPERADMIN . '|' . RoleTag::ADMIN])->group(function () {
-    Route::get('/admin-test', [AdminController::class, 'index']);
-
     Route::prefix('admin')->group(function () {
         Route::get('/list', [AdminController::class, 'list'])->name('admin.list');
         Route::post('/store', [AdminController::class, 'store'])->name('admin.store');
         Route::get('/show/{id}', [AdminController::class, 'show'])->name('admin.show');
         Route::put('/update', [AdminController::class, 'update'])->name('admin.update');
         Route::delete('/delete/{id}', [AdminController::class, 'delete'])->name('admin.delete');
+    });
+
+    Route::prefix('banner')->group(function () {
+        Route::get('/list', [BannerController::class, 'list'])->name('banner.list');
+        Route::post('/store', [BannerController::class, 'store'])->name('banner.store');
+        Route::get('/show/{id}', [BannerController::class, 'show'])->name('banner.show');
+        Route::put('/update', [BannerController::class, 'update'])->name('banner.update');
+        Route::delete('/delete/{id}', [BannerController::class, 'delete'])->name('banner.delete');
     });
 });
