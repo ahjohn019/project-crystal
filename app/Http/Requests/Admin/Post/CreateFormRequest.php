@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\Banner;
+namespace App\Http\Requests\Admin\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateFormRequest extends FormRequest
+class CreateFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,11 @@ class UpdateFormRequest extends FormRequest
     {
         return [
             //
-            'id' => ['required'],
-            'name' => ['required'],
-            'seq_value' => ['nullable'],
+            'title' => ['required'],
+            'content' => ['nullable'],
+            'likes' => ['nullable'],
+            'status' => ['required'],
+            'user_id' => ['required'],
             'file' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpg,png'],
         ];
     }

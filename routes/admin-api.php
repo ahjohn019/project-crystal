@@ -4,6 +4,7 @@ use App\Library\RoleTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BannerController;
 
@@ -52,7 +53,15 @@ Route::middleware(['auth:sanctum', 'role:' . RoleTag::SUPERADMIN . '|' . RoleTag
         Route::get('/list', [BannerController::class, 'list'])->name('banner.list');
         Route::post('/store', [BannerController::class, 'store'])->name('banner.store');
         Route::get('/show/{id}', [BannerController::class, 'show'])->name('banner.show');
-        Route::put('/update', [BannerController::class, 'update'])->name('banner.update');
+        Route::post('/update', [BannerController::class, 'update'])->name('banner.update');
         Route::delete('/delete/{id}', [BannerController::class, 'delete'])->name('banner.delete');
+    });
+
+    Route::prefix('post')->group(function () {
+        Route::get('/list', [PostController::class, 'list'])->name('posts.list');
+        Route::post('/store', [PostController::class, 'store'])->name('posts.store');
+        Route::get('/show/{id}', [PostController::class, 'show'])->name('posts.show');
+        Route::put('/update', [PostController::class, 'update'])->name('posts.update');
+        Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('posts.delete');
     });
 });

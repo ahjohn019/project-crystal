@@ -25,6 +25,7 @@ class CreateFormRequest extends FormRequest
             //
             'name' => ['required'],
             'seq_value' => ['nullable'],
+            'file' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpg,png'],
         ];
     }
 }
