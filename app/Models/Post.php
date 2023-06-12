@@ -13,4 +13,9 @@ class Post extends Model
     public const STATUS_ACTIVE = 1;
 
     protected $fillable = ['title', 'content', 'likes', 'status', 'user_id'];
+
+    public function image()
+    {
+        return $this->morphOne(ServerFile::class, 'uploadable');
+    }
 }

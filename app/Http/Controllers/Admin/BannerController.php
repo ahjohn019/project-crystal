@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Banner;
-use App\Models\ServerFile;
-use Illuminate\Http\Request;
-use App\Traits\ServerFileTrait;
 use Illuminate\Support\Facades\DB;
+use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Banner\CreateFormRequest;
 use App\Http\Requests\Admin\Banner\UpdateFormRequest;
@@ -29,18 +27,8 @@ class BannerController extends Controller
             $banner = Banner::create($payload);
 
             if (isset($payload['file'])) {
-                $serverFile = ServerFileTrait::uploadServerFiles($payload['file'], [
-                    'model_id' => $banner->id,
-                    'image' => $payload['file'],
-                    'module_path' => ServerFile::MODULE_PATH_BANNER_WEB_IMAGE,
-                    'file_type_id' => ServerFile::FILE_TYPE_IMAGE,
-                    'max_size' => 1000,
-                    'width' => isset($payload['width']) ? $payload['width'] : "",
-                    'height' => isset($payload['height']) ? $payload['height'] : "",
-                    'folder_name' => 'Banner'
-                ]);
-
-                $result = $banner->image()->updateOrCreate($serverFile);
+                $payload['folder_name'] = 'Banner';
+                $result = ImageService::createImage($payload, $banner, 'Banner');
 
                 return self::successResponse('Images Created Successfully', $result);
             }
@@ -65,19 +53,8 @@ class BannerController extends Controller
             $result = $banner->update($payload);
 
             if (isset($payload['file'])) {
-                $serverFile = ServerFileTrait::uploadServerFiles($payload['file'], [
-                    'model_id' => $banner->id,
-                    'image' => $payload['file'],
-                    'module_path' => ServerFile::MODULE_PATH_BANNER_WEB_IMAGE,
-                    'file_type_id' => ServerFile::FILE_TYPE_IMAGE,
-                    'max_size' => 1000,
-                    'width' => isset($payload['width']) ? $payload['width'] : "",
-                    'height' => isset($payload['height']) ? $payload['height'] : "",
-                    'server_files' => $banner->image()->firstOrThrowError(),
-                    'folder_name' => 'Banner'
-                ], true);
-
-                $result = $banner->image()->update($serverFile);
+                $payload['folder_name'] = 'Banner';
+                $result = ImageService::updateImage($payload, $banner);
 
                 return self::successResponse('Images Updated Successfully', $result);
             }

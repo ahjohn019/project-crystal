@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Post\CreateFormRequest;
 use App\Http\Requests\Admin\Post\UpdateFormRequest;
@@ -25,7 +25,15 @@ class PostController extends Controller
         $payload = $request->validated();
 
         return DB::transaction(function () use ($payload) {
-            Post::create($payload);
+            $posts = Post::create($payload);
+
+            if (isset($payload['file'])) {
+                $payload['folder_name'] = 'Posts';
+                $result = ImageService::createImage($payload, $posts);
+
+                return self::successResponse('Post Images Created Successfully', $result);
+            }
+
 
             return self::successResponse('Post Created Successfully', $payload);
         });
@@ -45,6 +53,13 @@ class PostController extends Controller
         return DB::transaction(function () use ($payload) {
             $posts = Post::where('id', $payload['id'])->firstOrThrowError();
             $result = $posts->update($payload);
+
+            if (isset($payload['file'])) {
+                $payload['folder_name'] = 'Posts';
+                $result = ImageService::updateImage($payload, $posts);
+
+                return self::successResponse('Post Images Updated Successfully', $result);
+            }
 
             return self::successResponse('Post Update Successfully.', $result);
         });

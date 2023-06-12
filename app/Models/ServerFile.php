@@ -29,7 +29,7 @@ class ServerFile extends Model
 
     public const FILE_TYPE_IMAGE = 3;
 
-    public const MODULE_PATH_BANNER_WEB_IMAGE = 'banner-web-image';
+    public const MODULE_PATH_WEB_IMAGE = 'web-image';
 
     public function uploadable()
     {

@@ -61,7 +61,7 @@ Route::middleware(['auth:sanctum', 'role:' . RoleTag::SUPERADMIN . '|' . RoleTag
         Route::get('/list', [PostController::class, 'list'])->name('posts.list');
         Route::post('/store', [PostController::class, 'store'])->name('posts.store');
         Route::get('/show/{id}', [PostController::class, 'show'])->name('posts.show');
-        Route::put('/update', [PostController::class, 'update'])->name('posts.update');
+        Route::post('/update', [PostController::class, 'update'])->name('posts.update');
         Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('posts.delete');
     });
 });
