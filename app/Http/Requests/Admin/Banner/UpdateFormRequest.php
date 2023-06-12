@@ -27,6 +27,8 @@ class UpdateFormRequest extends FormRequest
             'name' => ['required'],
             'seq_value' => ['nullable'],
             'file' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpg,png'],
+            'width' => ['nullable', 'integer'],
+            'height' => ['nullable', 'integer']
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Http\UploadedFile;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
 trait ServerFileTrait
@@ -15,13 +16,14 @@ trait ServerFileTrait
         $file_type_id = $payload['file_type_id'];
         $folderName = $payload['folder_name'] ?? 'uploads';
 
+        $resizeImages = self::resizeImage($file, $payload['width'], $payload['height']);
         $storageDisk = Storage::disk($disk);
 
         if ($clearStorage == true) {
             $storageDisk->delete($folderName . '/' . $payload['server_files']->name);
         }
 
-        $storageDisk->put($folderName, $file);
+        $storageDisk->put($folderName . '/' . $file->hashName(), (string)$resizeImages->encode());
 
         $serverFileArr = [
             'name' => $file->hashName(),
@@ -36,5 +38,15 @@ trait ServerFileTrait
         ];
 
         return $serverFileArr;
+    }
+
+    public static function resizeImage($file, $width, $height)
+    {
+        $imgFile = Image::make($file->getRealPath());
+        $imgFile->resize($width, $height, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+        return $imgFile;
     }
 }

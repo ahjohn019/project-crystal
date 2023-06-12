@@ -28,13 +28,15 @@ class BannerController extends Controller
         return DB::transaction(function () use ($payload) {
             $banner = Banner::create($payload);
 
-            if ($payload['file']) {
+            if (isset($payload['file'])) {
                 $serverFile = ServerFileTrait::uploadServerFiles($payload['file'], [
                     'model_id' => $banner->id,
                     'image' => $payload['file'],
                     'module_path' => ServerFile::MODULE_PATH_BANNER_WEB_IMAGE,
                     'file_type_id' => ServerFile::FILE_TYPE_IMAGE,
                     'max_size' => 1000,
+                    'width' => isset($payload['width']) ? $payload['width'] : "",
+                    'height' => isset($payload['height']) ? $payload['height'] : "",
                     'folder_name' => 'Banner'
                 ]);
 
@@ -62,22 +64,23 @@ class BannerController extends Controller
             $banner = Banner::where('id', $payload['id'])->firstOrThrowError();
             $result = $banner->update($payload);
 
-            if ($payload['file']) {
+            if (isset($payload['file'])) {
                 $serverFile = ServerFileTrait::uploadServerFiles($payload['file'], [
                     'model_id' => $banner->id,
                     'image' => $payload['file'],
                     'module_path' => ServerFile::MODULE_PATH_BANNER_WEB_IMAGE,
                     'file_type_id' => ServerFile::FILE_TYPE_IMAGE,
                     'max_size' => 1000,
+                    'width' => isset($payload['width']) ? $payload['width'] : "",
+                    'height' => isset($payload['height']) ? $payload['height'] : "",
                     'server_files' => $banner->image()->firstOrThrowError(),
                     'folder_name' => 'Banner'
                 ], true);
 
                 $result = $banner->image()->update($serverFile);
 
-                return self::successResponse('Images Created Successfully', $result);
+                return self::successResponse('Images Updated Successfully', $result);
             }
-
 
             return self::successResponse('Banner Update Successfully.', $result);
         });
