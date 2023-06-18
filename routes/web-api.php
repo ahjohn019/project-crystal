@@ -4,6 +4,7 @@ use App\Library\RoleTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\PostController;
 use App\Http\Controllers\Web\UserController;
 
 /*
@@ -40,4 +41,12 @@ Route::middleware('auth:sanctum')->group(function () {
 // sanctum auth
 Route::middleware('auth:sanctum', 'role:' . RoleTag::USER)->group(function () {
     Route::get('/user-test', [UserController::class, 'index']);
+
+    Route::prefix('post')->group(function () {
+        Route::get('/list', [PostController::class, 'list'])->name('web.posts.list');
+        Route::post('/store', [PostController::class, 'store'])->name('web.posts.store');
+        Route::get('/show/{id}', [PostController::class, 'show'])->name('web.posts.show');
+        Route::post('/update', [PostController::class, 'update'])->name('web.posts.update');
+        Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('web.posts.delete');
+    });
 });

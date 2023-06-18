@@ -40,7 +40,7 @@ class AuthController extends Controller
                 ])->header('Authorization', $token->plainTextToken);
             });
         } catch (\Throwable $th) {
-            //throw $th;
+            return self::failedResponse('Unauthorized', $th->getMessage());
         }
     }
 
@@ -52,7 +52,7 @@ class AuthController extends Controller
 
             return self::successResponse('Success', $result);
         } catch (\Throwable $th) {
-            throw $th;
+            return self::failedResponse('Unauthorized', $th->getMessage());
         }
     }
 

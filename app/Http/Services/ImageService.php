@@ -27,6 +27,12 @@ class ImageService
 
     public static function updateImage(array $payload, $model)
     {
+        $checkFileExists = $model->image()->exists();
+
+        if (!$checkFileExists) {
+            return self::createImage($payload, $model);
+        }
+
         $serverFile = ServerFileTrait::uploadServerFiles($payload['file'], [
             'model_id' => $model->id,
             'image' => $payload['file'],

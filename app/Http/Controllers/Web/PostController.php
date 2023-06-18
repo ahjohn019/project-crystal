@@ -1,27 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Web;
 
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Post\CreateFormRequest;
-use App\Http\Requests\Admin\Post\UpdateFormRequest;
+use App\Http\Requests\Web\Post\CreateFormRequest;
+use App\Http\Requests\Web\Post\UpdateFormRequest;
 
 class PostController extends Controller
 {
     //
     public function list()
     {
-        $posts = Post::where("status", Post::STATUS_ACTIVE)->paginate(15);
+        try {
+            $posts = Post::where("status", Post::STATUS_ACTIVE)->paginate(15);
 
-        return self::successResponse('Posts Display Successfully', $posts);
+            return self::successResponse('Posts Display Successfully', $posts);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function store(CreateFormRequest $request)
     {
-        //
         $payload = $request->validated();
 
         return DB::transaction(function () use ($payload) {
@@ -51,6 +54,8 @@ class PostController extends Controller
         $payload = $request->validated();
 
         return DB::transaction(function () use ($payload) {
+            $payload['user_id'] = auth()->user()->id;
+
             $posts = Post::where('id', $payload['id'])->firstOrThrowError();
             $result = $posts->update($payload);
 
@@ -74,5 +79,9 @@ class PostController extends Controller
 
             return self::successResponse('Post Deleted Successfully.', $payload);
         });
+    }
+
+    public function likes()
+    {
     }
 }
