@@ -34,11 +34,17 @@ class UserSeeder extends Seeder
                     'email' => 'user_one@example.com',
                     'password' => bcrypt('1111aaaa'),
                 ],
+                [
+                    'name' => 'User Two',
+                    'email' => 'user_two@example.com',
+                    'password' => bcrypt('1111aaaa'),
+                ],
             ]
         );
 
         User::find(1)->assignRole(RoleTag::ADMIN);
         User::find(2)->assignRole(RoleTag::SUPERADMIN);
         User::find(3)->assignRole(RoleTag::USER);
+        User::find(4)->assignRole(RoleTag::USER);
     }
 }

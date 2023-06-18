@@ -48,5 +48,6 @@ Route::middleware('auth:sanctum', 'role:' . RoleTag::USER)->group(function () {
         Route::get('/show/{id}', [PostController::class, 'show'])->name('web.posts.show');
         Route::post('/update', [PostController::class, 'update'])->name('web.posts.update');
         Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('web.posts.delete');
+        Route::post('/user-like', [PostController::class, 'sendUserLikes'])->name('web.posts.likes');
     });
 });

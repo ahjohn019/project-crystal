@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\Post\CreateFormRequest;
+use App\Http\Requests\Web\Post\PostLikesRequest;
 use App\Http\Requests\Web\Post\UpdateFormRequest;
 
 class PostController extends Controller
@@ -81,7 +82,25 @@ class PostController extends Controller
         });
     }
 
-    public function likes()
+    public function sendUserLikes(PostLikesRequest $request)
     {
+        try {
+            $payload = $request->validated();
+
+            $posts = Post::where('id', $payload['post_id'])
+                ->firstOrThrowError();
+
+            $posts->likes()->updateOrCreate([
+                'user_id' => auth()->user()->id
+            ]);
+
+            $totalPostLikes = $posts->likes()->count();
+
+            $posts->update(['likes' => $totalPostLikes]);
+
+            return self::successResponse('Likes Updated', $posts);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
