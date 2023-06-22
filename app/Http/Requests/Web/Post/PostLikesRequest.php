@@ -24,6 +24,7 @@ class PostLikesRequest extends FormRequest
         return [
             //
             'post_id' => ['required'],
+            'likes' => ['required', 'boolean'],
         ];
     }
 }

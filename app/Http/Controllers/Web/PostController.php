@@ -90,9 +90,15 @@ class PostController extends Controller
             $posts = Post::where('id', $payload['post_id'])
                 ->firstOrThrowError();
 
-            $posts->likes()->updateOrCreate([
-                'user_id' => auth()->user()->id
-            ]);
+            if ($payload['likes']) {
+                $posts->likes()->withTrashed()->where('user_id', auth()->user()->id)->restore();
+
+                $posts->likes()->updateOrCreate([
+                    'user_id' => auth()->user()->id
+                ]);
+            } else {
+                $posts->likes()->where('user_id', auth()->user()->id)->delete();
+            }
 
             $totalPostLikes = $posts->likes()->count();
 
