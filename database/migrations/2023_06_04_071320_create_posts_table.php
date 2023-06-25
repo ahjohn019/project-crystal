@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('likes')->default(0);
             $table->string('status')->default(0);
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('category_id')->constrained();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Web\Post;
+namespace App\Http\Requests\Web;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateFormRequest extends FormRequest
+class ListFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +23,11 @@ class CreateFormRequest extends FormRequest
     {
         return [
             //
-            'category_id' => ['nullable'],
-            'title' => ['required'],
-            'content' => ['nullable'],
-            'status' => ['required'],
-            'user_id' => ['required'],
-            'file' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpg,png'],
+            "paginate" => ["nullable"],
+            "keyword" => ["nullable"],
+            "searchable" => ["nullable"],
+            "foreign_model" => ["nullable"],
+            // "foreign_attribute" => ["nullable"],
         ];
     }
 }

@@ -6,17 +6,25 @@ use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Web\Post\CreateFormRequest;
+use App\Http\Requests\Web\ListFormRequest;
 use App\Http\Requests\Web\Post\PostLikesRequest;
+use App\Http\Requests\Web\Post\CreateFormRequest;
 use App\Http\Requests\Web\Post\UpdateFormRequest;
 
 class PostController extends Controller
 {
     //
-    public function list()
+    public function list(ListFormRequest $request)
     {
         try {
-            $posts = Post::where("status", Post::STATUS_ACTIVE)->paginate(15);
+            $payload = $request->validated();
+
+            $posts = Post::where("status", Post::STATUS_ACTIVE)
+                ->with('user', 'category')
+                ->searchable($payload)
+                ->searchableForeign($payload, 'user')
+                ->searchableForeign($payload, 'category')
+                ->paginate($payload['paginate'] ?? 15);
 
             return self::successResponse('Posts Display Successfully', $posts);
         } catch (\Throwable $th) {
