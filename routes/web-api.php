@@ -4,6 +4,7 @@ use App\Library\RoleTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\CommentController;
 use App\Http\Controllers\Web\PostController;
 use App\Http\Controllers\Web\UserController;
 
@@ -49,5 +50,12 @@ Route::middleware('auth:sanctum', 'role:' . RoleTag::USER)->group(function () {
         Route::post('/update', [PostController::class, 'update'])->name('web.posts.update');
         Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('web.posts.delete');
         Route::post('/user-like', [PostController::class, 'sendUserLikes'])->name('web.posts.likes');
+    });
+
+    Route::prefix('comment')->group(function () {
+        Route::get('/list', [CommentController::class, 'list'])->name('web.comments.list');
+        Route::post('/store', [CommentController::class, 'store'])->name('web.comments.store');
+        Route::get('/show/{id}', [CommentController::class, 'show'])->name('web.comments.show');
+        Route::delete('/delete/{id}', [CommentController::class, 'delete'])->name('web.comments.delete');
     });
 });

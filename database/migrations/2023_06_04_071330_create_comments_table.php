@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('likes')->default(0);
             $table->integer('status')->default(0);
             $table->morphs('commentable');
+            $table->foreignId('user_id')->constrained();
             $table->softDeletes();
             $table->timestamps();
         });

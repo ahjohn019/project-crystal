@@ -33,11 +33,8 @@ class PostController extends Controller
 
             if (isset($payload['file'])) {
                 $payload['folder_name'] = 'Posts';
-                $result = ImageService::createImage($payload, $posts);
-
-                return self::successResponse('Post Images Created Successfully', $result);
+                ImageService::createImage($payload, $posts);
             }
-
 
             return self::successResponse('Post Created Successfully', $payload);
         });
@@ -62,9 +59,7 @@ class PostController extends Controller
 
             if (isset($payload['file'])) {
                 $payload['folder_name'] = 'Posts';
-                $result = ImageService::updateImage($payload, $posts);
-
-                return self::successResponse('Post Images Updated Successfully', $result);
+                ImageService::updateImage($payload, $posts);
             }
 
             return self::successResponse('Post Update Successfully.', $result);

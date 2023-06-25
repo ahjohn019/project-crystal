@@ -25,4 +25,9 @@ class Post extends Model
     {
         return $this->morphOne(UserLike::class, 'content');
     }
+
+    public function comment()
+    {
+        return $this->morphOne(Comment::class, 'commentable');
+    }
 }
