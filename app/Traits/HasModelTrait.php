@@ -27,14 +27,30 @@ trait HasModelTrait
 
     public static function scopeSearchableForeign($query, array $payload = null, $foreignModel = null)
     {
-        return $query->orWhereHas($foreignModel, function ($q) use ($payload, $foreignModel) {
-            $foreignAttributes = isset($payload['foreign_model']) ? $payload['foreign_model'][$foreignModel] : null;
-            $keyword = $payload['keyword'] ?? null;
+        if (!$foreignModel) {
+            throw new BadRequestExceptions("Please Fill In The Foreign Model.", 400);
+        }
 
-            foreach ($foreignAttributes as $attribute) {
-                $q->where($attribute, 'like', '%' . $keyword . '%');
-                $q->orWhere($attribute, 'like', '%' . $keyword . '%');
+        foreach ($foreignModel as $fModel) {
+            $foreignModelValue = $payload['foreign_model'][$fModel] ?? null;
+
+            if ($foreignModelValue) {
+                $query->orWhereHas(
+                    $fModel,
+                    function ($q) use ($payload, $foreignModelValue) {
+                        $keyword = $payload['keyword'] ?? null;
+
+                        foreach ($foreignModelValue as $attribute) {
+                            $q->where($attribute, 'like', '%' . $keyword . '%');
+                            $q->orWhere(
+                                $attribute,
+                                'like',
+                                '%' . $keyword . '%'
+                            );
+                        }
+                    }
+                );
             }
-        });
+        }
     }
 }
