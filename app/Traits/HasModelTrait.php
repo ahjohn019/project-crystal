@@ -15,9 +15,9 @@ trait HasModelTrait
 
     public static function scopeSearchable($query, array $payload = null, array $hasModelForeign = null)
     {
-        $searchable = $payload['searchable'] ?? null;
+        $searchableMain = $payload['searchable'] ?? null;
 
-        if (!$searchable) {
+        if (!$searchableMain) {
             return HasModelTrait::searchableForeign($query, $payload, $hasModelForeign, true);
         }
 
@@ -26,16 +26,16 @@ trait HasModelTrait
 
     public static function handleSearchableMain($query, array $payload, $hasModelForeign)
     {
-        $searchable = $payload['searchable'];
+        $searchableMain = $payload['searchable'];
 
-        foreach ($searchable as $search) {
-            $result = $query->where($search, 'like', '%' . $payload['keyword'] ?? null . '%');
+        foreach ($searchableMain as $searchMain) {
+            $searchMainResult = $query->where($searchMain, 'like', '%' . $payload['keyword'] ?? null . '%');
 
             if (!$hasModelForeign) {
-                return $result;
+                return $searchMainResult;
             }
 
-            return HasModelTrait::searchableForeign($result, $payload, $hasModelForeign);
+            return HasModelTrait::searchableForeign($searchMainResult, $payload, $hasModelForeign);
         }
     }
 
