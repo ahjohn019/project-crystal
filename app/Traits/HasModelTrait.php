@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Models;
+namespace App\Traits;
 
 use App\Exceptions\BadRequestExceptions;
 
@@ -15,8 +15,8 @@ trait HasModelTrait
 
     public static function scopeSearchable($query, array $payload = null)
     {
-        $keyword = isset($payload['keyword']) ? $payload['keyword'] : null;
-        $searchable = isset($payload['searchable']) ? $payload['searchable'] : null;
+        $keyword = $payload['keyword'] ?? null;
+        $searchable = $payload['searchable'] ?? null;
 
         if ($searchable) {
             foreach ($searchable as $search) {
@@ -29,7 +29,7 @@ trait HasModelTrait
     {
         return $query->orWhereHas($foreignModel, function ($q) use ($payload, $foreignModel) {
             $foreignAttributes = isset($payload['foreign_model']) ? $payload['foreign_model'][$foreignModel] : null;
-            $keyword = isset($payload['keyword']) ? $payload['keyword'] : null;
+            $keyword = $payload['keyword'] ?? null;
 
             foreach ($foreignAttributes as $attribute) {
                 $q->where($attribute, 'like', '%' . $keyword . '%');

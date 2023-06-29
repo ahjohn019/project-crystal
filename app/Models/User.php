@@ -5,7 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\ServerFile;
 use Laravel\Sanctum\HasApiTokens;
-use App\Traits\Models\HasModelTrait;
+use App\Traits\HasModelTrait;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;

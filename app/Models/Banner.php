@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\ServerFile;
-use App\Traits\Models\HasModelTrait;
+use App\Traits\HasModelTrait;
 use App\Traits\ServerFileTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
