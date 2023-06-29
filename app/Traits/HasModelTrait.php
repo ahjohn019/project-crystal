@@ -13,41 +13,70 @@ trait HasModelTrait
         });
     }
 
-    public static function scopeSearchable($query, array $payload = null)
+    public static function scopeSearchable($query, array $payload = null, array $hasModelForeign = null)
     {
-        $keyword = $payload['keyword'] ?? null;
         $searchable = $payload['searchable'] ?? null;
 
-        if ($searchable) {
-            foreach ($searchable as $search) {
-                return $query->where($search, 'like', '%' . $keyword . '%');
+        if (!$searchable) {
+            return HasModelTrait::searchableForeign($query, $payload, $hasModelForeign, true);
+        }
+
+        HasModelTrait::handleSearchableMain($query, $payload, $hasModelForeign);
+    }
+
+    public static function handleSearchableMain($query, array $payload, $hasModelForeign)
+    {
+        $searchable = $payload['searchable'];
+
+        foreach ($searchable as $search) {
+            $result = $query->where($search, 'like', '%' . $payload['keyword'] ?? null . '%');
+
+            if (!$hasModelForeign) {
+                return $result;
             }
+
+            return HasModelTrait::searchableForeign($result, $payload, $hasModelForeign);
         }
     }
 
-    public static function scopeSearchableForeign($query, array $payload = null, $foreignModel = null)
+
+    public static function handleSearchableForeign($query, $payload, $foreignModelValue)
     {
-        if (!$foreignModel) {
+        $keyword = $payload['keyword'] ?? null;
+
+        foreach ($foreignModelValue as $attribute) {
+            $query->where($attribute, 'like', '%' . $keyword . '%');
+            $query->orWhere(
+                $attribute,
+                'like',
+                '%' . $keyword . '%'
+            );
+        }
+    }
+
+    public static function searchableForeign($query, array $payload = null, $hasModelForeign = null, $excludeMainSearch = false)
+    {
+        if (!$hasModelForeign) {
             throw new BadRequestExceptions("Please Fill In The Foreign Model.", 400);
         }
 
-        foreach ($foreignModel as $fModel) {
+        foreach ($hasModelForeign as $fModel) {
             $foreignModelValue = $payload['foreign_model'][$fModel] ?? null;
 
             if ($foreignModelValue) {
+                if ($excludeMainSearch) {
+                    $query->whereHas(
+                        $fModel,
+                        function ($q) use ($payload, $foreignModelValue) {
+                            HasModelTrait::handleSearchableForeign($q, $payload, $foreignModelValue);
+                        }
+                    );
+                }
+
                 $query->orWhereHas(
                     $fModel,
                     function ($q) use ($payload, $foreignModelValue) {
-                        $keyword = $payload['keyword'] ?? null;
-
-                        foreach ($foreignModelValue as $attribute) {
-                            $q->where($attribute, 'like', '%' . $keyword . '%');
-                            $q->orWhere(
-                                $attribute,
-                                'like',
-                                '%' . $keyword . '%'
-                            );
-                        }
+                        HasModelTrait::handleSearchableForeign($q, $payload, $foreignModelValue);
                     }
                 );
             }

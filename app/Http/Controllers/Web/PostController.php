@@ -21,8 +21,7 @@ class PostController extends Controller
 
             $posts = Post::where("status", Post::STATUS_ACTIVE)
                 ->with('user', 'category')
-                ->searchable($payload)
-                ->searchableForeign($payload, ['user', 'category'])
+                ->searchable($payload, ['user', 'category'])
                 ->paginate($payload['paginate'] ?? 15);
 
             return self::successResponse('Posts Display Successfully', $posts);
