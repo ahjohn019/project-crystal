@@ -6,15 +6,22 @@ use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
 use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\ListFormRequest;
 use App\Http\Requests\Web\Comment\CreateFormRequest;
 
 class CommentController extends Controller
 {
     //
-    public function list()
+    public function list(ListFormRequest $request)
     {
         try {
-            $comments = Comment::where("status", Comment::STATUS_ACTIVE)->paginate(15);
+            $payload = $request->validated();
+
+            $comments = Comment::where("status", Comment::STATUS_ACTIVE)
+                ->with('user')
+                ->searchable($payload, ['user'])
+                ->orderBy('created_at', 'desc')
+                ->paginate($payload['paginate'] ?? 15);
 
             return self::successResponse('Comments Display Successfully', $comments);
         } catch (\Throwable $th) {
