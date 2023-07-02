@@ -36,6 +36,7 @@ class PostController extends Controller
         $payload = $request->validated();
 
         return DB::transaction(function () use ($payload) {
+            $payload['user_id'] = auth()->user()->id;
             $posts = Post::create($payload);
 
             if (isset($payload['file'])) {
@@ -61,7 +62,12 @@ class PostController extends Controller
         return DB::transaction(function () use ($payload) {
             $payload['user_id'] = auth()->user()->id;
 
-            $posts = Post::where('id', $payload['id'])->firstOrThrowError();
+            $posts = Post::where('id', $payload['id'])->with('user')->firstOrThrowError();
+
+            if ($posts->user->id != auth()->user()->id) {
+                return self::successResponse('You are not allowed to update other people posts');
+            }
+
             $result = $posts->update($payload);
 
             if (isset($payload['file'])) {
@@ -76,7 +82,12 @@ class PostController extends Controller
     public function delete($id)
     {
         return DB::transaction(function () use ($id) {
-            $posts = Post::where('id', $id)->firstOrThrowError();
+            $posts = Post::where('id', $id)->with('user')->firstOrThrowError();
+
+            if ($posts->user->id != auth()->user()->id) {
+                return self::successResponse('You are not allowed to delete other people posts');
+            }
+
             $payload = $posts->delete();
             $posts->image()->delete();
 

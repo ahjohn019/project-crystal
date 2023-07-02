@@ -27,7 +27,6 @@ class CreateFormRequest extends FormRequest
             'title' => ['required'],
             'content' => ['nullable'],
             'status' => ['required'],
-            'user_id' => ['required'],
             'file' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpg,png'],
         ];
     }

@@ -6,15 +6,22 @@ use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\ListFormRequest;
 use App\Http\Requests\Admin\Post\CreateFormRequest;
 use App\Http\Requests\Admin\Post\UpdateFormRequest;
 
 class PostController extends Controller
 {
     //
-    public function list()
+    public function list(ListFormRequest $request)
     {
-        $posts = Post::where("status", Post::STATUS_ACTIVE)->paginate(15);
+        $payload = $request->validated();
+
+        $posts = Post::where("status", Post::STATUS_ACTIVE)
+            ->with('user')
+            ->searchable($payload, ['user'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
 
         return self::successResponse('Posts Display Successfully', $posts);
     }
@@ -25,6 +32,7 @@ class PostController extends Controller
         $payload = $request->validated();
 
         return DB::transaction(function () use ($payload) {
+            $payload['user_id'] = auth()->user()->id;
             $posts = Post::create($payload);
 
             if (isset($payload['file'])) {
@@ -52,6 +60,11 @@ class PostController extends Controller
 
         return DB::transaction(function () use ($payload) {
             $posts = Post::where('id', $payload['id'])->firstOrThrowError();
+
+            if ($posts->user->id != auth()->user()->id) {
+                return self::successResponse('You are not allowed to update other people posts');
+            }
+
             $result = $posts->update($payload);
 
             if (isset($payload['file'])) {
