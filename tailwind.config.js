@@ -2,13 +2,13 @@
 module.exports = {
   content: [
     './resources/**/*.blade.php',
-    './resources/**/*.js',
-    './resources/**/*.vue',
     './vuejs/**/*.js',
-    './vuejs/**/*.vue'
+    './vuejs/**/*.vue',
+    './resources/**/*.scss'
   ],
   theme: {
     extend: {}
   },
-  plugins: [require('daisyui')]
+  plugins: [],
+  safelist: [{ pattern: /./ }]
 }
