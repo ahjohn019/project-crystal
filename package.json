@@ -7,6 +7,7 @@
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
+        "@quasar/vite-plugin": "^1.4.1",
         "@vitejs/plugin-vue": "^4.0.0",
         "autoprefixer": "^10.4.14",
         "axios": "^1.4.0",
@@ -30,6 +31,7 @@
     },
     "dependencies": {
         "element-plus": "^2.3.4",
+        "quasar": "^2.12.3",
         "vue": "^3.2.36",
         "vue-axios": "^3.5.2",
         "vue-router": "^4.1.6"

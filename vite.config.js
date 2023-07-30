@@ -5,6 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import path from 'path'
+import { quasar } from '@quasar/vite-plugin'
 
 export default defineConfig({
   plugins: [
@@ -20,6 +21,7 @@ export default defineConfig({
         }
       }
     }),
+    quasar(),
     AutoImport({
       resolvers: [ElementPlusResolver()]
     }),
