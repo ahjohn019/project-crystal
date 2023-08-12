@@ -20,7 +20,7 @@
 
 <body>
     <div id="app">
-        <main class="py-4">
+        <main>
             <router-view></router-view>
             <!-- @yield('content') -->
         </main>

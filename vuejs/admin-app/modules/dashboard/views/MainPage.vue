@@ -1,8 +1,7 @@
 <template>
-    <div>
+    <q-layout view="hHh Lpr lff" container style="height: 100vh">
         <nav-bar />
-        <h1>This is dashboard</h1>
-    </div>
+    </q-layout>
 </template>
 
 <script lang="ts">

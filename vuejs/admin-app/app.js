@@ -6,13 +6,16 @@ import VueAxios from 'vue-axios'
 import { Quasar } from 'quasar'
 // Import Quasar css
 import 'quasar/dist/quasar.css'
+// Import icon libraries
+import '@quasar/extras/material-icons/material-icons.css'
+import '@quasar/extras/material-icons-outlined/material-icons-outlined.css'
 
 const app = createApp({})
 app.use(router)
 app.use(VueAxios, axios)
 
 app.use(Quasar, {
-  plugins: {} // import Quasar plugins and add here
+  plugins: {}
 })
 
 app.mount('#app')
