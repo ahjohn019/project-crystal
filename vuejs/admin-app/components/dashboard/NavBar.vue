@@ -4,6 +4,7 @@
             <div class="col col-lg-2 text-sm md:text-2xl lg:text-center ml-4">
                 Admin Panel
             </div>
+
             <div class="col col-lg-8 col-md-5 nav-profile-details">
                 <q-input outlined dense label="Label">
                     <template v-slot:append>
@@ -11,6 +12,7 @@
                     </template>
                 </q-input>
             </div>
+
             <div class="col nav-profile-details">
                 <div class="row items-center">
                     <div class="col col-md-3 flex justify-end">
@@ -27,12 +29,10 @@
                             <template v-slot:label>
                                 <div class="row items-center no-wrap">
                                     <div class="col text-center">
-                                        <div class="font-bold ">
+                                        <div class="font-bold">
                                             Shoo Bro Thoo
                                         </div>
-                                        <div
-                                            class="lowercase  text-gray-500"
-                                        >
+                                        <div class="lowercase text-gray-500">
                                             shoobro@email.com
                                         </div>
                                     </div>
@@ -54,93 +54,22 @@
                     </div>
                 </div>
             </div>
+
             <div class="col nav-profile-sidebar">
-                <q-toolbar class="justify-end">
-                    <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
-                </q-toolbar>
+                <DrawerMobile />
             </div>
         </div>
     </q-header>
-
-    <q-drawer
-        v-model="drawer"
-        :width="200"
-        :breakpoint="500"
-        overlay
-        bordered
-        side="right"
-        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
-    >
-        <q-scroll-area class="fit">
-        <q-list>
-
-            <template v-for="(menuItem, index) in menuList" :key="index">
-            <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple>
-                <q-item-section avatar>
-                <q-icon :name="menuItem.icon" />
-                </q-item-section>
-                <q-item-section>
-                {{ menuItem.label }}
-                </q-item-section>
-            </q-item>
-            <q-separator :key="'sep' + index" v-if="menuItem.separator" />
-            </template>
-
-        </q-list>
-        </q-scroll-area>
-    </q-drawer>
 </template>
 
 <script>
-import { ref } from 'vue'
-
-const menuList = [
-  {
-    icon: 'inbox',
-    label: 'Inbox',
-    separator: true
-  },
-  {
-    icon: 'send',
-    label: 'Outbox',
-    separator: false
-  },
-  {
-    icon: 'delete',
-    label: 'Trash',
-    separator: false
-  },
-  {
-    icon: 'error',
-    label: 'Spam',
-    separator: true
-  },
-  {
-    icon: 'settings',
-    label: 'Settings',
-    separator: false
-  },
-  {
-    icon: 'feedback',
-    label: 'Send Feedback',
-    separator: false
-  },
-  {
-    icon: 'help',
-    iconColor: 'primary',
-    label: 'Help',
-    separator: false
-  }
-]
+import DrawerMobile from '@admin/components/dashboard/DrawerMobile.vue';
 
 export default {
-  setup () {
-    return {
-      drawer: ref(false),
-      menuList
-    }
-  }
-}
+    components: {
+        DrawerMobile,
+    },
+};
 </script>
 
 <style>
@@ -157,7 +86,7 @@ export default {
         display: none;
     }
 
-    .nav-profile-sidebar{
+    .nav-profile-sidebar {
         display: block;
     }
 }
@@ -167,7 +96,7 @@ export default {
         display: block;
     }
 
-    .nav-profile-sidebar{
+    .nav-profile-sidebar {
         display: none;
     }
 }

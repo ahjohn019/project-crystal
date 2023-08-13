@@ -4,9 +4,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import '../bootstrap'
-import { createApp } from 'vue'
-import router from '../router'
+import '../bootstrap';
+import { createApp } from 'vue';
+import router from '../router';
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -14,8 +14,8 @@ import router from '../router'
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp({})
-app.use(router)
+const app = createApp({});
+app.use(router);
 
 /**
  * The following block of code may be used to automatically register your
@@ -35,4 +35,4 @@ app.use(router)
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
 
-app.mount('#app')
+app.mount('#app');

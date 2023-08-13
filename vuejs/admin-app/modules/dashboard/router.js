@@ -1,5 +1,3 @@
-const MainPage = () => import('./views/MainPage.vue')
+const MainPage = () => import('./views/MainPage.vue');
 
-export {
-  MainPage
-}
+export { MainPage };
