@@ -1,26 +1,15 @@
 <template>
-    <div style="max-width: 350px">
-        <q-list bordered padding class="side-bar-container">
-            <q-item clickable v-ripple>
-                <q-item-section class="q-pa-md">
-                    <div class="row items-center">
-                        <div class="col col-md-4">
-                            <q-avatar size="75px" rounded>
-                                <img
-                                    src="https://cdn.quasar.dev/img/avatar.png"
-                                />
-                            </q-avatar>
-                        </div>
-                        <div class="col">
-                            <div class="text-xl font-bold">Broto Store</div>
-                            <div>Verified</div>
-                        </div>
-                    </div>
-                </q-item-section>
-            </q-item>
-            <q-separator />
-
-            <q-item clickable v-ripple>
+    <div style="max-width: 250px">
+        <q-list padding class="border-r side-bar-container">
+            <q-item
+                clickable
+                dense
+                :active="link === 'dashboard'"
+                @click="link = 'dashboard'"
+                active-class="admin-side-bar"
+                v-ripple
+                class="m-4 rounded"
+            >
                 <q-item>
                     <q-item-section avatar>
                         <q-icon name="grid_view" />
@@ -31,7 +20,15 @@
                 </q-item>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item
+                clickable
+                dense
+                :active="link === 'statistics'"
+                @click="link = 'statistics'"
+                active-class="admin-side-bar"
+                v-ripple
+                class="m-4 rounded"
+            >
                 <q-item>
                     <q-item-section avatar>
                         <q-icon name="equalizer" />
@@ -44,7 +41,15 @@
                 </q-item>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item
+                clickable
+                dense
+                :active="link === 'my-products'"
+                @click="link = 'my-products'"
+                active-class="admin-side-bar"
+                v-ripple
+                class="m-4 rounded"
+            >
                 <q-item>
                     <q-item-section avatar>
                         <q-icon name="shopping_bag" />
@@ -56,7 +61,15 @@
                     </q-item-section>
                 </q-item>
             </q-item>
-            <q-item clickable v-ripple>
+            <q-item
+                clickable
+                dense
+                :active="link === 'settings'"
+                @click="link = 'settings'"
+                active-class="admin-side-bar"
+                v-ripple
+                class="m-4 rounded"
+            >
                 <q-item>
                     <q-item-section avatar>
                         <q-icon name="tune" />
@@ -70,8 +83,25 @@
     </div>
 </template>
 
+<script>
+import { ref } from 'vue';
+
+export default {
+    setup() {
+        return {
+            link: ref('dashboard'),
+        };
+    },
+};
+</script>
+
 <style>
 .side-bar-container {
     height: calc(100vh - 72px);
+}
+
+.admin-side-bar {
+    color: white;
+    background: #5541d7;
 }
 </style>

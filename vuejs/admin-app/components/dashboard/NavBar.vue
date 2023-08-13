@@ -1,12 +1,12 @@
 <template>
-    <q-header elevated class="bg-white text-black py-2">
+    <q-header class="border-b bg-white text-black py-2">
         <div class="row items-center mx-4 md:mx-10">
             <div class="col col-lg-2 text-sm md:text-2xl lg:text-center ml-4">
                 Admin Panel
             </div>
 
             <div class="col col-lg-8 col-md-5 nav-profile-details">
-                <q-input outlined dense label="Label">
+                <q-input outlined dense label="Search">
                     <template v-slot:append>
                         <q-icon name="search" />
                     </template>
@@ -79,6 +79,10 @@ export default {
 
 .q-btn-dropdown__arrow-container {
     font-size: 32px !important;
+}
+
+.nav-profile-details .q-field__control {
+    color: #5541d7;
 }
 
 @media (max-width: 768px) {

@@ -3,7 +3,7 @@
         <nav-bar />
         <q-page-container>
             <q-page>
-                <side-bar />
+                <side-bar class="admin-sidebar" />
             </q-page>
         </q-page-container>
     </q-layout>
@@ -20,3 +20,17 @@ export default {
     },
 };
 </script>
+
+<style>
+@media (max-width: 768px) {
+    .admin-sidebar {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) {
+    .admin-sidebar {
+        display: block;
+    }
+}
+</style>

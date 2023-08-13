@@ -14,6 +14,30 @@
     >
         <q-scroll-area class="fit">
             <q-list>
+                <q-item>
+                    <q-item-section>
+                        <q-input outlined dense label="Search">
+                            <template v-slot:append>
+                                <q-icon name="search" />
+                            </template>
+                        </q-input>
+                    </q-item-section>
+                </q-item>
+                <q-item clickable v-ripple>
+                    <q-item-section class="items-center">
+                        <q-avatar size="100px">
+                            <img src="https://cdn.quasar.dev/img/avatar.png" />
+                        </q-avatar>
+                    </q-item-section>
+                </q-item>
+                <q-item clickable v-ripple>
+                    <q-item-section class="items-center">
+                        <div class="font-bold">Shoo Bro Thoo</div>
+                        <div class="lowercase text-gray-500">
+                            shoobro@email.com
+                        </div>
+                    </q-item-section>
+                </q-item>
                 <template v-for="(menuItem, index) in menuList" :key="index">
                     <q-item
                         clickable
@@ -42,39 +66,23 @@ import { ref } from 'vue';
 
 const menuList = [
     {
-        icon: 'inbox',
-        label: 'Inbox',
-        separator: true,
-    },
-    {
-        icon: 'send',
-        label: 'Outbox',
+        icon: 'grid_view',
+        label: 'Dashboard',
         separator: false,
     },
     {
-        icon: 'delete',
-        label: 'Trash',
+        icon: 'equalizer',
+        label: 'Statistics',
         separator: false,
     },
     {
-        icon: 'error',
-        label: 'Spam',
+        icon: 'shopping_bag',
+        label: 'My Products',
         separator: true,
     },
     {
-        icon: 'settings',
+        icon: 'tune',
         label: 'Settings',
-        separator: false,
-    },
-    {
-        icon: 'feedback',
-        label: 'Send Feedback',
-        separator: false,
-    },
-    {
-        icon: 'help',
-        iconColor: 'primary',
-        label: 'Help',
         separator: false,
     },
 ];
