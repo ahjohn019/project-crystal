@@ -1,84 +1,28 @@
 <template>
     <div style="max-width: 250px">
         <q-list padding class="border-r side-bar-container">
-            <q-item
-                clickable
-                dense
-                :active="link === 'dashboard'"
-                @click="link = 'dashboard'"
-                active-class="admin-side-bar"
-                v-ripple
-                class="m-4 rounded"
-            >
-                <q-item>
-                    <q-item-section avatar>
-                        <q-icon name="grid_view" />
-                    </q-item-section>
-                    <q-item-section class="font-bold">
-                        <q-item-label class="font-bold">Dashboard</q-item-label>
-                    </q-item-section>
+            <template v-for="(sideBarItem, index) in sideBarList" :key="index">
+                <q-item
+                    clickable
+                    dense
+                    :active="link === sideBarItem.title"
+                    @click="link = sideBarItem.title"
+                    active-class="admin-side-bar"
+                    v-ripple
+                    class="m-4 rounded"
+                >
+                    <q-item>
+                        <q-item-section avatar>
+                            <q-icon :name="sideBarItem.icon" />
+                        </q-item-section>
+                        <q-item-section class="font-bold">
+                            <q-item-label class="font-bold">{{
+                                sideBarItem.text
+                            }}</q-item-label>
+                        </q-item-section>
+                    </q-item>
                 </q-item>
-            </q-item>
-
-            <q-item
-                clickable
-                dense
-                :active="link === 'statistics'"
-                @click="link = 'statistics'"
-                active-class="admin-side-bar"
-                v-ripple
-                class="m-4 rounded"
-            >
-                <q-item>
-                    <q-item-section avatar>
-                        <q-icon name="equalizer" />
-                    </q-item-section>
-                    <q-item-section class="font-bold">
-                        <q-item-label class="font-bold"
-                            >Statistics</q-item-label
-                        >
-                    </q-item-section>
-                </q-item>
-            </q-item>
-
-            <q-item
-                clickable
-                dense
-                :active="link === 'my-products'"
-                @click="link = 'my-products'"
-                active-class="admin-side-bar"
-                v-ripple
-                class="m-4 rounded"
-            >
-                <q-item>
-                    <q-item-section avatar>
-                        <q-icon name="shopping_bag" />
-                    </q-item-section>
-                    <q-item-section class="font-bold">
-                        <q-item-label class="font-bold"
-                            >My Products</q-item-label
-                        >
-                    </q-item-section>
-                </q-item>
-            </q-item>
-            <q-item
-                clickable
-                dense
-                :active="link === 'settings'"
-                @click="link = 'settings'"
-                active-class="admin-side-bar"
-                v-ripple
-                class="m-4 rounded"
-            >
-                <q-item>
-                    <q-item-section avatar>
-                        <q-icon name="tune" />
-                    </q-item-section>
-                    <q-item-section class="font-bold">
-                        <q-item-label class="font-bold">Settings</q-item-label>
-                    </q-item-section>
-                </q-item>
-            </q-item>
+            </template>
         </q-list>
     </div>
 </template>
@@ -86,10 +30,34 @@
 <script>
 import { ref } from 'vue';
 
+const sideBarList = [
+    {
+        icon: 'grid_view',
+        title: 'dashboard',
+        text: 'Dashboard',
+    },
+    {
+        icon: 'equalizer',
+        title: 'statistics',
+        text: 'Statistics',
+    },
+    {
+        icon: 'shopping_bag',
+        title: 'my-products',
+        text: 'My Products',
+    },
+    {
+        icon: 'tune',
+        title: 'settings',
+        text: 'Settings',
+    },
+];
+
 export default {
     setup() {
         return {
             link: ref('dashboard'),
+            sideBarList,
         };
     },
 };
