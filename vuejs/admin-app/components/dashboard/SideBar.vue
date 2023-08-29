@@ -1,6 +1,6 @@
 <template>
-    <div style="max-width: 250px">
-        <q-list padding class="border-r side-bar-container">
+    <div style="max-width: 250px; max-height: 0">
+        <q-list padding class="border-r side-bar-container bg-white">
             <template v-for="(sideBarItem, index) in sideBarList" :key="index">
                 <q-item
                     clickable
@@ -65,7 +65,7 @@ export default {
 
 <style>
 .side-bar-container {
-    height: calc(100vh - 72px);
+    height: calc(100vh - 75px);
 }
 
 .admin-side-bar {

@@ -1,9 +1,13 @@
 <template>
     <q-layout view="hHh Lpr lff" container style="height: 100vh">
         <nav-bar />
-        <q-page-container>
+        <q-page-container class="dashboard-container">
             <q-page>
                 <side-bar class="admin-sidebar" />
+                <div class="dashboard-container-page m-6 justify-center">
+                    <card-details />
+                    <bar-chart />
+                </div>
             </q-page>
         </q-page-container>
     </q-layout>
@@ -12,16 +16,24 @@
 <script>
 import NavBar from '@admin/components/dashboard/NavBar.vue';
 import SideBar from '@admin/components/dashboard/SideBar.vue';
+import CardDetails from '@admin/components/dashboard/CardDetails.vue';
+import BarChart from '@admin/components/charts/dashboard/BarChart.vue';
 
 export default {
     components: {
         NavBar,
         SideBar,
+        CardDetails,
+        BarChart,
     },
 };
 </script>
 
 <style>
+.dashboard-container {
+    background-color: #f7f7fc;
+}
+
 @media (max-width: 768px) {
     .admin-sidebar {
         display: none;
@@ -31,6 +43,9 @@ export default {
 @media (min-width: 769px) {
     .admin-sidebar {
         display: block;
+    }
+    .dashboard-container-page {
+        padding-left: 250px;
     }
 }
 </style>
