@@ -6,6 +6,10 @@ const routes = [
         path: '/',
         component: AdminDashboard.MainPage,
     },
+    {
+        path: '/login',
+        component: AdminDashboard.LoginPage,
+    },
 ];
 
 const router = createRouter({

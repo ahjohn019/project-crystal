@@ -4,9 +4,10 @@
         <q-page-container class="dashboard-container">
             <q-page>
                 <side-bar class="admin-sidebar" />
-                <div class="dashboard-container-page m-6 justify-center">
+                <div class="dashboard-container-page m-4 justify-center">
                     <card-details />
                     <bar-chart />
+                    <bar-performance />
                 </div>
             </q-page>
         </q-page-container>
@@ -18,6 +19,7 @@ import NavBar from '@admin/components/dashboard/NavBar.vue';
 import SideBar from '@admin/components/dashboard/SideBar.vue';
 import CardDetails from '@admin/components/dashboard/CardDetails.vue';
 import BarChart from '@admin/components/charts/dashboard/BarChart.vue';
+import BarPerformance from '@admin/components/dashboard/BarPerformance.vue';
 
 export default {
     components: {
@@ -25,6 +27,7 @@ export default {
         SideBar,
         CardDetails,
         BarChart,
+        BarPerformance,
     },
 };
 </script>

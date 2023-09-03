@@ -1,5 +1,5 @@
 <template>
-    <div class="card-details-container text-white row py-4 justify-between">
+    <div class="card-details-container text-white row pb-2 justify-between">
         <div
             class="col-12 col-md-2 my-2 rounded p-6 row justify-between"
             style="background-color: #55aaf1"

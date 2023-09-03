@@ -1,34 +1,43 @@
 <template>
-    <div
-        class="col col-12 bg-white rounded-tl-lg rounded-tr-lg p-4 font-bold border-b"
-    >
-        Blog Data
-    </div>
-    <div class="row">
+    <div class="pb-2">
         <div
-            class="dashboard-bar-chart col col-12 col-md-2 row justify-center bg-white p-4 md:rounded-bl-lg space-y-4"
+            class="col col-12 bg-white rounded-tl-lg rounded-tr-lg p-4 font-bold border-b"
         >
-            <div class="col-6 col-md-12">
-                <div class="text-sm">Total Blogs</div>
-                <div class="font-bold" style="font-size: 1.5rem">200</div>
-            </div>
-            <div class="col-6 col-md-12">
-                <div class="text-sm">Most View</div>
-                <div class="font-bold" style="font-size: 1.5rem">Gaming</div>
-            </div>
-            <div class="col-6 col-md-12">
-                <div class="text-sm">Highest Liked Count</div>
-                <div class="font-bold" style="font-size: 1.5rem">300</div>
-            </div>
-            <div class="col-6 col-md-12">
-                <div class="text-sm">Total Comment</div>
-                <div class="font-bold" style="font-size: 1.5rem">24</div>
-            </div>
+            Blog Data
         </div>
-        <div
-            class="dashboard-bar-chat-graphs col bg-white p-4 rounded-bl-lg md:rounded-bl-none rounded-br-lg"
-        >
-            <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
+        <div class="row">
+            <div
+                class="dashboard-bar-chart col-12 col-md-2 row justify-center bg-white p-4 md:rounded-bl-lg"
+            >
+                <div class="col-6 col-md-12">
+                    <div class="text-sm">Total Blogs</div>
+                    <div class="font-bold" style="font-size: 1.5rem">200</div>
+                </div>
+                <div class="col-6 col-md-12">
+                    <div class="text-sm">Most View</div>
+                    <div class="font-bold" style="font-size: 1.5rem">
+                        Gaming
+                    </div>
+                </div>
+                <div class="col-6 col-md-12">
+                    <div class="text-sm">Highest Liked Count</div>
+                    <div class="font-bold" style="font-size: 1.5rem">300</div>
+                </div>
+                <div class="col-6 col-md-12">
+                    <div class="text-sm">Total Comment</div>
+                    <div class="font-bold" style="font-size: 1.5rem">24</div>
+                </div>
+            </div>
+            <div
+                style="height: 40vh"
+                class="dashboard-bar-chat-graphs col bg-white p-4 rounded-bl-lg md:rounded-bl-none rounded-br-lg"
+            >
+                <Bar
+                    id="my-chart-id"
+                    :options="chartOptions"
+                    :data="chartData"
+                />
+            </div>
         </div>
     </div>
 </template>
