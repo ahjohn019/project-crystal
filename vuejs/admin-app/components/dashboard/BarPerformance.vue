@@ -9,7 +9,7 @@
         <div
             class="col bg-white px-4 rounded-bl-lg md:rounded-bl-none rounded-br-lg"
         >
-            <q-expansion-item v-model="expanded">
+            <q-expansion-item v-model="expanded" class="relative">
                 <template v-slot:header>
                     <span class="font-bold flex items-center">This Week</span>
                 </template>
@@ -19,6 +19,27 @@
                     style="border-radius: 24px; color: #5541d7"
                     class="custom-progress"
                 />
+                <div
+                    class="bar-performace-fade-in-icons"
+                    :class="barPerformanceClass"
+                >
+                    <div class="flex justify-center items-center h-10">
+                        <div
+                            class="absolute bottom-10 flex justify-center font-bold"
+                            style="width: 350px; color: #5541d7"
+                        >
+                            {{ barPerformanceCheckpointText }}
+                        </div>
+                        <q-icon
+                            :name="barPerformanceIcons"
+                            size="32px"
+                        ></q-icon>
+                        <div
+                            class="bar-performance-pulse-effect"
+                            :class="barPerformanceColorEffect"
+                        ></div>
+                    </div>
+                </div>
             </q-expansion-item>
 
             <div class="col-12 py-4 font-bold">Indicators</div>
@@ -59,10 +80,14 @@ export default {
     setup() {
         const progress = ref(0);
         const expanded = ref(true);
+        let barPerformanceClass = 'bar-checkpoint-two';
+        let barPerformanceIcons = 'close';
+        let barPerformanceColorEffect = 'bar-performance-red-effect';
+        let barPerformanceCheckpointText = '';
+        const targetProgress = 0.5;
 
         // Start the progress animation
         const animateProgress = () => {
-            const targetProgress = 0.8;
             const animationDuration = 1000;
             const interval = 10;
 
@@ -80,6 +105,13 @@ export default {
             }, interval);
         };
 
+        if (targetProgress >= 0.5) {
+            barPerformanceClass = 'bar-checkpoint-one';
+            barPerformanceIcons = 'check';
+            barPerformanceColorEffect = 'bar-performance-green-effect';
+            barPerformanceCheckpointText = "You've Achieved the 50% Milestone";
+        }
+
         onMounted(() => {
             animateProgress();
         });
@@ -87,6 +119,10 @@ export default {
         return {
             progress,
             expanded,
+            barPerformanceClass,
+            barPerformanceIcons,
+            barPerformanceColorEffect,
+            barPerformanceCheckpointText,
         };
     },
 };
@@ -102,5 +138,60 @@ export default {
 
 .q-expansion-item .q-expansion-item__container .q-item {
     padding: 0;
+}
+
+.bar-checkpoint-one,
+.bar-checkpoint-two {
+    width: 40px;
+    height: 40px;
+    border-radius: 24px;
+    position: absolute;
+    left: 49.5%;
+    bottom: -50%;
+    color: white;
+}
+
+.bar-checkpoint-one,
+.bar-performance-green-effect {
+    background: green;
+}
+
+.bar-checkpoint-two,
+.bar-performance-red-effect {
+    background: red;
+}
+
+.bar-performace-fade-in-icons {
+    animation: fadeIn 1.5s;
+    opacity: 1;
+}
+
+.bar-performance-pulse-effect {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    opacity: 1;
+    animation: scaleIn 1.25s infinite cubic-bezier(0.36, 0.11, 0.89, 0.32);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.5, 0.5);
+        opacity: 0.5;
+    }
+    to {
+        transform: scale(1, 1);
+        opacity: 0;
+    }
 }
 </style>
