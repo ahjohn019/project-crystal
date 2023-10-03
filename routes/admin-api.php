@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,7 @@ Route::prefix('auth')->middleware([])->group(
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('auth')->middleware([])->group(function () {
+        Route::post('/profile', [AuthController::class, 'authProfile']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/update-password', [AuthController::class, 'updatePassword']);
     });
@@ -57,11 +59,23 @@ Route::middleware(['auth:sanctum', 'role:' . RoleTag::SUPERADMIN . '|' . RoleTag
         Route::delete('/delete/{id}', [BannerController::class, 'delete'])->name('banner.delete');
     });
 
-    Route::prefix('post')->group(function () {
-        Route::get('/list', [PostController::class, 'list'])->name('posts.list');
-        Route::post('/store', [PostController::class, 'store'])->name('posts.store');
-        Route::get('/show/{id}', [PostController::class, 'show'])->name('posts.show');
-        Route::post('/update', [PostController::class, 'update'])->name('posts.update');
-        Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('posts.delete');
+    Route::prefix('post')->name('posts.')->group(function () {
+        Route::get('/list', [PostController::class, 'list'])->name('list');
+        Route::post('/store', [PostController::class, 'store'])->name('store');
+        Route::get('/show/{id}', [PostController::class, 'show'])->name('show');
+        Route::post('/update', [PostController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        Route::get('/all', [DashboardController::class, 'fetchAllPost'])->name('all');
+        Route::get('/current', [DashboardController::class, 'fetchCurrentPost'])->name('current');
+        Route::get('/current-comment', [DashboardController::class, 'fetchCurrentComment'])->name('current_comment');
+        Route::get('/user-list', [DashboardController::class, 'fetchUserList'])->name('user_list');
+        Route::get('/monthly-post', [DashboardController::class, 'fetchMonthlyPost'])->name('monthly_post');
+        Route::get('/top-category', [DashboardController::class, 'fetchTopCategory'])->name('top_category');
+        Route::get('/highest-likes-month', [DashboardController::class, 'fetchHighestLikesByMonth'])->name('highest_like_month');
+        Route::get('/highest-comment-month', [DashboardController::class, 'fetchHighestCommentByMonth'])->name('highest_comment_month');
+        Route::get('/bar-chart-data', [DashboardController::class, 'retrieveBarChartData'])->name('bar_chart_data');
     });
 });

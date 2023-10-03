@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use App\Library\PermissionTag;
 use App\Http\Services\AuthService;
 use Illuminate\Support\Facades\DB;
@@ -40,8 +41,13 @@ class AuthController extends Controller
                 ])->header('Authorization', $token->plainTextToken);
             });
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
+    }
+
+    public function authProfile()
+    {
+        return self::successResponse('Success', auth()->user());
     }
 
     public function register(RegisterFormRequest $request)
@@ -60,7 +66,7 @@ class AuthController extends Controller
     {
         $result = AuthService::logout([]);
 
-        return self::successResponse('Success', $result);
+        return self::successResponse('Logout Successfully', $result);
     }
 
     public function resetPassword(ResetPasswordRequest $request)

@@ -33,6 +33,7 @@ export default defineConfig({
         alias: {
             vue: 'vue/dist/vue.esm-bundler.js',
             '@admin': path.resolve(__dirname, 'vuejs/admin-app'),
+            '@shared_admin': path.resolve(__dirname, 'vuejs/admin-app/shared'),
         },
     },
 });

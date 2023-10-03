@@ -19,6 +19,8 @@ class User extends Authenticatable
     use SoftDeletes;
     use HasModelTrait;
 
+    const USER = 'user';
+
     /**
      * The attributes that are mass assignable.
      *

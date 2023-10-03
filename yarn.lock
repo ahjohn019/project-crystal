@@ -2093,6 +2093,14 @@
   "resolved" "https://registry.npmjs.org/pify/-/pify-2.3.0.tgz"
   "version" "2.3.0"
 
+"pinia@^2.1.6":
+  "integrity" "sha512-bIU6QuE5qZviMmct5XwCesXelb5VavdOWKWaB17ggk++NUwQWWbP5YnsONTk3b752QkW9sACiR81rorpeOMSvQ=="
+  "resolved" "https://registry.npmjs.org/pinia/-/pinia-2.1.6.tgz"
+  "version" "2.1.6"
+  dependencies:
+    "@vue/devtools-api" "^6.5.0"
+    "vue-demi" ">=0.14.5"
+
 "pirates@^4.0.1":
   "integrity" "sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg=="
   "resolved" "https://registry.npmjs.org/pirates/-/pirates-4.0.6.tgz"
@@ -2464,6 +2472,11 @@
   "resolved" "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   "version" "1.0.0"
 
+"sweetalert2@11.x":
+  "integrity" "sha512-QbRXGQn1sb7HEhzA/K2xtWIwQHh/qkSbb1w6jYcTql2xy17876lTREEt1D4X6Q0x2wHtfUjKJ+Cb8IVkRoq7DQ=="
+  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.7.27.tgz"
+  "version" "11.7.27"
+
 "tailwindcss@^3", "tailwindcss@^3.3.3":
   "integrity" "sha512-A0KgSkef7eE4Mf+nKJ83i75TMyq8HqY3qmFIJSWy8bNt0v1lG7jUcpGpoTFxAwYcWOphcTBLPPJg+bDfhDf52w=="
   "resolved" "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.3.3.tgz"
@@ -2705,6 +2718,11 @@
   "resolved" "https://registry.npmjs.org/vue-demi/-/vue-demi-0.14.5.tgz"
   "version" "0.14.5"
 
+"vue-demi@>=0.14.5":
+  "integrity" "sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w=="
+  "resolved" "https://registry.npmjs.org/vue-demi/-/vue-demi-0.14.6.tgz"
+  "version" "0.14.6"
+
 "vue-eslint-parser@^9.3.1":
   "integrity" "sha512-Clr85iD2XFZ3lJ52/ppmUDG/spxQu6+MAeHXjjyI4I1NUYZ9xmenQp4N0oaHJhrA8OOxltCVxMRfANGa70vU0g=="
   "resolved" "https://registry.npmjs.org/vue-eslint-parser/-/vue-eslint-parser-9.3.1.tgz"
@@ -2734,7 +2752,14 @@
   dependencies:
     "@vue/devtools-api" "^6.5.0"
 
-"vue@^3.0.0", "vue@^3.0.0 || ^2.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.0-0 || ^2.7.0", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.2.37", "vue@2 || 3", "vue@3.3.4":
+"vue-sweetalert2@^5.0.5":
+  "integrity" "sha512-Q7+TjQxNwGruT2jfPaSKMz18HHWs81r4umEwlrrtOf/QL5Iwl1T+tUaNkcvKB7Rf9rYftubt7NnOMjfDMnDH3A=="
+  "resolved" "https://registry.npmjs.org/vue-sweetalert2/-/vue-sweetalert2-5.0.5.tgz"
+  "version" "5.0.5"
+  dependencies:
+    "sweetalert2" "11.x"
+
+"vue@*", "vue@^2.6.14 || ^3.3.0", "vue@^3.0.0", "vue@^3.0.0 || ^2.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.0-0 || ^2.7.0", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.2.37", "vue@2 || 3", "vue@3.3.4":
   "integrity" "sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.3.4.tgz"
   "version" "3.3.4"

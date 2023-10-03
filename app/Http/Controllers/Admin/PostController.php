@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
+use App\Http\Services\PostService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;

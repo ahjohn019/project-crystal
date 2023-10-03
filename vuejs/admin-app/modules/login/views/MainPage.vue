@@ -11,14 +11,28 @@
                 admin panel
             </div>
             <div class="col-12 my-4">
-                <q-input outlined dense v-model="text" label="Login">
+                <q-input
+                    outlined
+                    dense
+                    v-model="formData.email"
+                    label="Login"
+                    type="email"
+                    filled
+                >
                     <template v-slot:prepend>
                         <q-icon name="person" />
                     </template>
                 </q-input>
             </div>
             <div class="col-12 my-4">
-                <q-input outlined dense v-model="text" label="Password">
+                <q-input
+                    outlined
+                    dense
+                    v-model="formData.password"
+                    label="Password"
+                    type="password"
+                    filled
+                >
                     <template v-slot:prepend>
                         <q-icon name="lock" />
                     </template>
@@ -30,11 +44,12 @@
                     class="text-white"
                     rounded
                     style="width: 100%; background-color: #5541d7"
+                    @click="submitAdminLogin"
                 />
             </div>
             <div class="col-12 my-4 flex items-center justify-between">
                 <div class="admin-login-checkbox">
-                    <q-checkbox v-model="val" label="Remember Me" />
+                    <q-checkbox v-model="forget_password" label="Remember Me" />
                 </div>
                 <div>
                     <a href="#" target="_blank">Forgot Password?</a>
@@ -42,21 +57,36 @@
             </div>
         </div>
 
-        <div class="ocean">
-            <div class="wave"></div>
-            <div class="wave"></div>
-            <div class="wave"></div>
-        </div>
+        <wave-component />
     </div>
 </template>
 
 <script>
 import { ref } from 'vue';
+import WaveComponent from '@admin/components/login/waveComponent.vue';
+import { useAdminAuthStore } from '@shared_admin/base/auth.js';
 
 export default {
+    components: {
+        WaveComponent,
+    },
+
     setup() {
+        const adminStore = useAdminAuthStore();
+        const formData = ref({
+            email: 'admin_one@example.com',
+            password: '1111aaaa',
+            device_name: 'web',
+        });
+
+        const submitAdminLogin = async () => {
+            await adminStore.handleLogin(formData.value);
+        };
+
         return {
-            val: ref(true),
+            submitAdminLogin,
+            forget_password: ref(''),
+            formData,
         };
     },
 };
@@ -69,50 +99,5 @@ export default {
 
 .admin-login-checkbox .q-checkbox .q-checkbox__inner--truthy {
     color: #5541d7;
-}
-
-/* waves */
-.ocean {
-    height: 80px;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow-x: hidden;
-}
-
-.wave {
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-49.9-200 0-250 49.9-394.5 49.9v31.8h800v-.2-31.6z' fill='%23003F7C'/%3E%3C/svg%3E");
-    position: absolute;
-    width: 200%;
-    height: 100%;
-    animation: wave 10s -3s linear infinite;
-    transform: translate3d(0, 0, 0);
-    opacity: 0.8;
-}
-
-.wave:nth-of-type(2) {
-    bottom: 0;
-    animation: wave 18s linear reverse infinite;
-    opacity: 0.5;
-}
-
-.wave:nth-of-type(3) {
-    bottom: 0;
-    animation: wave 20s -1s linear infinite;
-    opacity: 0.5;
-}
-
-@keyframes wave {
-    0% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(-25%);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
 }
 </style>

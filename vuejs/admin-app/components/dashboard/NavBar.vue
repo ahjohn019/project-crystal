@@ -30,23 +30,26 @@
                                 <div class="row items-center no-wrap">
                                     <div class="col text-center">
                                         <div class="font-bold">
-                                            Shoo Bro Thoo
+                                            {{ adminProfileData.name }}
                                         </div>
                                         <div class="lowercase text-gray-500">
-                                            shoobro@email.com
+                                            {{ adminProfileData.email }}
                                         </div>
                                     </div>
                                 </div>
                             </template>
                             <q-list>
-                                <q-item clickable v-close-popup>
+                                <q-item
+                                    v-for="item in navBarDropDown"
+                                    :key="item"
+                                    clickable
+                                    v-close-popup
+                                    @click="handleDropdownMenu(item.handler)"
+                                >
                                     <q-item-section>
-                                        <q-item-label>Photos</q-item-label>
-                                    </q-item-section>
-                                </q-item>
-                                <q-item clickable v-close-popup>
-                                    <q-item-section>
-                                        <q-item-label>Videos</q-item-label>
+                                        <q-item-label>{{
+                                            item.label
+                                        }}</q-item-label>
                                     </q-item-section>
                                 </q-item>
                             </q-list>
@@ -64,10 +67,68 @@
 
 <script>
 import DrawerMobile from '@admin/components/dashboard/DrawerMobile.vue';
+import { useAdminAuthStore } from '@shared_admin/base/auth.js';
+import { onMounted, ref } from 'vue';
 
 export default {
     components: {
         DrawerMobile,
+    },
+
+    setup() {
+        const adminStore = useAdminAuthStore();
+        const getAuthToken = adminStore.fetchSessionToken();
+        const adminProfileData = ref({
+            email: '',
+            name: '',
+        });
+        const navBarDropDown = ref([
+            { label: 'Log Out', value: 'logout', handler: 'handlerLogout' },
+        ]);
+
+        const handleLogout = async () => {
+            try {
+                await adminStore.handleLogout(getAuthToken);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        const fetchProfile = async () => {
+            try {
+                const fetchAdminProfile = await adminStore.fetchProfile(
+                    getAuthToken
+                );
+
+                adminProfileData.value.email = fetchAdminProfile.email;
+                adminProfileData.value.name = fetchAdminProfile.name;
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+            }
+        };
+
+        const handleDropdownMenu = (funcName) => {
+            const functionList = {
+                handlerLogout: handleLogout,
+            };
+
+            const selectedFunction = functionList[funcName];
+
+            if (selectedFunction) {
+                selectedFunction();
+            }
+        };
+
+        onMounted(() => {
+            fetchProfile();
+        });
+
+        return {
+            handleLogout,
+            adminProfileData,
+            navBarDropDown,
+            handleDropdownMenu,
+        };
     },
 };
 </script>

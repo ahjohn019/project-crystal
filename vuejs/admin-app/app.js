@@ -10,7 +10,12 @@ import 'quasar/dist/quasar.css';
 import '@quasar/extras/material-icons/material-icons.css';
 import '@quasar/extras/material-icons-outlined/material-icons-outlined.css';
 
+import { createPinia } from 'pinia';
+
 const app = createApp({});
+const pinia = createPinia();
+
+app.use(pinia);
 app.use(router);
 app.use(VueAxios, axios);
 

@@ -2,7 +2,7 @@
     <q-layout view="hHh Lpr lff" container style="height: 100vh">
         <nav-bar />
         <q-page-container class="dashboard-container">
-            <q-page>
+            <q-page class="overflow-hidden">
                 <side-bar class="admin-sidebar" />
                 <div class="dashboard-container-page m-4 justify-center">
                     <card-details />

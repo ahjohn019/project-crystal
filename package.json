@@ -37,10 +37,12 @@
         "@quasar/extras": "^1.16.5",
         "chart.js": "^4.3.3",
         "element-plus": "^2.3.4",
+        "pinia": "^2.1.6",
         "quasar": "^2.12.3",
         "vue": "^3.2.36",
         "vue-axios": "^3.5.2",
         "vue-chartjs": "^5.2.0",
-        "vue-router": "^4.1.6"
+        "vue-router": "^4.1.6",
+        "vue-sweetalert2": "^5.0.5"
     }
 }
