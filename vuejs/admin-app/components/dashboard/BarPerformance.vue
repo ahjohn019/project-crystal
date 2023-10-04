@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="animate__animated animate__fadeInRight">
         <div
             class="col col-12 rounded-tl-lg rounded-tr-lg p-4 font-bold border-b bg-white"
         >
@@ -15,7 +15,7 @@
                 </template>
                 <q-linear-progress
                     :value="progress"
-                    size="20px"
+                    size="12px"
                     style="border-radius: 24px; color: #5541d7"
                     class="custom-progress"
                 />
@@ -181,7 +181,7 @@ export default {
         height: 40px;
         border-radius: 24px;
         position: absolute;
-        bottom: -50%;
+        bottom: -0.75rem;
         color: white;
         display: block;
     }

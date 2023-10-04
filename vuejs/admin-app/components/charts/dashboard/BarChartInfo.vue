@@ -22,13 +22,13 @@
         <div class="col-6 col-md-12">
             <div class="text-sm">Highest Liked By Month</div>
             <div class="font-bold" style="font-size: 1.5rem">
-                {{ highestLikesInit.likes }}
+                {{ highestLikesInit.likes ?? 0 }}
             </div>
         </div>
         <div class="col-6 col-md-12">
             <div class="text-sm">Highest Comment By Month</div>
             <div class="font-bold" style="font-size: 1.5rem">
-                {{ highestCommentsInit.comments }}
+                {{ highestCommentsInit.comments ?? 0 }}
             </div>
         </div>
     </div>

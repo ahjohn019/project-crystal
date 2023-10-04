@@ -3,7 +3,7 @@
         <div
             v-for="cardDetail in cardDetailsList"
             :key="cardDetail"
-            class="col-12 col-md-2 my-2 rounded p-6 row justify-between"
+            class="col-12 col-md-2 my-2 rounded p-6 row justify-between animate__animated animate__bounce"
             :style="'background-color:' + cardDetail.backgroundColor"
         >
             <div>
@@ -117,6 +117,10 @@ export default {
 </script>
 
 <style>
+.animate__animated.animate__bounce {
+    --animate-duration: 2s;
+}
+
 @media (min-width: 1024px) {
     .card-details-container .col-md-2 {
         width: 23.5% !important;

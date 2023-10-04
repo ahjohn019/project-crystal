@@ -99,24 +99,19 @@ class DashboardService
 
     public static function retrieveBarChartData()
     {
-        $postQuery = Post::query();
-        $monthListInit = [];
-        $restructuredMonthInit = [];
+        $months = collect(range(1, 12))->map(function ($monthNumber) {
+            return Carbon::createFromDate(null, $monthNumber, 1)->format("F");
+        })->toArray();
 
-        Collection::make(range(1, 12))->map(function ($monthNumber) use (&$monthListInit) {
-            $monthName = Carbon::createFromDate(null, $monthNumber, 1)->format("F");
-            $monthListInit[$monthName] = 0;
-        })->all();
+        $totalPostByMonth = Post::query()
+            ->selectRaw('MONTHNAME(created_at) as month_name')
+            ->selectRaw('COUNT(*) as total')
+            ->groupByRaw('MONTHNAME(created_at)')
+            ->pluck('total', 'month_name')
+            ->all();
 
-        $totalPostByMonth = $postQuery
-            ->selectRaw('COUNT(*) as total, MONTHNAME(created_at) as month_name')
-            ->groupByRaw('MONTHNAME(created_at)');
-
-        $totalPostByMonth = $totalPostByMonth->pluck('total', 'month_name')->toArray();
-
-        foreach ($monthListInit as $monthName => $defaultValue) {
-            $restructuredMonthInit[$monthName] = $totalPostByMonth[$monthName] ?? 0;
-        }
+        $restructuredMonthInit = array_fill_keys($months, 0);
+        $restructuredMonthInit = array_replace($restructuredMonthInit, $totalPostByMonth);
 
         return ["data" => $restructuredMonthInit];
     }
