@@ -12,6 +12,7 @@
                 class="dashboard-bar-chat-graphs col bg-white p-4 rounded-bl-lg md:rounded-bl-none rounded-br-lg"
             >
                 <Bar
+                    v-if="chartLoaded"
                     id="my-chart-id"
                     :options="chartOptions"
                     :data="chartData"
@@ -26,7 +27,6 @@
 import { useBarChartsAdminStore } from '@shared_admin/dashboard/barChartDetails.js';
 import { useAdminAuthStore } from '@shared_admin/base/auth.js';
 import { Bar } from 'vue-chartjs';
-import { onMounted, ref, watchEffect } from 'vue';
 import {
     Chart as ChartJS,
     Title,
@@ -37,7 +37,6 @@ import {
     LinearScale,
 } from 'chart.js';
 import BarChartInfo from './BarChartInfo.vue';
-import axios from 'axios';
 
 ChartJS.register(
     Title,
@@ -51,21 +50,30 @@ ChartJS.register(
 export default {
     name: 'BarChart',
     components: { Bar, BarChartInfo },
-    setup() {
+    data() {
+        return {
+            chartLoaded: false,
+            chartData: '',
+            chartOptions: '',
+        };
+    },
+    async mounted() {
         const barChartsAdminStore = useBarChartsAdminStore();
         const adminAuthStore = useAdminAuthStore();
         const getAuthToken = adminAuthStore.fetchSessionToken();
-        const retrieveBarChartDataInit = ref([]);
 
-        const chartData = ref({
-            labels: ref([]),
+        const response = await barChartsAdminStore.retrieveBarChartData(
+            getAuthToken
+        );
+
+        this.chartLoaded = true;
+
+        this.chartData = {
+            labels: Object.keys(response.data),
             datasets: [
                 {
                     label: 'Post',
-                    data: Array.from(
-                        { length: 12 },
-                        () => Math.floor(Math.random() * 100) + 1
-                    ),
+                    data: Object.values(response.data),
                     backgroundColor: '#55AAF1',
                     borderWidth: 2,
                     borderRadius: Number.MAX_VALUE,
@@ -73,9 +81,9 @@ export default {
                     barThickness: 20,
                 },
             ],
-        });
+        };
 
-        const chartOptions = ref({
+        this.chartOptions = {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
@@ -89,37 +97,6 @@ export default {
                     },
                 },
             },
-        });
-
-        const retrieveBarChartData = async () => {
-            try {
-                const response = await barChartsAdminStore.retrieveBarChartData(
-                    getAuthToken
-                );
-
-                const data = await response.json();
-
-                chartData.value.labels = ['aaa'];
-
-                console.log(data);
-                // retrieveBarChartDataInit.value =
-                //     await barChartsAdminStore.retrieveBarChartData(
-                //         getAuthToken
-                //     );
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        onMounted(() => {
-            retrieveBarChartData();
-        });
-
-        chartData.value.labels = ['aaa'];
-
-        return {
-            chartData,
-            chartOptions,
         };
     },
 };
