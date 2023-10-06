@@ -34,7 +34,7 @@ export default {
     setup() {
         const baseScrollAnimationStore = useBaseScrollAnimationStore();
         const animateClassList = [
-            { name: 'card-details', animation: 'animate__bounce' },
+            { name: 'card-details', animation: 'animate__backInDown' },
             { name: 'bar-chart', animation: 'animate__fadeInLeft' },
             { name: 'bar-performance', animation: 'animate__fadeInRight' },
         ];
