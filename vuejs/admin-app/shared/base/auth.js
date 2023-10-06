@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 const prefix = '/api/auth/';
 
-export const useAdminAuthStore = defineStore('admin', {
+export const useAdminAuthStore = defineStore('auth_admin', {
     state: () => ({
         admin: null,
         config: { headers: { Authorization: '' } },

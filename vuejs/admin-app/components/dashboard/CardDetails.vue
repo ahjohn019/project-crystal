@@ -3,7 +3,7 @@
         <div
             v-for="cardDetail in cardDetailsList"
             :key="cardDetail"
-            class="col-12 col-md-2 my-2 rounded p-6 row justify-between animate__animated animate__bounce"
+            class="col-12 col-md-2 my-2 rounded p-6 row justify-between"
             :style="'background-color:' + cardDetail.backgroundColor"
         >
             <div>

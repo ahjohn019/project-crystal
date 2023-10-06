@@ -1,5 +1,5 @@
 <template>
-    <div class="animate__animated animate__fadeInRight">
+    <div>
         <div
             class="col col-12 rounded-tl-lg rounded-tr-lg p-4 font-bold border-b bg-white"
         >

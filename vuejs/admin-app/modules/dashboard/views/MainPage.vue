@@ -5,9 +5,9 @@
             <q-page class="overflow-hidden">
                 <side-bar class="admin-sidebar" />
                 <div class="dashboard-container-page m-4 justify-center">
-                    <card-details />
-                    <bar-chart />
-                    <bar-performance />
+                    <card-details class="to-animate card-details" />
+                    <bar-chart class="to-animate bar-chart" />
+                    <bar-performance class="to-animate bar-performance" />
                 </div>
             </q-page>
         </q-page-container>
@@ -20,6 +20,7 @@ import SideBar from '@admin/components/dashboard/SideBar.vue';
 import CardDetails from '@admin/components/dashboard/CardDetails.vue';
 import BarChart from '@admin/components/charts/dashboard/BarChart.vue';
 import BarPerformance from '@admin/components/dashboard/BarPerformance.vue';
+import { useBaseScrollAnimationStore } from '@shared_admin/base/scrollAnimation.js';
 
 export default {
     components: {
@@ -28,6 +29,17 @@ export default {
         CardDetails,
         BarChart,
         BarPerformance,
+    },
+
+    setup() {
+        const baseScrollAnimationStore = useBaseScrollAnimationStore();
+        const animateClassList = [
+            { name: 'card-details', animation: 'animate__bounce' },
+            { name: 'bar-chart', animation: 'animate__fadeInLeft' },
+            { name: 'bar-performance', animation: 'animate__fadeInRight' },
+        ];
+
+        baseScrollAnimationStore.scrollAnimation(animateClassList);
     },
 };
 </script>

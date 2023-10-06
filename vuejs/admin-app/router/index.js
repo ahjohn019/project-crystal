@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import * as AdminDashboard from '../modules/dashboard/router';
 import * as LoginDashboard from '../modules/login/router';
+import * as TestPage from '../modules/test/router';
 import { useAdminAuthStore } from '@shared_admin/base/auth.js';
 
 const routes = [
@@ -15,6 +16,12 @@ const routes = [
         component: LoginDashboard.LoginPage,
         meta: { requiresAuth: false },
         name: 'login',
+    },
+    {
+        path: '/test',
+        component: TestPage.TestPage,
+        meta: { requiresAuth: false },
+        name: 'test',
     },
 ];
 

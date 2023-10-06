@@ -1,5 +1,5 @@
 <template>
-    <div class="pb-2 animate__animated animate__fadeInLeft">
+    <div class="pb-2">
         <div
             class="col col-12 bg-white rounded-tl-lg rounded-tr-lg p-4 font-bold border-b"
         >
