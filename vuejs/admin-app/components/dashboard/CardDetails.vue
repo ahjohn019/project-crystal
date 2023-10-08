@@ -27,7 +27,7 @@
 <script>
 import { useCardDetailsAdminStore } from '@shared_admin/dashboard/cardDetails.js';
 import { useAdminAuthStore } from '@shared_admin/base/auth.js';
-import { onMounted, ref, watchEffect } from 'vue';
+import { onMounted, ref } from 'vue';
 
 export default {
     setup() {
@@ -66,25 +66,6 @@ export default {
             }
         };
 
-        const fetchCurrentCommentList = async () => {
-            try {
-                totalCommentsList.value =
-                    await cardDetailsStore.fetchCurrentCommentList(
-                        getAuthToken
-                    );
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        onMounted(async () => {
-            await Promise.all([
-                fetchCurrentPosts(),
-                fetchUserList(),
-                fetchCurrentCommentList(),
-            ]);
-        });
-
         const cardDetailsList = ref([
             {
                 label: 'Today Posts',
@@ -108,15 +89,32 @@ export default {
             },
         ]);
 
-        watchEffect(() => {
-            cardDetailsList.value[CURRENT_POSTS_INDEX].totalCount =
-                totalCurrentPosts.value.total || 0;
-            cardDetailsList.value[TOTAL_USERS_INDEX].totalCount =
-                totalUserList.value.total;
-            cardDetailsList.value[TODAY_LIKES_INDEX].totalCount =
-                totalCurrentPosts.value.total_likes || 0;
-            cardDetailsList.value[TOTAL_REVIEWS_INDEX].totalCount =
-                totalCommentsList.value.total_comments || 0;
+        const fetchCurrentCommentList = async () => {
+            try {
+                totalCommentsList.value =
+                    await cardDetailsStore.fetchCurrentCommentList(
+                        getAuthToken
+                    );
+
+                cardDetailsList.value[CURRENT_POSTS_INDEX].totalCount =
+                    totalCurrentPosts.value.total || 0;
+                cardDetailsList.value[TOTAL_USERS_INDEX].totalCount =
+                    totalUserList.value.total;
+                cardDetailsList.value[TODAY_LIKES_INDEX].totalCount =
+                    totalCurrentPosts.value.total_likes || 0;
+                cardDetailsList.value[TOTAL_REVIEWS_INDEX].totalCount =
+                    totalCommentsList.value.total_comments || 0;
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        onMounted(async () => {
+            await Promise.all([
+                fetchCurrentPosts(),
+                fetchUserList(),
+                fetchCurrentCommentList(),
+            ]);
         });
 
         return {
