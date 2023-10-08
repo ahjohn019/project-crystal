@@ -77,7 +77,7 @@ export default {
 
         const cardDetailsList = ref([
             {
-                label: 'Current Posts',
+                label: 'Today Posts',
                 backgroundColor: '#55aaf1',
                 totalCount: null,
             },

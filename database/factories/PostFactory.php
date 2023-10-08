@@ -16,6 +16,8 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $dateByThisYear = fake()->dateTimeThisYear()->format('Y-m-d H:i:s');
+
         return [
             //
             'title' => fake()->name,
@@ -24,6 +26,8 @@ class PostFactory extends Factory
             'status' => fake()->numberBetween(0, 1),
             'user_id' => fake()->numberBetween(1, 4),
             'category_id' => fake()->numberBetween(1, 5),
+            'created_at' => $dateByThisYear,
+            'updated_at' => $dateByThisYear
         ];
     }
 }

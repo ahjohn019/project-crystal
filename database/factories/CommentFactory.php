@@ -16,7 +16,7 @@ class CommentFactory extends Factory
      */
     public function definition(): array
     {
-        $commentableIds = range(1, 20);
+        $commentableIds = range(1, 500);
         shuffle($commentableIds);
 
         return [

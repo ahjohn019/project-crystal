@@ -13,9 +13,12 @@ class DashboardService
 {
     public static function allPost()
     {
-        $postQuery = Post::all();
 
-        return ['posts' => $postQuery];
+        $postQuery = Post::query();
+        $totalPosts = $postQuery->get();
+        $postCount = $postQuery->count();
+
+        return ['posts' => $totalPosts, 'counts' => $postCount];
     }
 
     public static function currentPost()

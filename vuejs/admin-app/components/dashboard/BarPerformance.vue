@@ -9,40 +9,43 @@
         <div
             class="col bg-white px-4 rounded-bl-lg md:rounded-bl-none rounded-br-lg"
         >
-            <q-expansion-item v-model="expanded" class="relative">
+            <q-expansion-item
+                v-model="progressAnimation.expanded.value"
+                class="relative"
+            >
                 <template v-slot:header>
                     <span class="font-bold flex items-center">This Week</span>
                 </template>
                 <q-linear-progress
-                    :value="progress"
+                    :value="progressAnimation.progress.value"
                     size="12px"
                     style="border-radius: 24px; color: #5541d7"
                     class="custom-progress"
                 />
                 <div
                     class="bar-performace-fade-in-icons"
-                    :class="barPerformanceClass"
+                    :class="progressAnimation.barPerformanceClass"
                 >
                     <div class="flex justify-center items-center h-10">
                         <div
                             class="absolute bottom-10 flex justify-center font-bold"
                             style="width: 350px; color: #5541d7"
                         >
-                            {{ barPerformanceCheckpointText }}
+                            {{ progressAnimation.barPerformanceCheckpointText }}
                         </div>
                         <q-icon
-                            :name="barPerformanceIcons"
+                            :name="progressAnimation.barPerformanceIcons"
                             size="32px"
                         ></q-icon>
                         <div
                             class="bar-performance-pulse-effect"
-                            :class="barPerformanceColorEffect"
+                            :class="progressAnimation.barPerformanceColorEffect"
                         ></div>
                     </div>
                 </div>
                 <div
                     class="bar-performace-fade-in-icons"
-                    :class="barPerformanceClassTwo"
+                    :class="progressAnimation.barPerformanceClassTwo"
                 >
                     <div class="flex justify-center items-center h-10">
                         <div
@@ -52,12 +55,12 @@
                             100%
                         </div>
                         <q-icon
-                            :name="barPerformanceIcons"
+                            :name="progressAnimation.barPerformanceIcons"
                             size="32px"
                         ></q-icon>
                         <div
                             class="bar-performance-pulse-effect"
-                            :class="barPerformanceColorEffect"
+                            :class="progressAnimation.barPerformanceColorEffect"
                         ></div>
                     </div>
                 </div>
@@ -70,7 +73,7 @@
                     <span
                         class="text-white px-2 py-1 rounded"
                         style="background-color: #5541d7"
-                        >10</span
+                        >{{ totalPostInit.counts }}</span
                     >
                 </div>
                 <div class="p-3 mb-2 rounded" style="background-color: #f7f7fc">
@@ -78,7 +81,7 @@
                     <span
                         class="text-white px-2 py-1 rounded"
                         style="background-color: #2d96ee"
-                        >10</span
+                        >{{ totalLikesInit }}</span
                     >
                 </div>
                 <div class="p-3 mb-2 rounded" style="background-color: #f7f7fc">
@@ -86,7 +89,7 @@
                     <span
                         class="text-white px-2 py-1 rounded"
                         style="background-color: #42bda1"
-                        >10</span
+                        >{{ totalUserInit.total }}</span
                     >
                 </div>
             </div>
@@ -96,60 +99,69 @@
 
 <script>
 import { ref, onMounted } from 'vue';
+import { useBarChartsPerformanceAdminStore } from '@shared_admin/dashboard/barChartPerformance.js';
+import { useAdminAuthStore } from '@shared_admin/base/auth.js';
+import { useBaseProgressAnimationStore } from '@shared_admin/base/progressAnimation.js';
+import { useCardDetailsAdminStore } from '@shared_admin/dashboard/cardDetails.js';
 
 export default {
     setup() {
-        const progress = ref(0);
-        const expanded = ref(true);
-        let barPerformanceClass = 'bar-checkpoint-one-invalid';
-        let barPerformanceIcons = 'close';
-        let barPerformanceColorEffect = 'bar-performance-red-effect';
-        let barPerformanceCheckpointText = '';
-        let barPerformanceClassTwo = 'hidden';
-        const targetProgress = 1;
+        const progressAnimationStore = useBaseProgressAnimationStore();
+        const adminAuthStore = useAdminAuthStore();
+        const cardDetailsStore = useCardDetailsAdminStore();
+        const getAuthToken = adminAuthStore.fetchSessionToken();
+        const barChartsPerformanceAdminStore =
+            useBarChartsPerformanceAdminStore();
+        const progressAnimation = progressAnimationStore.progressAnimation();
 
-        // Start the progress animation
-        const animateProgress = () => {
-            const animationDuration = 1000;
-            const interval = 10;
+        const totalPostInit = ref([]);
+        const totalLikesInit = ref([]);
+        const totalUserInit = ref([]);
 
-            const steps = animationDuration / interval;
-            const increment = targetProgress / steps;
+        const fetchAllPost = async () => {
+            try {
+                totalPostInit.value =
+                    await barChartsPerformanceAdminStore.fetchAllPost(
+                        getAuthToken
+                    );
 
-            let currentProgress = 0;
-            const progressInterval = setInterval(() => {
-                currentProgress += increment;
-                progress.value = currentProgress;
+                const getAllLikes = totalPostInit.value.posts.map(
+                    function (value) {
+                        return parseInt(value.likes);
+                    }
+                );
 
-                if (currentProgress >= targetProgress) {
-                    clearInterval(progressInterval);
-                }
-            }, interval);
+                const totalAllLikes = getAllLikes.reduce(
+                    (accumulator, currentValue) => accumulator + currentValue,
+                    0
+                );
+
+                totalLikesInit.value = totalAllLikes;
+            } catch (error) {
+                console.error(error);
+            }
         };
 
-        if (targetProgress >= 0.5) {
-            barPerformanceClass = 'bar-checkpoint-one';
-            barPerformanceIcons = 'check';
-            barPerformanceColorEffect = 'bar-performance-green-effect';
-            barPerformanceCheckpointText = "You've Achieved the 50% Milestone";
-
-            if (targetProgress === 1) {
-                barPerformanceClassTwo = 'bar-checkpoint-two';
+        const fetchUserList = async () => {
+            try {
+                totalUserInit.value = await cardDetailsStore.fetchUserList(
+                    getAuthToken
+                );
+            } catch (error) {
+                console.error(error);
             }
-        }
+        };
 
         onMounted(() => {
-            animateProgress();
+            fetchAllPost();
+            fetchUserList();
         });
 
         return {
-            progress,
-            expanded,
-            barPerformanceClass,
-            barPerformanceIcons,
-            barPerformanceColorEffect,
-            barPerformanceCheckpointText,
-            barPerformanceClassTwo,
+            progressAnimation,
+            totalPostInit,
+            totalLikesInit,
+            totalUserInit,
         };
     },
 };
