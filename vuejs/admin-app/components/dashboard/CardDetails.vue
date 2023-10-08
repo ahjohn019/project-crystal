@@ -3,7 +3,7 @@
         <div
             v-for="cardDetail in cardDetailsList"
             :key="cardDetail"
-            class="col-12 col-md-2 my-2 rounded p-6 row justify-between"
+            class="col-12 col-md-2 my-2 rounded p-6 row justify-between shadow-lg"
             :style="'background-color:' + cardDetail.backgroundColor"
         >
             <div>
@@ -11,7 +11,14 @@
                 <div class="pt-4 text-lg font-bold">{{ cardDetail.label }}</div>
             </div>
             <div class="flex items-center text-5xl">
-                {{ cardDetail.totalCount }}
+                <number
+                    class="bold transition"
+                    ref="number2"
+                    :from="numberFrom"
+                    :to="cardDetail.totalCount"
+                    :duration="duration"
+                    @complete="completed"
+                />
             </div>
         </div>
     </div>
@@ -36,6 +43,9 @@ export default {
         const TOTAL_USERS_INDEX = 1;
         const TODAY_LIKES_INDEX = 2;
         const TOTAL_REVIEWS_INDEX = 3;
+
+        const numberFrom = 0;
+        const duration = 5;
 
         const fetchCurrentPosts = async () => {
             try {
@@ -111,6 +121,8 @@ export default {
 
         return {
             cardDetailsList,
+            numberFrom,
+            duration,
         };
     },
 };
