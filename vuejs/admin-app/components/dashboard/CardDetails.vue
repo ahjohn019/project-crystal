@@ -15,9 +15,8 @@
                     class="bold transition"
                     ref="number2"
                     :from="numberFrom"
-                    :to="cardDetail.totalCount"
+                    :to="cardDetail.totalCount || 0"
                     :duration="duration"
-                    @complete="completed"
                 />
             </div>
         </div>

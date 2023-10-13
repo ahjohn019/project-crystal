@@ -1,11 +1,12 @@
 <template>
     <BasePage>
-        <template #content
-            ><div class="dashboard-container-page m-4 justify-center">
+        <template #content>
+            <div class="m-4 justify-center dashboard-container-page">
                 <card-details class="to-animate card-details" />
                 <bar-chart class="to-animate bar-chart" />
-                <bar-performance class="to-animate bar-performance" /></div
-        ></template>
+                <bar-performance class="to-animate bar-performance" />
+            </div>
+        </template>
     </BasePage>
 </template>
 
@@ -38,20 +39,7 @@ export default {
 </script>
 
 <style>
-.dashboard-container {
-    background-color: #f7f7fc;
-}
-
-@media (max-width: 768px) {
-    .admin-sidebar {
-        display: none;
-    }
-}
-
 @media (min-width: 769px) {
-    .admin-sidebar {
-        display: block;
-    }
     .dashboard-container-page {
         padding-left: 250px;
     }

@@ -12,6 +12,12 @@ const routes = [
         name: 'home',
     },
     {
+        path: '/posts',
+        component: AdminDashboard.PostPage,
+        meta: { requiresAuth: true },
+        name: 'posts',
+    },
+    {
         path: '/login',
         component: LoginDashboard.LoginPage,
         meta: { requiresAuth: false },

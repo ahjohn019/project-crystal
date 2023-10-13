@@ -5,9 +5,8 @@
                 <q-item
                     clickable
                     dense
-                    :active="link === sideBarItem.title"
-                    @click="link = sideBarItem.title"
-                    active-class="admin-side-bar"
+                    @click="handleItemClick(sideBarItem)"
+                    :to="sideBarItem.route"
                     v-ripple
                     class="m-4 rounded"
                 >
@@ -16,9 +15,9 @@
                             <q-icon :name="sideBarItem.icon" />
                         </q-item-section>
                         <q-item-section class="font-bold">
-                            <q-item-label class="font-bold">{{
-                                sideBarItem.text
-                            }}</q-item-label>
+                            <q-item-label class="font-bold">
+                                {{ sideBarItem.text }}</q-item-label
+                            >
                         </q-item-section>
                     </q-item>
                 </q-item>
@@ -35,29 +34,41 @@ const sideBarList = [
         icon: 'grid_view',
         title: 'dashboard',
         text: 'Dashboard',
+        route: '/',
     },
     {
         icon: 'equalizer',
         title: 'statistics',
         text: 'Statistics',
+        route: null,
     },
     {
-        icon: 'shopping_bag',
-        title: 'my-products',
-        text: 'My Products',
+        icon: 'description',
+        title: 'posts',
+        text: 'Posts',
+        route: '/posts',
     },
     {
         icon: 'tune',
         title: 'settings',
         text: 'Settings',
+        route: null,
     },
 ];
 
 export default {
     setup() {
+        const link = ref('dashboard');
+
+        function handleItemClick(sideBarItem) {
+            link.value = sideBarItem.title;
+        }
+
         return {
-            link: ref('dashboard'),
+            link,
             sideBarList,
+
+            handleItemClick,
         };
     },
 };
@@ -68,7 +79,7 @@ export default {
     height: calc(100vh - 75px);
 }
 
-.admin-side-bar {
+.side-bar-container .q-item.q-router-link--active {
     color: white;
     background: #5541d7;
 }
