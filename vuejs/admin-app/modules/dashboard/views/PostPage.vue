@@ -9,10 +9,12 @@
                             icon-right="add"
                             label="Add Posts"
                             class="add-posts text-white"
+                            color="primary"
                         />
                     </div>
                 </div>
                 <FilterBar />
+                <TablePage />
             </div>
         </template>
     </BasePage>
@@ -21,11 +23,13 @@
 <script>
 import BasePage from '@admin/modules/base/views/BasePage.vue';
 import FilterBar from '@admin/components/post/FilterBar.vue';
+import TablePage from '@admin/components/post/TablePage.vue';
 
 export default {
     components: {
         BasePage,
         FilterBar,
+        TablePage,
     },
     setup() {},
 };
@@ -33,7 +37,6 @@ export default {
 
 <style>
 .add-posts {
-    background: #5541d7;
     font-weight: bold;
     border-radius: 6px;
 }

@@ -19,7 +19,8 @@
                 <q-linear-progress
                     :value="progressAnimation.progress.value"
                     size="12px"
-                    style="border-radius: 24px; color: #5541d7"
+                    color="primary"
+                    style="border-radius: 24px"
                     class="custom-progress"
                 />
                 <div
@@ -28,8 +29,8 @@
                 >
                     <div class="flex justify-center items-center h-10">
                         <div
-                            class="absolute bottom-10 flex justify-center font-bold"
-                            style="width: 350px; color: #5541d7"
+                            class="absolute bottom-10 flex justify-center font-bold text-primary"
+                            style="width: 350px"
                         >
                             {{ progressAnimation.barPerformanceCheckpointText }}
                         </div>
@@ -49,8 +50,8 @@
                 >
                     <div class="flex justify-center items-center h-10">
                         <div
-                            class="absolute bottom-10 flex justify-center font-bold"
-                            style="width: 350px; color: #5541d7"
+                            class="absolute bottom-10 flex justify-center font-bold text-primary"
+                            style="width: 350px"
                         >
                             100%
                         </div>
@@ -68,15 +69,13 @@
 
             <div class="col-12 py-4 font-bold">Indicators</div>
             <div class="flex flex-col md:flex-row md:space-x-4">
-                <div class="p-3 mb-2 rounded" style="background-color: #f7f7fc">
+                <div class="p-3 mb-2 rounded indicator-details">
                     Total Blogs
-                    <span
-                        class="text-white px-2 py-1 rounded"
-                        style="background-color: #5541d7"
-                        >{{ totalPostInit.counts }}</span
-                    >
+                    <span class="text-white px-2 py-1 rounded bg-primary">{{
+                        totalPostInit.counts
+                    }}</span>
                 </div>
-                <div class="p-3 mb-2 rounded" style="background-color: #f7f7fc">
+                <div class="p-3 mb-2 rounded indicator-details">
                     Total Likes
                     <span
                         class="text-white px-2 py-1 rounded"
@@ -84,7 +83,7 @@
                         >{{ totalLikesInit }}</span
                     >
                 </div>
-                <div class="p-3 mb-2 rounded" style="background-color: #f7f7fc">
+                <div class="p-3 mb-2 rounded indicator-details">
                     Total Users
                     <span
                         class="text-white px-2 py-1 rounded"
@@ -168,6 +167,12 @@ export default {
 </script>
 
 <style>
+:root {
+    --background: #f7f7fc;
+    --bar-primary: #26a69a;
+    --bar-warning: #ff0000;
+}
+
 .custom-progress {
     /* Apply the transition effect */
     transition:
@@ -183,6 +188,10 @@ export default {
 .bar-checkpoint-one-invalid,
 .bar-checkpoint-two {
     display: none;
+}
+
+.indicator-details {
+    background-color: var(--background);
 }
 
 @media (min-width: 768px) {
@@ -210,12 +219,12 @@ export default {
     .bar-checkpoint-one,
     .bar-checkpoint-two,
     .bar-performance-green-effect {
-        background: #26a69a;
+        background: var(--bar-primary);
     }
 
     .bar-checkpoint-one-invalid,
     .bar-performance-red-effect {
-        background: red;
+        background: var(--bar-warning);
     }
 
     .bar-performace-fade-in-icons {

@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="grid place-items-center h-screen"
-        style="background-color: #f7f7fc"
-    >
+    <div class="grid place-items-center h-screen login-main-page">
         <div class="row mx-auto admin-login-page px-6">
             <div
                 class="col-12 text-center text-uppercase text-3xl"
@@ -41,9 +38,8 @@
             <div class="col-12 my-4">
                 <q-btn
                     label="login"
-                    class="text-white"
+                    class="text-white bg-primary w-full"
                     rounded
-                    style="width: 100%; background-color: #5541d7"
                     @click="submitAdminLogin"
                 />
             </div>
@@ -93,11 +89,19 @@ export default {
 </script>
 
 <style>
+:root {
+    --primary: #5541d7;
+    --background: #f7f7fc;
+}
+
 .admin-login-page {
     max-width: 640px;
 }
 
 .admin-login-checkbox .q-checkbox .q-checkbox__inner--truthy {
-    color: #5541d7;
+    color: var(--primary);
+}
+.login-main-page {
+    background-color: var(--background);
 }
 </style>

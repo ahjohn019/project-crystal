@@ -75,12 +75,16 @@ export default {
 </script>
 
 <style>
+:root {
+    --primary: #5541d7;
+}
+
 .side-bar-container {
     height: calc(100vh - 75px);
 }
 
 .side-bar-container .q-item.q-router-link--active {
     color: white;
-    background: #5541d7;
+    background: var(--primary);
 }
 </style>

@@ -134,6 +134,10 @@ export default {
 </script>
 
 <style>
+:root {
+    --primary: #5541d7;
+}
+
 .q-btn:before {
     box-shadow: none !important;
 }
@@ -143,7 +147,7 @@ export default {
 }
 
 .nav-profile-details .q-field__control {
-    color: #5541d7;
+    color: var(--primary);
 }
 
 @media (max-width: 768px) {

@@ -13,6 +13,7 @@ import 'animate.css';
 import VueNumber from 'vue-number-animation';
 
 import { createPinia } from 'pinia';
+import SortQuasarTableIconsPlugin from '@admin/plugins/SortQuasarTableIcon.js';
 
 const app = createApp({});
 const pinia = createPinia();
@@ -22,8 +23,15 @@ app.use(router);
 app.use(VueNumber);
 app.use(VueAxios, axios);
 
+app.use(SortQuasarTableIconsPlugin);
+
 app.use(Quasar, {
     plugins: {},
+    config: {
+        brand: {
+            primary: '#5541d7',
+        },
+    },
 });
 
 app.mount('#app');

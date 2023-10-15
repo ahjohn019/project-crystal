@@ -23,8 +23,12 @@ export default {
 </script>
 
 <style>
+:root {
+    --background: #f7f7fc;
+}
+
 .dashboard-container {
-    background-color: #f7f7fc;
+    background-color: var(--background);
 }
 
 @media (max-width: 768px) {
