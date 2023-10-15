@@ -88,10 +88,6 @@
 </template>
 
 <style>
-:root {
-    --primary: #5541d7;
-}
-
 .filter-posts-bar {
     color: #11142d;
     font-weight: 700;

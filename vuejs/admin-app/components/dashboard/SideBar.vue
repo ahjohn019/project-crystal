@@ -75,10 +75,6 @@ export default {
 </script>
 
 <style>
-:root {
-    --primary: #5541d7;
-}
-
 .side-bar-container {
     height: calc(100vh - 75px);
 }

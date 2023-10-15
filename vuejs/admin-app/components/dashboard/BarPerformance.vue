@@ -78,16 +78,14 @@
                 <div class="p-3 mb-2 rounded indicator-details">
                     Total Likes
                     <span
-                        class="text-white px-2 py-1 rounded"
-                        style="background-color: #2d96ee"
+                        class="text-white px-2 py-1 rounded total-likes-indicators"
                         >{{ totalLikesInit }}</span
                     >
                 </div>
                 <div class="p-3 mb-2 rounded indicator-details">
                     Total Users
                     <span
-                        class="text-white px-2 py-1 rounded"
-                        style="background-color: #42bda1"
+                        class="text-white px-2 py-1 rounded total-users-indicators"
                         >{{ totalUserInit.total }}</span
                     >
                 </div>
@@ -167,12 +165,6 @@ export default {
 </script>
 
 <style>
-:root {
-    --background: #f7f7fc;
-    --bar-primary: #26a69a;
-    --bar-warning: #ff0000;
-}
-
 .custom-progress {
     /* Apply the transition effect */
     transition:
@@ -192,6 +184,14 @@ export default {
 
 .indicator-details {
     background-color: var(--background);
+}
+
+.total-likes-indicators {
+    background-color: var(--indicator-primary);
+}
+
+.total-users-indicators {
+    background-color: var(--indicator-secondary);
 }
 
 @media (min-width: 768px) {

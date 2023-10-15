@@ -23,10 +23,6 @@ export default {
 </script>
 
 <style>
-:root {
-    --background: #f7f7fc;
-}
-
 .dashboard-container {
     background-color: var(--background);
 }

@@ -89,11 +89,6 @@ export default {
 </script>
 
 <style>
-:root {
-    --primary: #5541d7;
-    --background: #f7f7fc;
-}
-
 .admin-login-page {
     max-width: 640px;
 }

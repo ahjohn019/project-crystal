@@ -134,10 +134,6 @@ export default {
 </script>
 
 <style>
-:root {
-    --primary: #5541d7;
-}
-
 .q-btn:before {
     box-shadow: none !important;
 }

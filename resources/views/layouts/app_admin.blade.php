@@ -15,7 +15,7 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['vuejs/admin-app/app.js', 'resources/sass/app.scss'])
+    @vite(['vuejs/admin-app/app.js', 'resources/sass/app.scss', 'resources/sass/custom.scss'])
 </head>
 
 <body>
