@@ -10,7 +10,11 @@ import { quasar } from '@quasar/vite-plugin';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/sass/app.scss', 'vuejs/admin-app/app.js'],
+            input: [
+                'resources/sass/app.scss',
+                'vuejs/admin-app/app.js',
+                'resources/sass/custom.scss',
+            ],
             refresh: true,
         }),
         vue({
