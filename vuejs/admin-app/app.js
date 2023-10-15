@@ -30,6 +30,7 @@ app.use(Quasar, {
     config: {
         brand: {
             primary: '#5541d7',
+            positive: '#26A69A',
         },
     },
 });

@@ -20,8 +20,7 @@
                     :value="progressAnimation.progress.value"
                     size="12px"
                     color="primary"
-                    style="border-radius: 24px"
-                    class="custom-progress"
+                    class="custom-progress q-table-custom-progress-bar"
                 />
                 <div
                     class="bar-performace-fade-in-icons"

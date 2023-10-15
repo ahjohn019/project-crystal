@@ -21,22 +21,91 @@
                 </template>
                 <template v-slot:body-cell="props">
                     <q-td :props="props" class="font-bold">
-                        {{ props.value }}
+                        <div>{{ props.value }}</div>
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-name="props">
+                    <q-td :props="props">
+                        <div class="font-bold">{{ props.value }}</div>
+                        <div class="q-table-label">Likes : 10</div>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-popularity="props">
                     <q-td :props="props">
                         <div>
-                            <q-badge color="purple" :label="props.value" />
+                            <span class="q-table-label">Score : </span>
+                            <q-badge
+                                color="positive"
+                                style="font-weight: bold"
+                                class="capitalize p-2 rounded"
+                                :label="props.value"
+                            />
                         </div>
                         <div>
                             <q-linear-progress
                                 rounded
                                 size="15px"
                                 :value="progress"
-                                class="q-mt-sm"
-                                color="primary"
+                                class="q-mt-sm rounded q-table-custom-progress-bar progress-transition"
                             />
+                        </div>
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-status="props">
+                    <q-td :props="props">
+                        <div class="flex">
+                            <div>
+                                <q-toggle v-model="status[props.row.name]" />
+                            </div>
+                            <div>
+                                <q-btn-dropdown
+                                    color="transparent"
+                                    class="text-black font-bold"
+                                    dropdown-icon="expand_more"
+                                >
+                                    <template v-slot:label>
+                                        <div
+                                            class="row items-center no-wrap font-bold"
+                                        >
+                                            Edit
+                                        </div>
+                                    </template>
+                                    <q-list class="q-table-edit-dropdown-list">
+                                        <q-item clickable>
+                                            <q-item-section>
+                                                <q-icon name="visibility" />
+                                            </q-item-section>
+                                            <q-item-section>
+                                                <q-item-label
+                                                    >View</q-item-label
+                                                >
+                                            </q-item-section>
+                                        </q-item>
+
+                                        <q-item clickable>
+                                            <q-item-section>
+                                                <q-icon name="edit" />
+                                            </q-item-section>
+                                            <q-item-section>
+                                                <q-item-label
+                                                    >Edit</q-item-label
+                                                >
+                                            </q-item-section>
+                                        </q-item>
+
+                                        <q-item clickable>
+                                            <q-item-section>
+                                                <q-icon name="delete" />
+                                            </q-item-section>
+                                            <q-item-section>
+                                                <q-item-label
+                                                    >Delete</q-item-label
+                                                >
+                                            </q-item-section>
+                                        </q-item>
+                                    </q-list>
+                                </q-btn-dropdown>
+                            </div>
                         </div>
                     </q-td>
                 </template>
@@ -47,7 +116,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const columns = [
     {
@@ -64,13 +133,7 @@ const columns = [
         field: 'popularity',
         sortable: true,
     },
-    {
-        name: 'status',
-        align: 'left',
-        label: 'Status',
-        field: 'status',
-        sortable: true,
-    },
+
     {
         name: 'created_at',
         align: 'left',
@@ -78,37 +141,68 @@ const columns = [
         field: 'created_at',
         sortable: true,
     },
-    { name: 'action', align: 'left', label: 'Action', field: 'action' },
+    {
+        name: 'status',
+        align: 'left',
+        label: 'Status',
+        field: 'status',
+        sortable: true,
+    },
 ];
 
 const rows = [
     {
         name: 'Frozen Yogurt',
         popularity: 'good',
-        status: 'active',
         created_at: '2022-01-22',
-        action: '',
+        status: 'active',
     },
     {
         name: 'Ice cream sandwich',
         popularity: 'good',
-        status: 'active',
         created_at: '2022-01-22',
-        action: '',
+        status: 'active',
     },
 ];
 
 export default {
     setup() {
         const selected = ref([]);
-        const progress = 0.4;
+        const progress = ref(0);
+        const status = ref({});
+
+        rows.forEach((row) => {
+            status.value[row.name] = true;
+        });
+
+        const startInitialTransition = () => {
+            const duration = 2000;
+            const targetProgress = 0.5;
+            const step = (targetProgress / duration) * 1000;
+
+            let currentProgress = 0;
+
+            const interval = setInterval(() => {
+                if (currentProgress < targetProgress) {
+                    progress.value = currentProgress;
+                    currentProgress += step;
+                } else {
+                    progress.value = targetProgress;
+                    clearInterval(interval);
+                }
+            }, 10);
+        };
+
+        onMounted(() => {
+            startInitialTransition();
+        });
 
         return {
             progress,
             selected,
             columns,
             rows,
-
+            status,
             getSelectedString() {
                 return selected.value.length === 0
                     ? ''
@@ -124,5 +218,17 @@ export default {
 <style>
 .posts-table .q-table__sort-icon {
     opacity: 1;
+}
+
+.q-table-custom-progress-bar {
+    height: 0.75rem;
+}
+
+.q-table-label {
+    color: var(--label-table-primary);
+}
+
+.q-table-edit-dropdown-list .q-item__section--main + .q-item__section--main {
+    margin: 0 !important;
 }
 </style>
