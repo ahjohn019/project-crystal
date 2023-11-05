@@ -38,7 +38,7 @@
             <div class="col-12 my-4">
                 <q-btn
                     label="login"
-                    class="text-white bg-primary w-full"
+                    class="text-white bg-primary !w-full"
                     rounded
                     @click="submitAdminLogin"
                 />

@@ -6,7 +6,12 @@
             </div>
 
             <div class="col col-lg-8 col-md-5 nav-profile-details">
-                <q-input outlined dense label="Search">
+                <q-input
+                    outlined
+                    dense
+                    label="Search"
+                    v-model="searchKeywordAdmin"
+                >
                     <template v-slot:append>
                         <q-icon name="search" />
                     </template>
@@ -85,6 +90,7 @@ export default {
         const navBarDropDown = ref([
             { label: 'Log Out', value: 'logout', handler: 'handlerLogout' },
         ]);
+        const searchKeywordAdmin = ref('');
 
         const handleLogout = async () => {
             try {
@@ -128,6 +134,7 @@ export default {
             adminProfileData,
             navBarDropDown,
             handleDropdownMenu,
+            searchKeywordAdmin,
         };
     },
 };

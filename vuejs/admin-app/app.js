@@ -15,6 +15,8 @@ import VueNumber from 'vue-number-animation';
 import { createPinia } from 'pinia';
 import SortQuasarTableIconsPlugin from '@admin/plugins/SortQuasarTableIcon.js';
 
+import CKEditor from '@ckeditor/ckeditor5-vue';
+
 const app = createApp({});
 const pinia = createPinia();
 
@@ -24,6 +26,8 @@ app.use(VueNumber);
 app.use(VueAxios, axios);
 
 app.use(SortQuasarTableIconsPlugin);
+
+app.use(CKEditor);
 
 app.use(Quasar, {
     plugins: {},
