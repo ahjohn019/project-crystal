@@ -1,7 +1,8 @@
 <template>
     <ckeditor
         :editor="editor"
-        v-model="editorData"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event)"
         :config="editorConfig"
     ></ckeditor>
 </template>
@@ -17,13 +18,16 @@ import {
     Image,
     ImageResize,
     ImageStyle,
-    // ImageToolbar,
+    ImageToolbar,
     ImageUpload,
 } from '@ckeditor/ckeditor5-image';
 import { Base64UploadAdapter } from '@ckeditor/ckeditor5-upload';
 
 export default {
-    data() {
+    props: {
+        modelValue: String,
+    },
+    setup() {
         return {
             editor: ClassicEditor,
             editorData: '<p>Content of the editor.</p>',
@@ -37,7 +41,7 @@ export default {
                     Image,
                     ImageResize,
                     ImageStyle,
-                    // ImageToolbar,
+                    ImageToolbar,
                     ImageUpload,
                     Base64UploadAdapter,
                 ],
@@ -52,16 +56,16 @@ export default {
                         'imageUpload',
                     ],
                 },
-                // image: {
-                //     toolbar: [
-                //         'imageStyle:block',
-                //         'imageStyle:side',
-                //         '|',
-                //         'imageTextAlternative',
-                //         '|',
-                //         'link',
-                //     ],
-                // },
+                image: {
+                    toolbar: [
+                        'imageStyle:block',
+                        'imageStyle:side',
+                        '|',
+                        'imageTextAlternative',
+                        '|',
+                        'link',
+                    ],
+                },
             },
         };
     },

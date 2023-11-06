@@ -15,37 +15,6 @@
                                 query: { type: 'create' },
                             }"
                         />
-
-                        <!-- <q-dialog v-model="openPostsModal">
-                            <q-card style="width: 650px">
-                                <q-card-section
-                                    class="row justify-between q-pb-none"
-                                >
-                                    <div class="text-h6">Add Posts</div>
-                                    <q-btn
-                                        icon="close"
-                                        flat
-                                        round
-                                        dense
-                                        v-close-popup
-                                        @click="handlePostsForm"
-                                    />
-                                </q-card-section>
-
-                                <q-card-section class="row">
-                                    <div class="col-12">
-                                        <label for="title">title</label>
-                                        <q-input outlined dense />
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="title">description</label>
-                                        <div>
-                                            <CkEditorPlugin />
-                                        </div>
-                                    </div>
-                                </q-card-section>
-                            </q-card>
-                        </q-dialog> -->
                     </div>
                 </div>
                 <FilterBar />
@@ -60,34 +29,12 @@ import BasePage from '@admin/modules/base/views/BasePage.vue';
 import FilterBar from '@admin/components/post/FilterBar.vue';
 import TablePage from '@admin/components/post/TablePage.vue';
 
-// import CkEditorPlugin from '@admin/components/ckeditor/ckeditorPlugin.vue';
-
-// import { ref } from 'vue';
-
 export default {
     components: {
         BasePage,
         FilterBar,
         TablePage,
-        // CkEditorPlugin,
     },
-    // setup() {
-    //     const openPostsModal = ref(true);
-
-    //     const handlePosts = () => {
-    //         openPostsModal.value = true;
-    //     };
-
-    //     const handlePostsForm = () => {
-    //         this.router.push('/form');
-    //     };
-
-    //     return {
-    //         openPostsModal,
-    //         handlePosts,
-    //         handlePostsForm,
-    //     };
-    // },
 };
 </script>
 
