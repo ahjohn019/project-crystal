@@ -31,6 +31,10 @@
                             />
                         </div>
                     </div>
+                    <div class="col-12">
+                        <div class="col-12 post-information-title">Images</div>
+                        <DropFile />
+                    </div>
                     <div class="col-12 text-right">
                         <q-btn
                             label="Submit"
@@ -46,13 +50,15 @@
 
 <script>
 import BasePage from '@admin/modules/base/views/BasePage.vue';
-import CkeditorPlugin from '@admin/components/ckeditor/ckeditorPlugin.vue';
+import CkeditorPlugin from '@admin/components/ckeditor/ckEditorPlugin.vue';
+import DropFile from '@admin/components/dragAndDrop/DropFile.vue';
 import { ref } from 'vue';
 
 export default {
     components: {
         BasePage,
         CkeditorPlugin,
+        DropFile,
     },
 
     setup() {
