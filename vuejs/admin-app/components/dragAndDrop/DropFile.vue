@@ -17,7 +17,9 @@
                 accept=".pdf,.jpg,.jpeg,.png"
             />
             <label for="fileInput" class="file-label">
-                <div v-if="isDragging">Release to drop files here.</div>
+                <div class="text-sm" v-if="isDragging">
+                    Release to drop files here.
+                </div>
                 <div class="drag-and-drop-content" v-else>
                     <div class="flex justify-center py-4">
                         <img
@@ -32,28 +34,29 @@
                 </div>
             </label>
         </div>
-
-        <div
-            class="preview-container p-2 col-12 overflow-y-auto"
-            v-if="files.length"
-        >
-            <div v-for="file in files" :key="file.name" class="preview-card">
-                <div>
-                    <img class="preview-img" :src="generateURL(file)" />
-                    <p>
-                        {{ file.name }} -
-                        {{ Math.round(file.size / 1000) + 'kb' }}
-                    </p>
-                </div>
-                <div>
+    </div>
+    <div
+        class="preview-container p-2 col-12 overflow-y-auto"
+        v-if="files.length"
+    >
+        <div v-for="file in files" :key="file.name">
+            <div class="relative p-2" style="width: 250px">
+                <div
+                    class="absolute top-0 -right-2 bg-gray-500 text-white rounded-full border border-white"
+                >
                     <button
-                        class="ml-2"
+                        class="p-1"
                         type="button"
                         @click="remove(files.indexOf(file))"
                         title="Remove file"
                     >
-                        <b>×</b>
+                        <q-icon name="close" size="1.5rem" />
                     </button>
+                </div>
+                <img class="preview-img" :src="generateURL(file)" />
+                <div class="py-2">
+                    {{ file.name }} -
+                    {{ Math.round(file.size / 1000) + 'kb' }}
                 </div>
             </div>
         </div>
@@ -117,7 +120,8 @@ export default {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
-    height: 40vh;
+    height: 25vh;
+    /* height: 40vh; */
 }
 
 .hidden-input {
@@ -137,7 +141,17 @@ export default {
 .preview-container {
     display: flex;
     margin-top: 2rem;
-    width: 400px;
+    width: 100%;
+}
+
+.preview-img {
+    height: 100px;
+    width: 100%;
+    object-fit: contain;
+}
+
+.preview-close-button {
+    border: 1px solid;
 }
 
 ::-webkit-scrollbar {
@@ -156,20 +170,5 @@ export default {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
-
-.preview-card {
-    display: flex;
-    border: 1px solid #a2a2a2;
-    padding: 5px;
-    margin-left: 5px;
-}
-
-.preview-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-    border: 1px solid #a2a2a2;
-    background-color: #a2a2a2;
 }
 </style>

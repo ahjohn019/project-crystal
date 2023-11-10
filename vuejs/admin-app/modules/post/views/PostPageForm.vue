@@ -2,7 +2,7 @@
     <BasePage>
         <template #content>
             <div class="dashboard-container-page m-4 px-4">
-                <div class="row py-4">
+                <div class="row pb-4">
                     <div class="col text-2xl">Post Form</div>
                 </div>
                 <div class="row bg-white p-5 font-bold gap-4">
