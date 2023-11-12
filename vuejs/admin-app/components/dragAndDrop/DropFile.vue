@@ -1,6 +1,6 @@
 <template>
     <div
-        class="text-center p-4 row"
+        class="text-center row"
         @dragover="dragover"
         @dragleave="dragleave"
         @drop="drop"

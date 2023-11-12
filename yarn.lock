@@ -82,6 +82,13 @@
   dependencies:
     "ckeditor5" "40.0.0"
 
+"@ckeditor/ckeditor5-heading@^40.0.0":
+  "integrity" "sha512-VDV8TQggkNQdReleo4Y7Gyn9A1hHB7J3efMkMgO5CzCbxVWzq6tqh285S+Kp7o2sJcezudVZoojL0jV3WxERKg=="
+  "resolved" "https://registry.npmjs.org/@ckeditor/ckeditor5-heading/-/ckeditor5-heading-40.0.0.tgz"
+  "version" "40.0.0"
+  dependencies:
+    "ckeditor5" "40.0.0"
+
 "@ckeditor/ckeditor5-image@^40.0.0":
   "integrity" "sha512-5CV80EiKBaMDfpJwUqTD/2Hcl87da4PS1WU5lDlhvKimrIx+0c65MJmjWGjUdQCSyJ89+PBzj1qAwMJWVZBQ/g=="
   "resolved" "https://registry.npmjs.org/@ckeditor/ckeditor5-image/-/ckeditor5-image-40.0.0.tgz"
@@ -91,6 +98,13 @@
     "ckeditor5" "40.0.0"
     "lodash-es" "4.17.21"
 
+"@ckeditor/ckeditor5-indent@^40.0.0":
+  "integrity" "sha512-YI9gI3NiAombf0mYkgvZSB7UaMyZl3f7idPbLlsDPfeHb1oTkzxLvTfrpaxKoE7hZPjj6KrgH9gXyPLeho7O/A=="
+  "resolved" "https://registry.npmjs.org/@ckeditor/ckeditor5-indent/-/ckeditor5-indent-40.0.0.tgz"
+  "version" "40.0.0"
+  dependencies:
+    "ckeditor5" "40.0.0"
+
 "@ckeditor/ckeditor5-link@^40.0.0":
   "integrity" "sha512-hi0JRC6N93N7vqpR80AG9wBGUJ0C86UYvwA8yPMThl5KtXxwwUs2L5UH+Ju3twrkan2MxMzjpPMTXqfaFSt+vA=="
   "resolved" "https://registry.npmjs.org/@ckeditor/ckeditor5-link/-/ckeditor5-link-40.0.0.tgz"
@@ -99,6 +113,14 @@
     "@ckeditor/ckeditor5-ui" "40.0.0"
     "ckeditor5" "40.0.0"
     "lodash-es" "4.17.21"
+
+"@ckeditor/ckeditor5-list@^40.0.0":
+  "integrity" "sha512-sP6ZZ0rzaC2bU09DWT1k2gYJizQHaGwcX7/mTsCSpLVynkZaOU8ckBY/SChD9R54/RWADyX3woVJVHhL1v0QRQ=="
+  "resolved" "https://registry.npmjs.org/@ckeditor/ckeditor5-list/-/ckeditor5-list-40.0.0.tgz"
+  "version" "40.0.0"
+  dependencies:
+    "@ckeditor/ckeditor5-ui" "40.0.0"
+    "ckeditor5" "40.0.0"
 
 "@ckeditor/ckeditor5-paragraph@^40.0.0", "@ckeditor/ckeditor5-paragraph@40.0.0":
   "integrity" "sha512-j2Pm/dlu3hE08EKYvbUT9qUMyJeZtuufuZjUZaADCsVmtfFuzXlaHjIkQUvCxUeuMXQLlUpJ69OSAMzzMlJs8g=="
@@ -117,6 +139,14 @@
     "@ckeditor/ckeditor5-core" "40.0.0"
     "@ckeditor/ckeditor5-ui" "40.0.0"
     "@ckeditor/ckeditor5-utils" "40.0.0"
+
+"@ckeditor/ckeditor5-table@^40.0.0":
+  "integrity" "sha512-RsX1Jbnap8OwP9t1EPBS1DDjaJY74oWvUYjmp5IbamvtkFnlDP4HCmxIF4MIQ90V5u0qevydKwAqNmioue/1wA=="
+  "resolved" "https://registry.npmjs.org/@ckeditor/ckeditor5-table/-/ckeditor5-table-40.0.0.tgz"
+  "version" "40.0.0"
+  dependencies:
+    "ckeditor5" "40.0.0"
+    "lodash-es" "4.17.21"
 
 "@ckeditor/ckeditor5-theme-lark@^40.0.0":
   "integrity" "sha512-7pb0JjfbIGdlZHOdEC4+x2dIb1qjfKnrqEjlhA5m7+Sg6OuPo/hEDZEn+Y0QALxhoCElCm90cDvIbN6LLsiyKQ=="
