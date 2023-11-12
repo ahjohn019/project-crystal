@@ -1,27 +1,35 @@
 <template>
     <div
-        class="dropzone-container flex justify-center items-center text-center p-4 row"
+        class="text-center p-4 row"
         @dragover="dragover"
         @dragleave="dragleave"
         @drop="drop"
     >
-        <div class="col-12">
-            <input
-                type="file"
-                multiple
-                name="file"
-                id="fileInput"
-                class="hidden-input"
-                @change="onChange"
-                ref="file"
-                accept=".pdf,.jpg,.jpeg,.png"
-            />
+        <input
+            type="file"
+            multiple
+            name="file"
+            id="fileInput"
+            class="hidden-input"
+            @change="onChange"
+            ref="file"
+            accept=".pdf,.jpg,.jpeg,.png"
+        />
+        <div
+            :style="
+                dropZoneContainer ? 'height:300px;' : 'background-image:none;'
+            "
+            class="dropzone-container col-12 grid place-content-center"
+        >
             <label for="fileInput" class="file-label">
                 <div class="text-sm" v-if="isDragging">
                     Release to drop files here.
                 </div>
                 <div class="drag-and-drop-content" v-else>
-                    <div class="flex justify-center py-4">
+                    <div
+                        class="flex justify-center py-4"
+                        v-if="dropZoneContainer"
+                    >
                         <img
                             src="/images/admin/base/drop_file_camera.png"
                             alt=""
@@ -34,29 +42,29 @@
                 </div>
             </label>
         </div>
-    </div>
-    <div
-        class="preview-container p-2 col-12 overflow-y-auto"
-        v-if="files.length"
-    >
-        <div v-for="file in files" :key="file.name">
-            <div class="relative p-2" style="width: 250px">
-                <div
-                    class="absolute top-0 -right-2 bg-gray-500 text-white rounded-full border border-white"
-                >
-                    <button
-                        class="p-1"
-                        type="button"
-                        @click="remove(files.indexOf(file))"
-                        title="Remove file"
+        <div
+            class="preview-container p-2 col-12 overflow-y-auto"
+            v-if="files.length"
+        >
+            <div v-for="file in files" :key="file.name">
+                <div class="relative p-2" style="width: 250px">
+                    <div
+                        class="absolute top-0 -right-2 bg-gray-500 text-white rounded-full border border-white"
                     >
-                        <q-icon name="close" size="1.5rem" />
-                    </button>
-                </div>
-                <img class="preview-img" :src="generateURL(file)" />
-                <div class="py-2">
-                    {{ file.name }} -
-                    {{ Math.round(file.size / 1000) + 'kb' }}
+                        <button
+                            class="p-1"
+                            type="button"
+                            @click="remove(files.indexOf(file))"
+                            title="Remove file"
+                        >
+                            <q-icon name="close" size="1.5rem" />
+                        </button>
+                    </div>
+                    <img class="preview-img" :src="generateURL(file)" />
+                    <div class="py-2">
+                        {{ file.name }} -
+                        {{ Math.round(file.size / 1000) + 'kb' }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,8 +77,10 @@ export default {
         return {
             isDragging: false,
             files: [],
+            dropZoneContainer: true,
         };
     },
+    emits: ['updateFiles'],
     methods: {
         onChange() {
             const self = this;
@@ -85,6 +95,10 @@ export default {
                 alert('New upload contains files that already exist');
             } else {
                 self.files.push(...incomingFiles);
+                if (self.files.length >= 1) {
+                    self.dropZoneContainer = false;
+                }
+                this.$emit('updateFiles', this.files);
             }
         },
         dragover(e) {
@@ -102,6 +116,10 @@ export default {
         },
         remove(i) {
             this.files.splice(i, 1);
+            this.$emit('updateFiles', this.files);
+            if (this.files.length <= 0) {
+                this.dropZoneContainer = true;
+            }
         },
         generateURL(file) {
             const fileSrc = URL.createObjectURL(file);
@@ -116,12 +134,7 @@ export default {
 
 <style scoped>
 .dropzone-container {
-    background-image: url('/images/admin/base/drop_file_container.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    height: 25vh;
-    /* height: 40vh; */
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23333' stroke-width='2' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 }
 
 .hidden-input {
@@ -142,6 +155,7 @@ export default {
     display: flex;
     margin-top: 2rem;
     width: 100%;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23333' stroke-width='2' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 }
 
 .preview-img {
