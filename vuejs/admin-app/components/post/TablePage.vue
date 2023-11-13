@@ -32,21 +32,33 @@
                 </template>
                 <template v-slot:body-cell-popularity="props">
                     <q-td :props="props">
-                        <div>
-                            <span class="q-table-label">Score : </span>
-                            <q-badge
-                                color="positive"
-                                style="font-weight: bold"
-                                class="capitalize p-2 rounded"
-                                :label="props.value"
-                            />
+                        <div class="flex gap-2">
+                            <div><span class="q-table-label">Score </span></div>
+
+                            <div>
+                                <q-badge
+                                    color="positive"
+                                    style="font-weight: bold"
+                                    class="capitalize p-2 rounded"
+                                    :label="props.value"
+                                />
+                            </div>
+
+                            <div>
+                                <q-badge
+                                    color="positive"
+                                    style="font-weight: bold"
+                                    class="capitalize p-2 rounded"
+                                    :label="props.row.percentage"
+                                />
+                            </div>
                         </div>
                         <div>
                             <q-linear-progress
                                 rounded
                                 size="15px"
-                                :value="progress"
-                                class="q-mt-sm rounded q-table-custom-progress-bar progress-transition"
+                                :value="props.row.percentage"
+                                class="q-mt-sm rounded q-table-custom-progress-bar"
                             />
                         </div>
                     </q-td>
@@ -116,7 +128,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 const columns = [
     {
@@ -154,12 +166,14 @@ const rows = [
     {
         name: 'Frozen Yogurt',
         popularity: 'good',
+        percentage: 0.5,
         created_at: '2022-01-22',
         status: 'active',
     },
     {
         name: 'Ice cream sandwich',
         popularity: 'good',
+        percentage: 0.8,
         created_at: '2022-01-22',
         status: 'active',
     },
@@ -168,37 +182,14 @@ const rows = [
 export default {
     setup() {
         const selected = ref([]);
-        const progress = ref(0);
         const status = ref({});
 
         rows.forEach((row) => {
             status.value[row.name] = true;
-        });
-
-        const startInitialTransition = () => {
-            const duration = 2000;
-            const targetProgress = 0.5;
-            const step = (targetProgress / duration) * 1000;
-
-            let currentProgress = 0;
-
-            const interval = setInterval(() => {
-                if (currentProgress < targetProgress) {
-                    progress.value = currentProgress;
-                    currentProgress += step;
-                } else {
-                    progress.value = targetProgress;
-                    clearInterval(interval);
-                }
-            }, 10);
-        };
-
-        onMounted(() => {
-            startInitialTransition();
+            row.percentage = (row.percentage * 100).toFixed(2) + '%';
         });
 
         return {
-            progress,
             selected,
             columns,
             rows,
