@@ -103,19 +103,27 @@ class PostController extends Controller
             $posts = Post::where('id', $payload['post_id'])
                 ->firstOrThrowError();
 
-            if ($payload['likes']) {
-                $posts->likes()->withTrashed()->where('user_id', auth()->user()->id)->restore();
+            $postLikes = $posts->likes();
 
-                $posts->likes()->updateOrCreate([
+            if ($payload['likes']) {
+                if ($postLikes->exists()) {
+                    return self::successResponse('You have already like this posts.');
+                }
+
+                $postLikes->withTrashed()->where('user_id', auth()->user()->id)->restore();
+
+                $postLikes->updateOrCreate([
                     'user_id' => auth()->user()->id
                 ]);
             } else {
-                $posts->likes()->where('user_id', auth()->user()->id)->delete();
+                $deductLikes = $posts->likes - $postLikes->count();
+                $posts->update(['likes' => $deductLikes]);
+                $postLikes->where('user_id', auth()->user()->id)->delete();
             }
 
-            $totalPostLikes = $posts->likes()->count();
-
-            $posts->update(['likes' => $totalPostLikes]);
+            $totalPostLikes = $postLikes->count();
+            $resultLikes = $posts->likes + $totalPostLikes;
+            $posts->update(['likes' => $resultLikes]);
 
             return self::successResponse('Likes Updated', $posts);
         } catch (\Throwable $th) {

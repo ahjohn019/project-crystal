@@ -15,7 +15,7 @@ class Post extends Model
 
     public const STATUS_ACTIVE = 1;
 
-    protected $fillable = ['title', 'content', 'likes', 'status', 'user_id', 'category_id'];
+    protected $fillable = ['title', 'content', 'likes', 'status', 'popularity', 'user_id', 'category_id'];
 
     public function user()
     {
