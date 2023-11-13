@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Models\Post;
+use App\Models\UserLike;
 use Illuminate\Support\Facades\DB;
 use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;
@@ -105,25 +106,21 @@ class PostController extends Controller
 
             $postLikes = $posts->likes();
 
-            if ($payload['likes']) {
-                if ($postLikes->exists()) {
-                    return self::successResponse('You have already like this posts.');
-                }
+            $postLikes->updateOrCreate([
+                'user_id' => auth()->user()->id
+            ]);
 
-                $postLikes->withTrashed()->where('user_id', auth()->user()->id)->restore();
+            $findPostLikes = $postLikes->first();
+            $findPostLikes->status = !$findPostLikes->status;
+            $findPostLikes->save();
 
-                $postLikes->updateOrCreate([
-                    'user_id' => auth()->user()->id
-                ]);
-            } else {
-                $deductLikes = $posts->likes - $postLikes->count();
-                $posts->update(['likes' => $deductLikes]);
-                $postLikes->where('user_id', auth()->user()->id)->delete();
+            $likeCalculate = $posts->likes + UserLike::TOGGLE_STATUS;
+
+            if (!$findPostLikes->status) {
+                $likeCalculate = $posts->likes - UserLike::TOGGLE_STATUS;
             }
 
-            $totalPostLikes = $postLikes->count();
-            $resultLikes = $posts->likes + $totalPostLikes;
-            $posts->update(['likes' => $resultLikes]);
+            $posts->update(['likes' => $likeCalculate]);
 
             return self::successResponse('Likes Updated', $posts);
         } catch (\Throwable $th) {
