@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Http\Services\PostService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,13 +18,16 @@ class PostFactory extends Factory
     public function definition(): array
     {
         $dateByThisYear = fake()->dateTimeThisYear()->format('Y-m-d H:i:s');
+        $likes = fake()->numberBetween(0, 100);
+        $popularity = PostService::calculatePopularity($likes, 'likes');
 
         return [
             //
             'title' => fake()->name,
             'content' => fake()->sentence,
-            'likes' => fake()->numberBetween(0, 100),
+            'likes' => $likes,
             'status' => fake()->numberBetween(0, 1),
+            'popularity' =>  $popularity,
             'user_id' => fake()->numberBetween(1, 4),
             'category_id' => fake()->numberBetween(1, 5),
             'created_at' => $dateByThisYear,

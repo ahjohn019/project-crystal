@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Models\Post;
 use App\Models\UserLike;
+use App\Http\Services\PostService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;
@@ -121,6 +122,10 @@ class PostController extends Controller
             }
 
             $posts->update(['likes' => $likeCalculate]);
+
+            $resultPopularity = PostService::calculatePopularity($posts->likes, 'likes');
+
+            $posts->update(["popularity" => $resultPopularity]);
 
             return self::successResponse('Likes Updated', $posts);
         } catch (\Throwable $th) {

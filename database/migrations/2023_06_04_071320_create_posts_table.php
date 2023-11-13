@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('content')->nullable();
             $table->string('likes')->default(0);
             $table->string('status')->default(0);
-            $table->decimal('popularity', 2, 1)->nullable();
+            $table->decimal('popularity', '16', '2')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('category_id')->constrained();
             $table->softDeletes();
