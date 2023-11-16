@@ -123,10 +123,6 @@ class PostController extends Controller
 
             $posts->update(['likes' => $likeCalculate]);
 
-            $resultPopularity = PostService::calculatePopularity($posts->likes, 'likes');
-
-            $posts->update(["popularity" => $resultPopularity]);
-
             return self::successResponse('Likes Updated', $posts);
         } catch (\Throwable $th) {
             throw $th;

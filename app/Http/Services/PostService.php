@@ -14,13 +14,29 @@ class PostService
 
         $maximumEngagement = $latestPopluarity->maximum_value;
 
-        $calculatePopularity = ($currentEngagement / $maximumEngagement) * ConfigPopularity::FULL_PERCENTAGE;
-        $resultPopularity = round($calculatePopularity, 2);
+        $calculatePopularity = round(($currentEngagement / $maximumEngagement), 2);
+
+        $calculatePopularityPercentage = $calculatePopularity * ConfigPopularity::FULL_PERCENTAGE;
+        $resultPercentagePopularity = round($calculatePopularityPercentage, 2);
 
         if ($currentEngagement > $maximumEngagement) {
-            $resultPopularity = ConfigPopularity::FULL_PERCENTAGE;
+            $resultPercentagePopularity = ConfigPopularity::FULL_PERCENTAGE;
         }
 
-        return $resultPopularity;
+        return ['popularity' => $calculatePopularity, 'popularity_percentage' => $resultPercentagePopularity];
+    }
+
+    public static function fetchPopularityGrade($currentEngagement)
+    {
+        $latestPopluarity = ConfigPopularity::where(function ($query) use ($currentEngagement) {
+            $query->where('minimum_value', '<=', $currentEngagement);
+            $query->where('maximum_value', '>=', $currentEngagement);
+        })
+            ->firstOrThrowError();
+
+        $removeUnderscore = str_replace('_', ' ', $latestPopluarity->grade);
+        $result = ucwords(strtolower($removeUnderscore));
+
+        return $result;
     }
 }

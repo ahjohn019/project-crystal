@@ -6,6 +6,7 @@
                 bordered
                 :rows="rows"
                 :columns="columns"
+                row-key="name"
                 :selected-rows-label="getSelectedString"
                 selection="multiple"
                 v-model:selected="selected"
@@ -23,12 +24,10 @@
                         <div>{{ props.value }}</div>
                     </q-td>
                 </template>
-                <template v-slot:body-cell-title="props">
+                <template v-slot:body-cell-name="props">
                     <q-td :props="props">
                         <div class="font-bold">{{ props.value }}</div>
-                        <div class="q-table-label">
-                            Likes : {{ props.row.likes }}
-                        </div>
+                        <div class="q-table-label">Likes : 10</div>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-popularity="props">
@@ -41,9 +40,7 @@
                                     color="positive"
                                     style="font-weight: bold"
                                     class="capitalize p-2 rounded"
-                                    :label="
-                                        props.row.popularity_percentage + '%'
-                                    "
+                                    :label="props.value"
                                 />
                             </div>
 
@@ -52,7 +49,7 @@
                                     color="positive"
                                     style="font-weight: bold"
                                     class="capitalize p-2 rounded"
-                                    :label="props.row.popularity_grade"
+                                    :label="props.row.percentage"
                                 />
                             </div>
                         </div>
@@ -60,7 +57,7 @@
                             <q-linear-progress
                                 rounded
                                 size="15px"
-                                :value="props.value"
+                                :value="props.row.percentage"
                                 class="q-mt-sm rounded q-table-custom-progress-bar"
                             />
                         </div>
@@ -70,7 +67,7 @@
                     <q-td :props="props">
                         <div class="flex">
                             <div>
-                                <q-toggle v-model="status" />
+                                <q-toggle v-model="status[props.row.name]" />
                             </div>
                             <div>
                                 <q-btn-dropdown
@@ -134,85 +131,72 @@
 import { ref } from 'vue';
 import { usePostTablePageAdminStore } from '@shared_admin/post/postTablePage.js';
 import { useAdminAuthStore } from '@shared_admin/base/auth.js';
-import dayjs from 'dayjs';
+
+const columns = [
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Posts',
+        field: 'name',
+        sortable: true,
+    },
+    {
+        name: 'popularity',
+        align: 'left',
+        label: 'Popularity',
+        field: 'popularity',
+        sortable: true,
+    },
+
+    {
+        name: 'created_at',
+        align: 'left',
+        label: 'Created At',
+        field: 'created_at',
+        sortable: true,
+    },
+    {
+        name: 'status',
+        align: 'left',
+        label: 'Status',
+        field: 'status',
+        sortable: true,
+    },
+];
+
+const rows = [
+    {
+        name: 'Frozen Yogurt',
+        popularity: 'good',
+        like: 20,
+        percentage: 0.5,
+        created_at: '2022-01-22',
+        status: 'active',
+    },
+    {
+        name: 'Ice cream sandwich',
+        popularity: 'good',
+        like: 30,
+        percentage: 0.8,
+        created_at: '2022-01-22',
+        status: 'active',
+    },
+];
 
 export default {
     setup() {
         const selected = ref([]);
         const status = ref({});
 
-        const columns = ref([]);
-        const rows = ref([]);
+        // const postTablePageAdminStore = usePostTablePageAdminStore();
+        // const adminAuthStore = useAdminAuthStore();
+        // const getAuthToken = adminAuthStore.fetchSessionToken();
 
-        const postTablePageAdminStore = usePostTablePageAdminStore();
-        const adminAuthStore = useAdminAuthStore();
-        const getAuthToken = adminAuthStore.fetchSessionToken();
+        // const response = postTablePageAdminStore.fetchPostList(getAuthToken);
 
-        const fetchPostList = async () => {
-            try {
-                const response = await postTablePageAdminStore.fetchPostList(
-                    getAuthToken
-                );
+        // const fetchPostList = response.data;
 
-                columns.value = [
-                    {
-                        name: 'title',
-                        align: 'left',
-                        label: 'Title',
-                        field: 'title',
-                        sortable: true,
-                    },
-                    {
-                        name: 'popularity',
-                        align: 'left',
-                        label: 'Popularity',
-                        field: 'popularity',
-                        sortable: true,
-                    },
-                    {
-                        name: 'created_at',
-                        align: 'left',
-                        label: 'Created At',
-                        field: 'created_at',
-                        sortable: true,
-                    },
-                    {
-                        name: 'status',
-                        align: 'left',
-                        label: 'Status',
-                        field: 'status',
-                        sortable: true,
-                    },
-                ];
-
-                const updatedData = response.map((item) => {
-                    status.value = false;
-
-                    if (item.status) {
-                        status.value = true;
-                    }
-
-                    return {
-                        ...item,
-                        created_at: dayjs(item.created_at).format(
-                            'YYYY-MM-DD HH:mm:ss'
-                        ),
-                    };
-                });
-
-                rows.value = updatedData;
-
-                return response;
-            } catch (error) {
-                // Handle errors here
-                console.error('Error fetching post list:', error);
-            }
-        };
-
-        // Call the asynchronous function
-        fetchPostList();
-
-        rows.value.forEach((row) => {
+        rows.forEach((row) => {
             status.value[row.name] = true;
             row.percentage = (row.percentage * 100).toFixed(2) + '%';
         });
@@ -228,7 +212,7 @@ export default {
                     ? ''
                     : `${selected.value.length} record${
                           selected.value.length > 1 ? 's' : ''
-                      } selected of ${rows.value.length}`;
+                      } selected of ${rows.length}`;
             },
         };
     },

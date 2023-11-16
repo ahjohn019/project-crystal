@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
-use App\Http\Services\PostService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Services\ImageService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\PostResource;
 use App\Http\Requests\Web\ListFormRequest;
 use App\Http\Requests\Admin\Post\CreateFormRequest;
 use App\Http\Requests\Admin\Post\UpdateFormRequest;
@@ -24,7 +24,9 @@ class PostController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return self::successResponse('Posts Display Successfully', $posts);
+        $result = PostResource::collection($posts);
+
+        return self::successResponse('Posts Display Successfully', $result);
     }
 
     public function store(CreateFormRequest $request)
