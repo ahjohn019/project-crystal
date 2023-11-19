@@ -14,6 +14,8 @@ class Post extends Model
     use HasFactory, HasModelTrait, SoftDeletes;
 
     public const STATUS_ACTIVE = 1;
+    public const CREATED_AT = 'created_at';
+    public const LATEST = 'desc';
 
     protected $fillable = ['title', 'content', 'likes', 'status', 'user_id', 'category_id'];
 

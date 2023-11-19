@@ -18,10 +18,13 @@ class PostController extends Controller
     {
         $payload = $request->validated();
 
+        $postAttribute = $payload['attribute'] ?? Post::CREATED_AT;
+        $postSortable = $payload['sortable'] ?? Post::LATEST;
+
         $posts = Post::where("status", Post::STATUS_ACTIVE)
             ->with('user')
             ->searchable($payload, ['user'])
-            ->orderBy('created_at', 'desc')
+            ->orderBy($postAttribute, $postSortable)
             ->paginate(15);
 
         $result = PostResource::collection($posts);

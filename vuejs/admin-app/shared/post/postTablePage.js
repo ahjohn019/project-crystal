@@ -9,7 +9,7 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
     }),
 
     actions: {
-        async fetchPostList(payload, page = null) {
+        async fetchPostList(payload, page = null, tableHeader = null) {
             const config = {
                 headers: { Authorization: `Bearer ${payload}` },
             };
@@ -17,10 +17,12 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
             try {
                 const pagination = '?page=' + page;
 
-                const response = await axios.get(
-                    prefix + 'list' + pagination,
-                    config
-                );
+                console.log(tableHeader);
+
+                const response = await axios.get(prefix + 'list' + pagination, {
+                    params: tableHeader,
+                    ...config,
+                });
 
                 console.log(response);
 
@@ -45,7 +47,7 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
                     align: 'left',
                     label: 'Popularity',
                     field: 'popularity',
-                    sortable: true,
+                    sortable: false,
                 },
                 {
                     name: 'created_at',
@@ -59,9 +61,37 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
                     align: 'left',
                     label: 'Status',
                     field: 'status',
-                    sortable: true,
+                    sortable: false,
                 },
             ];
+        },
+
+        handleTableHeaderFunction(e) {
+            let eventTarget = e.target;
+            let classListTarget = eventTarget.classList;
+            const checkSortable = classListTarget.contains('sortable');
+
+            if (!checkSortable) {
+                eventTarget = eventTarget.parentNode;
+                classListTarget = eventTarget.classList;
+            }
+
+            let fetchAttributeSortable = eventTarget.querySelector('label');
+
+            if (fetchAttributeSortable) {
+                fetchAttributeSortable = fetchAttributeSortable.innerHTML
+                    .replace(/\s+/g, '_')
+                    .toLowerCase();
+            }
+
+            const handleSortable = classListTarget.contains('sort-desc')
+                ? 'desc'
+                : 'asc';
+
+            return {
+                attribute: fetchAttributeSortable,
+                sortable: handleSortable,
+            };
         },
     },
 });

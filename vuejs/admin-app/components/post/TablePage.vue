@@ -9,7 +9,9 @@
                 :selected-rows-label="getSelectedString"
                 selection="multiple"
                 v-model:selected="selected"
+                binary-state-sort
                 class="posts-table"
+                @click="handleTableHeaderClick"
             >
                 <template v-slot:header-cell="props">
                     <q-th :props="props">
@@ -173,14 +175,25 @@ export default {
             current.value = parseInt(paginationPage);
         };
 
-        const fetchPostList = async (paginationPage = null) => {
+        const handleTableHeaderClick = async (e) => {
+            const fetchTableHeader =
+                postTablePageAdminStore.handleTableHeaderFunction(e);
+
+            fetchPostList(null, fetchTableHeader);
+        };
+
+        const fetchPostList = async (
+            paginationPage = null,
+            fetchTableHeader = null
+        ) => {
             try {
                 const fetchColumnList =
                     postTablePageAdminStore.fetchPostColumns();
 
                 const response = await postTablePageAdminStore.fetchPostList(
                     getAuthToken,
-                    paginationPage
+                    paginationPage,
+                    fetchTableHeader
                 );
 
                 columns.value = fetchColumnList;
@@ -213,6 +226,7 @@ export default {
             status,
             current,
             fetchPagination,
+            handleTableHeaderClick,
             getSelectedString() {
                 return selected.value.length === 0
                     ? ''
