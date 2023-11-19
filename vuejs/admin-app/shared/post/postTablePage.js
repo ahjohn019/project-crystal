@@ -17,14 +17,10 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
             try {
                 const pagination = '?page=' + page;
 
-                console.log(tableHeader);
-
                 const response = await axios.get(prefix + 'list' + pagination, {
                     params: tableHeader,
                     ...config,
                 });
-
-                console.log(response);
 
                 return response.data.data;
             } catch (error) {
@@ -47,7 +43,7 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
                     align: 'left',
                     label: 'Popularity',
                     field: 'popularity',
-                    sortable: false,
+                    sortable: true,
                 },
                 {
                     name: 'created_at',

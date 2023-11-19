@@ -121,7 +121,9 @@ class PostController extends Controller
                 $likeCalculate = $posts->likes - UserLike::TOGGLE_STATUS;
             }
 
-            $posts->update(['likes' => $likeCalculate]);
+            $popularity = PostService::calculatePopularity($likeCalculate, 'likes')['popularity'];
+
+            $posts->update(['likes' => $likeCalculate, 'popularity' => $popularity]);
 
             return self::successResponse('Likes Updated', $posts);
         } catch (\Throwable $th) {

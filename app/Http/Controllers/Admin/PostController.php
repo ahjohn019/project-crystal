@@ -29,7 +29,7 @@ class PostController extends Controller
 
         $result = PostResource::collection($posts);
 
-        return self::successResponse('Posts Display Successfully', $result);
+        return self::successResponse('Posts Display Successfully', ['result' => $result, 'data' => $posts]);
     }
 
     public function store(CreateFormRequest $request)

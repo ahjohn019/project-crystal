@@ -17,7 +17,7 @@ class Post extends Model
     public const CREATED_AT = 'created_at';
     public const LATEST = 'desc';
 
-    protected $fillable = ['title', 'content', 'likes', 'status', 'user_id', 'category_id'];
+    protected $fillable = ['title', 'content', 'likes', 'status', 'popularity', 'user_id', 'category_id'];
 
     public function user()
     {

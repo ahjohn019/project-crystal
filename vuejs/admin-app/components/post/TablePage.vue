@@ -1,5 +1,7 @@
 <template>
     <div class="row mt-5">
+        <input type="hidden" :value="attributeData" />
+        <input type="hidden" :value="sortableData" />
         <div class="col">
             <q-table
                 flat
@@ -9,6 +11,7 @@
                 :selected-rows-label="getSelectedString"
                 selection="multiple"
                 v-model:selected="selected"
+                v-model:pagination="pagination"
                 binary-state-sort
                 class="posts-table"
                 @click="handleTableHeaderClick"
@@ -62,7 +65,7 @@
                             <q-linear-progress
                                 rounded
                                 size="15px"
-                                :value="props.value"
+                                :value="parseFloat(props.value)"
                                 class="q-mt-sm rounded q-table-custom-progress-bar"
                             />
                         </div>
@@ -127,7 +130,7 @@
             <div class="q-pa-lg flex flex-center">
                 <q-pagination
                     v-model="current"
-                    :max="10"
+                    :max="totalPaginationNumber"
                     :max-pages="5"
                     :boundary-numbers="false"
                     direction-links
@@ -151,6 +154,7 @@ import { ref } from 'vue';
 import { usePostTablePageAdminStore } from '@shared_admin/post/postTablePage.js';
 import { useAdminAuthStore } from '@shared_admin/base/auth.js';
 import dayjs from 'dayjs';
+import { useRoute } from 'vue-router';
 
 export default {
     setup() {
@@ -164,20 +168,34 @@ export default {
         const postTablePageAdminStore = usePostTablePageAdminStore();
         const adminAuthStore = useAdminAuthStore();
         const getAuthToken = adminAuthStore.fetchSessionToken();
+        const route = useRoute();
+
+        const attributeData = ref('');
+        const sortableData = ref('');
+
+        const totalPaginationNumber = ref(0);
+
+        const pagination = ref({
+            rowsPerPage: 0,
+        });
 
         const fetchPagination = async (e) => {
-            const baseURI = e.target.baseURI;
-            const url = new URL(baseURI);
-            const params = new URLSearchParams(url.search);
+            const paginationPage = route.query.page;
+            const fetchTableHeader = {
+                attribute: attributeData.value,
+                sortable: sortableData.value,
+            };
 
-            const paginationPage = params.get('page');
-            fetchPostList(paginationPage);
+            fetchPostList(paginationPage, fetchTableHeader);
             current.value = parseInt(paginationPage);
         };
 
         const handleTableHeaderClick = async (e) => {
             const fetchTableHeader =
                 postTablePageAdminStore.handleTableHeaderFunction(e);
+
+            attributeData.value = fetchTableHeader.attribute;
+            sortableData.value = fetchTableHeader.sortable;
 
             fetchPostList(null, fetchTableHeader);
         };
@@ -197,8 +215,10 @@ export default {
                 );
 
                 columns.value = fetchColumnList;
+                totalPaginationNumber.value = response.data.last_page;
+                pagination.value.rowsPerPage = response.data.per_page;
 
-                const updatedData = response.map((item) => {
+                const updatedData = response.result.map((item) => {
                     return {
                         ...item,
                         created_at: dayjs(item.created_at).format(
@@ -211,12 +231,10 @@ export default {
 
                 return response;
             } catch (error) {
-                // Handle errors here
                 console.error('Error fetching post list:', error);
             }
         };
 
-        // Call the asynchronous function
         fetchPostList();
 
         return {
@@ -225,6 +243,10 @@ export default {
             rows,
             status,
             current,
+            attributeData,
+            sortableData,
+            totalPaginationNumber,
+            pagination,
             fetchPagination,
             handleTableHeaderClick,
             getSelectedString() {
