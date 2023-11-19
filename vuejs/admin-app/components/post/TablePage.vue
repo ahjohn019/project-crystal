@@ -70,9 +70,6 @@
                     <q-td :props="props">
                         <div class="flex">
                             <div>
-                                <q-toggle v-model="status" />
-                            </div>
-                            <div>
                                 <q-btn-dropdown
                                     color="transparent"
                                     class="text-black font-bold"
@@ -125,6 +122,23 @@
                     </q-td>
                 </template>
             </q-table>
+            <div class="q-pa-lg flex flex-center">
+                <q-pagination
+                    v-model="current"
+                    :max="10"
+                    :max-pages="5"
+                    :boundary-numbers="false"
+                    direction-links
+                    boundary-links
+                    icon-first="skip_previous"
+                    icon-last="skip_next"
+                    icon-prev="fast_rewind"
+                    icon-next="fast_forward"
+                    :to-fn="(page) => ({ query: { page } })"
+                    @click="fetchPagination"
+                >
+                </q-pagination>
+            </div>
             <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
         </div>
     </div>
@@ -138,6 +152,7 @@ import dayjs from 'dayjs';
 
 export default {
     setup() {
+        const current = ref(1);
         const selected = ref([]);
         const status = ref({});
 
@@ -148,50 +163,29 @@ export default {
         const adminAuthStore = useAdminAuthStore();
         const getAuthToken = adminAuthStore.fetchSessionToken();
 
-        const fetchPostList = async () => {
+        const fetchPagination = async (e) => {
+            const baseURI = e.target.baseURI;
+            const url = new URL(baseURI);
+            const params = new URLSearchParams(url.search);
+
+            const paginationPage = params.get('page');
+            fetchPostList(paginationPage);
+            current.value = parseInt(paginationPage);
+        };
+
+        const fetchPostList = async (paginationPage = null) => {
             try {
+                const fetchColumnList =
+                    postTablePageAdminStore.fetchPostColumns();
+
                 const response = await postTablePageAdminStore.fetchPostList(
-                    getAuthToken
+                    getAuthToken,
+                    paginationPage
                 );
 
-                columns.value = [
-                    {
-                        name: 'title',
-                        align: 'left',
-                        label: 'Title',
-                        field: 'title',
-                        sortable: true,
-                    },
-                    {
-                        name: 'popularity',
-                        align: 'left',
-                        label: 'Popularity',
-                        field: 'popularity',
-                        sortable: true,
-                    },
-                    {
-                        name: 'created_at',
-                        align: 'left',
-                        label: 'Created At',
-                        field: 'created_at',
-                        sortable: true,
-                    },
-                    {
-                        name: 'status',
-                        align: 'left',
-                        label: 'Status',
-                        field: 'status',
-                        sortable: true,
-                    },
-                ];
+                columns.value = fetchColumnList;
 
                 const updatedData = response.map((item) => {
-                    status.value = false;
-
-                    if (item.status) {
-                        status.value = true;
-                    }
-
                     return {
                         ...item,
                         created_at: dayjs(item.created_at).format(
@@ -212,17 +206,13 @@ export default {
         // Call the asynchronous function
         fetchPostList();
 
-        rows.value.forEach((row) => {
-            status.value[row.name] = true;
-            row.percentage = (row.percentage * 100).toFixed(2) + '%';
-        });
-
         return {
             selected,
             columns,
             rows,
-            // fetchPostList,
             status,
+            current,
+            fetchPagination,
             getSelectedString() {
                 return selected.value.length === 0
                     ? ''
@@ -250,5 +240,9 @@ export default {
 
 .q-table-edit-dropdown-list .q-item__section--main + .q-item__section--main {
     margin: 0 !important;
+}
+
+.posts-table .q-table__bottom .q-table__control:nth-of-type(3) {
+    display: none;
 }
 </style>

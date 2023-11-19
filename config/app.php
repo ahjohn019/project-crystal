@@ -17,6 +17,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'admin_name' => env('APP_NAME', 'Admin Crystal'),
 
     /*
     |--------------------------------------------------------------------------
