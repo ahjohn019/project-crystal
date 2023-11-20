@@ -18,13 +18,13 @@ class PostFactory extends Factory
     public function definition(): array
     {
         $dateByThisYear = fake()->dateTimeThisYear()->format('Y-m-d H:i:s');
-        $likes = fake()->numberBetween(0, 100);
+        $likes = fake()->numberBetween(0, 500);
         $popularity = PostService::calculatePopularity($likes, 'likes')['popularity'];
 
         return [
             //
-            'title' => fake()->name,
-            'content' => fake()->sentence,
+            'title' => fake()->sentence,
+            'content' => fake()->text,
             'likes' => $likes,
             'popularity' => $popularity,
             'status' => fake()->numberBetween(0, 1),

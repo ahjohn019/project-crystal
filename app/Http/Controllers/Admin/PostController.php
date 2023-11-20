@@ -27,9 +27,9 @@ class PostController extends Controller
             ->orderBy($postAttribute, $postSortable)
             ->paginate(15);
 
-        $result = PostResource::collection($posts);
+        $result = PostResource::collection($posts)->response()->getData();
 
-        return self::successResponse('Posts Display Successfully', ['result' => $result, 'data' => $posts]);
+        return self::successResponse('Posts Display Successfully', $result);
     }
 
     public function store(CreateFormRequest $request)

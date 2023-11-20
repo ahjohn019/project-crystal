@@ -215,10 +215,10 @@ export default {
                 );
 
                 columns.value = fetchColumnList;
-                totalPaginationNumber.value = response.data.last_page;
-                pagination.value.rowsPerPage = response.data.per_page;
+                totalPaginationNumber.value = response.meta.last_page;
+                pagination.value.rowsPerPage = response.meta.per_page;
 
-                const updatedData = response.result.map((item) => {
+                const updatedData = response.data.map((item) => {
                     return {
                         ...item,
                         created_at: dayjs(item.created_at).format(
