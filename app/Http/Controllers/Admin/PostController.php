@@ -23,7 +23,7 @@ class PostController extends Controller
 
         $posts = Post::where("status", Post::STATUS_ACTIVE)
             ->with('user')
-            ->searchable($payload, ['user'])
+            ->searchable($payload, ['user' => 'name', 'category' => 'name'])
             ->orderBy($postAttribute, $postSortable)
             ->paginate(15);
 

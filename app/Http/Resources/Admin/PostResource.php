@@ -24,8 +24,8 @@ class PostResource extends JsonResource
             'popularity' => $this->popularity,
             'popularity_percentage' => PostService::calculatePopularity($this->likes, 'likes')['popularity_percentage'],
             'popularity_grade' => PostService::fetchPopularityGrade($this->likes),
-            'user_id' => $this->user_id,
-            'category_id' => $this->category_id,
+            'author' => $this->user->name ?? '-',
+            'category' => $this->category->name ?? '-',
             'created_at' => $this->created_at
         ];
     }
