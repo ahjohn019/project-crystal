@@ -16,7 +16,7 @@ trait HasModelTrait
 
     public static function scopeSearchable($query, array $payload = null, array $hasModelForeign = null)
     {
-        $searchableMain = $payload['searchable'];
+        $searchableMain = isset($payload['searchable']) ? $payload['searchable'] : null;
 
         collect($searchableMain)->map(function ($search) use ($query, $payload, $hasModelForeign) {
             $searchKeyword = '%' . $payload['keyword'] . '%';
