@@ -1,7 +1,11 @@
 <template>
     <div class="row p-2 bg-white mt-5">
         <div class="col col-md-6 col-lg-9 filter-posts-search-bar">
-            <q-input outlined dense label="Search"> </q-input>
+            <q-input outlined dense label="Search" v-model="postKeywords">
+                <template v-slot:append>
+                    <q-icon name="search" @click="handlePostSearch" />
+                </template>
+            </q-input>
         </div>
         <div class="col col-md-2 col-lg-1">
             <q-btn-dropdown
@@ -86,6 +90,25 @@
         </div>
     </div>
 </template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+    setup(props, { emit }) {
+        const postKeywords = ref('');
+
+        const handlePostSearch = () => {
+            emit('postKeywords', postKeywords.value);
+        };
+
+        return {
+            handlePostSearch,
+            postKeywords,
+        };
+    },
+};
+</script>
 
 <style>
 .filter-posts-bar {

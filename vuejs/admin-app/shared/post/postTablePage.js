@@ -9,16 +9,18 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
     }),
 
     actions: {
-        async fetchPostList(payload, page = null, tableHeader = null) {
+        async fetchPostList(authToken, page = null, payload = null) {
             const config = {
-                headers: { Authorization: `Bearer ${payload}` },
+                headers: { Authorization: `Bearer ${authToken}` },
             };
 
             try {
+                console.log(payload);
+
                 const pagination = '?page=' + page;
 
                 const response = await axios.get(prefix + 'list' + pagination, {
-                    params: tableHeader,
+                    params: payload,
                     ...config,
                 });
 

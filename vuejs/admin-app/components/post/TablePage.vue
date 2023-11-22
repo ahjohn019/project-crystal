@@ -1,4 +1,5 @@
 <template>
+    <FilterBar @postKeywords="handlePostKeywords" />
     <div class="row mt-5">
         <input type="hidden" :value="attributeData" />
         <input type="hidden" :value="sortableData" />
@@ -14,10 +15,9 @@
                 v-model:pagination="pagination"
                 binary-state-sort
                 class="posts-table"
-                @click="handleTableHeaderClick"
             >
                 <template v-slot:header-cell="props">
-                    <q-th :props="props">
+                    <q-th :props="props" @click="handleTableHeaderClick">
                         <label :for="props.col.label" class="font-bold text-sm">
                             {{ props.col.label }}
                         </label>
@@ -155,8 +155,13 @@ import { usePostTablePageAdminStore } from '@shared_admin/post/postTablePage.js'
 import { useAdminAuthStore } from '@shared_admin/base/auth.js';
 import dayjs from 'dayjs';
 import { useRoute } from 'vue-router';
+import FilterBar from '@admin/components/post/FilterBar.vue';
 
 export default {
+    components: {
+        FilterBar,
+    },
+
     setup() {
         const current = ref(1);
         const selected = ref([]);
@@ -179,14 +184,31 @@ export default {
             rowsPerPage: 0,
         });
 
-        const fetchPagination = async (e) => {
-            const paginationPage = route.query.page;
-            const fetchTableHeader = {
-                attribute: attributeData.value,
-                sortable: sortableData.value,
+        const postPayload = ref({});
+
+        const handlePostKeywords = (keywords) => {
+            postPayload.value = {
+                ...postPayload.value,
+                keyword: keywords,
+                searchable: ['title', 'content'],
+                page: 1,
             };
 
-            fetchPostList(paginationPage, fetchTableHeader);
+            fetchPostList(null, postPayload.value);
+            current.value = 1;
+        };
+
+        const fetchPagination = async (e) => {
+            const paginationPage = route.query.page;
+
+            postPayload.value = {
+                ...postPayload.value,
+                attribute: attributeData.value,
+                sortable: sortableData.value,
+                page: paginationPage,
+            };
+
+            fetchPostList(paginationPage, postPayload.value);
             current.value = parseInt(paginationPage);
         };
 
@@ -202,7 +224,7 @@ export default {
 
         const fetchPostList = async (
             paginationPage = null,
-            fetchTableHeader = null
+            fetchPayload = null
         ) => {
             try {
                 const fetchColumnList =
@@ -211,7 +233,7 @@ export default {
                 const response = await postTablePageAdminStore.fetchPostList(
                     getAuthToken,
                     paginationPage,
-                    fetchTableHeader
+                    fetchPayload
                 );
 
                 columns.value = fetchColumnList;
@@ -249,6 +271,7 @@ export default {
             pagination,
             fetchPagination,
             handleTableHeaderClick,
+            handlePostKeywords,
             getSelectedString() {
                 return selected.value.length === 0
                     ? ''

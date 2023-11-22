@@ -17,7 +17,6 @@
                         />
                     </div>
                 </div>
-                <FilterBar />
                 <TablePage />
             </div>
         </template>
@@ -26,13 +25,11 @@
 
 <script>
 import BasePage from '@admin/modules/base/views/BasePage.vue';
-import FilterBar from '@admin/components/post/FilterBar.vue';
 import TablePage from '@admin/components/post/TablePage.vue';
 
 export default {
     components: {
         BasePage,
-        FilterBar,
         TablePage,
     },
 };
