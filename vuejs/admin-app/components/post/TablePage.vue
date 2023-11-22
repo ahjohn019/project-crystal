@@ -220,6 +220,7 @@ export default {
             sortableData.value = fetchTableHeader.sortable;
 
             fetchPostList(null, fetchTableHeader);
+            current.value = 1;
         };
 
         const fetchPostList = async (

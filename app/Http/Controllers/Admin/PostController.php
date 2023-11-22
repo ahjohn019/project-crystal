@@ -48,7 +48,6 @@ class PostController extends Controller
                 return self::successResponse('Post Images Created Successfully', $result);
             }
 
-
             return self::successResponse('Post Created Successfully', $payload);
         });
     }
