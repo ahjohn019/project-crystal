@@ -1,13 +1,10 @@
 <template>
     <div class="grid place-items-center h-screen login-main-page">
-        <div class="row mx-auto admin-login-page px-6">
-            <div
-                class="col-12 text-center text-uppercase text-3xl"
-                style="height: 5.25rem"
-            >
-                admin panel
+        <div class="row mx-auto admin-login-page px-6 gap-8">
+            <div class="col-12">
+                <img :src="mainLogo" alt="" width="100" class="mx-auto" />
             </div>
-            <div class="col-12 my-4">
+            <div class="col-12">
                 <q-input
                     outlined
                     dense
@@ -21,7 +18,7 @@
                     </template>
                 </q-input>
             </div>
-            <div class="col-12 my-4">
+            <div class="col-12">
                 <q-input
                     outlined
                     dense
@@ -35,7 +32,7 @@
                     </template>
                 </q-input>
             </div>
-            <div class="col-12 my-4">
+            <div class="col-12">
                 <q-btn
                     label="login"
                     class="text-white bg-primary !w-full"
@@ -43,7 +40,7 @@
                     @click="submitAdminLogin"
                 />
             </div>
-            <div class="col-12 my-4 flex items-center justify-between">
+            <div class="col-12 flex items-center justify-between">
                 <div class="admin-login-checkbox">
                     <q-checkbox v-model="forget_password" label="Remember Me" />
                 </div>

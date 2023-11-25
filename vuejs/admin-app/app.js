@@ -27,6 +27,8 @@ app.use(VueAxios, axios);
 
 app.use(SortQuasarTableIconsPlugin);
 
+app.config.globalProperties.mainLogo = '/images/crystal_logo.png';
+
 app.use(CKEditor);
 
 app.use(Quasar, {
