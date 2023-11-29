@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import { useRouter } from 'vue-router';
 
 const prefix = '/api/post/';
 
 export const usePostTablePageAdminStore = defineStore('post_table_admin', {
     state: () => ({
         post_table_admin: null,
+        router: useRouter(),
     }),
 
     actions: {
@@ -15,8 +18,6 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
             };
 
             try {
-                console.log(payload);
-
                 const pagination = '?page=' + page;
 
                 const response = await axios.get(prefix + 'list' + pagination, {
@@ -28,6 +29,33 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
             } catch (error) {
                 console.error('Error:', error);
                 throw error;
+            }
+        },
+
+        async createPost(authToken, payload = null) {
+            const config = {
+                headers: { Authorization: `Bearer ${authToken}` },
+            };
+
+            try {
+                const response = await axios.post(
+                    prefix + 'store',
+                    payload,
+                    config
+                );
+
+                this.router.push('/');
+
+                Swal.fire({
+                    text: 'Post Created Successfully',
+                    icon: 'success',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        return response.data.data;
+                    }
+                });
+            } catch (error) {
+                return error.response;
             }
         },
 

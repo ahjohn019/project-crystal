@@ -1,6 +1,6 @@
 <template>
     <div style="max-width: 250px; max-height: 0">
-        <q-list padding class="border-r side-bar-container bg-white">
+        <q-list padding class="border-r side-bar-container bg-white fixed">
             <template v-for="(sideBarItem, index) in sideBarList" :key="index">
                 <q-item
                     clickable

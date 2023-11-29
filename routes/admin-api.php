@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\RefController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,5 +78,9 @@ Route::middleware(['auth:sanctum', 'role:' . RoleTag::SUPERADMIN . '|' . RoleTag
         Route::get('/highest-likes-month', [DashboardController::class, 'fetchHighestLikesByMonth'])->name('highest_like_month');
         Route::get('/highest-comment-month', [DashboardController::class, 'fetchHighestCommentByMonth'])->name('highest_comment_month');
         Route::get('/bar-chart-data', [DashboardController::class, 'retrieveBarChartData'])->name('bar_chart_data');
+    });
+
+    Route::prefix('ref')->name('ref.')->group(function () {
+        Route::get('/category', [RefController::class, 'category'])->name('category');
     });
 });

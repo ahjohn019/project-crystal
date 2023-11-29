@@ -24,10 +24,9 @@ class CreateFormRequest extends FormRequest
         return [
             //
             'title' => ['required'],
-            'content' => ['nullable'],
-            'likes' => ['nullable'],
+            'descriptions' => ['required'],
             'status' => ['required'],
-            'category_id' => ['nullable'],
+            'category_id' => ['required'],
             'file' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpg,png'],
         ];
     }

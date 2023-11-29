@@ -13,7 +13,7 @@ import 'animate.css';
 import VueNumber from 'vue-number-animation';
 
 import { createPinia } from 'pinia';
-import SortQuasarTableIconsPlugin from '@admin/plugins/SortQuasarTableIcon.js';
+import SortQuasarIconsPlugin from '@admin/plugins/SortQuasarIcon.js';
 
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
@@ -25,7 +25,7 @@ app.use(router);
 app.use(VueNumber);
 app.use(VueAxios, axios);
 
-app.use(SortQuasarTableIconsPlugin);
+app.use(SortQuasarIconsPlugin);
 
 app.config.globalProperties.mainLogo = '/images/crystal_logo.png';
 
