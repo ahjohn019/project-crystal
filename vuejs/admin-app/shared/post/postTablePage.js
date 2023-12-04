@@ -59,6 +59,33 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
             }
         },
 
+        deletePost(authToken, payload = null) {
+            const config = {
+                headers: { Authorization: `Bearer ${authToken}` },
+            };
+
+            try {
+                Swal.fire({
+                    title: 'Do you want to delete this post?',
+                    showDenyButton: true,
+                    confirmButtonText: 'Yes',
+                    denyButtonText: `No`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(prefix + 'delete/' + payload, config);
+
+                        Swal.fire('Deleted', '', 'success').then((result) => {
+                            if (result.isConfirmed) {
+                                this.router.go('/posts');
+                            }
+                        });
+                    }
+                });
+            } catch (error) {
+                return error.response;
+            }
+        },
+
         fetchPostColumns() {
             return [
                 {

@@ -41,14 +41,16 @@
                 <template v-for="(menuItem, index) in menuList" :key="index">
                     <q-item
                         clickable
-                        :active="menuItem.label === 'Outbox'"
+                        :active="menuItem.title === 'Outbox'"
+                        @click="handleItemClick(menuItem)"
+                        :to="menuItem.route"
                         v-ripple
                     >
                         <q-item-section avatar>
                             <q-icon :name="menuItem.icon" />
                         </q-item-section>
                         <q-item-section>
-                            {{ menuItem.label }}
+                            {{ menuItem.text }}
                         </q-item-section>
                     </q-item>
                     <q-separator
@@ -67,23 +69,27 @@ import { ref } from 'vue';
 const menuList = [
     {
         icon: 'grid_view',
-        label: 'Dashboard',
-        separator: false,
+        title: 'dashboard',
+        text: 'Dashboard',
+        route: '/',
     },
     {
         icon: 'equalizer',
-        label: 'Statistics',
-        separator: false,
+        title: 'statistics',
+        text: 'Statistics',
+        route: null,
     },
     {
-        icon: 'shopping_bag',
-        label: 'My Products',
-        separator: true,
+        icon: 'description',
+        title: 'posts',
+        text: 'Posts',
+        route: '/posts',
     },
     {
         icon: 'tune',
-        label: 'Settings',
-        separator: false,
+        title: 'settings',
+        text: 'Settings',
+        route: null,
     },
 ];
 
@@ -91,13 +97,20 @@ export default {
     setup() {
         const toggleDrawer = ref(false);
 
+        const link = ref('dashboard');
+
         // Expose the parent method
         const toggleDrawerMobile = () => {
             toggleDrawer.value = !toggleDrawer.value;
         };
 
+        const handleItemClick = (sideBarItem) => {
+            link.value = sideBarItem.title;
+        };
+
         return {
             toggleDrawerMobile,
+            handleItemClick,
             toggleDrawer,
             menuList,
         };

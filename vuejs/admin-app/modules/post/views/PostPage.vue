@@ -1,36 +1,17 @@
 <template>
     <BasePage>
         <template #content>
-            <div class="dashboard-container-page m-4 px-4">
-                <div class="row">
-                    <div class="col text-2xl">Post List</div>
-                    <div class="col text-right">
-                        <q-btn
-                            icon-right="add"
-                            label="Add Posts"
-                            class="add-posts text-white"
-                            color="primary"
-                            :to="{
-                                name: 'posts.form',
-                                query: { type: 'create' },
-                            }"
-                        />
-                    </div>
-                </div>
-                <TablePage />
-            </div>
+            <router-view></router-view>
         </template>
     </BasePage>
 </template>
 
 <script>
 import BasePage from '@admin/modules/base/views/BasePage.vue';
-import TablePage from '@admin/components/post/TablePage.vue';
 
 export default {
     components: {
         BasePage,
-        TablePage,
     },
 };
 </script>

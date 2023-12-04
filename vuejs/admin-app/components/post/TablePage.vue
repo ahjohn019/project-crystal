@@ -110,7 +110,12 @@
                                             </q-item-section>
                                         </q-item>
 
-                                        <q-item clickable>
+                                        <q-item
+                                            clickable
+                                            @click="
+                                                handlePostDelete(props.row.id)
+                                            "
+                                        >
                                             <q-item-section>
                                                 <q-icon name="delete" />
                                             </q-item-section>
@@ -185,6 +190,14 @@ export default {
         });
 
         const postPayload = ref({});
+
+        const handlePostDelete = async (id) => {
+            const response = await postTablePageAdminStore.deletePost(
+                getAuthToken,
+                id
+            );
+            console.log(response);
+        };
 
         const handlePostKeywords = (keywords) => {
             postPayload.value = {
@@ -273,6 +286,7 @@ export default {
             fetchPagination,
             handleTableHeaderClick,
             handlePostKeywords,
+            handlePostDelete,
             getSelectedString() {
                 return selected.value.length === 0
                     ? ''

@@ -17,13 +17,21 @@ const routes = [
         component: PostDashboard.PostPage,
         meta: { requiresAuth: true },
         name: 'posts',
-    },
-    {
-        path: '/posts/form',
-        component: PostDashboard.PostPageForm,
-        meta: { requiresAuth: true },
-        name: 'posts.form',
-        props: (route) => ({ type: route.query.type }),
+        children: [
+            {
+                path: '',
+                component: PostDashboard.PostPageList,
+                meta: { requiresAuth: true },
+                name: 'posts.list',
+            },
+            {
+                path: 'form',
+                component: PostDashboard.PostPageForm,
+                meta: { requiresAuth: true },
+                name: 'posts.form',
+                props: (route) => ({ type: route.query.type }),
+            },
+        ],
     },
     {
         path: '/login',
