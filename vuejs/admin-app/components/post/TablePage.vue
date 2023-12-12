@@ -1,16 +1,14 @@
 \
 <template>
     <FilterBar @postKeywords="handlePostKeywords" />
-    <div class="q-pa-md">
-        <input type="hidden" :value="attributeData" />
-        <input type="hidden" :value="sortableData" />
+    <div class="pt-5">
         <q-table
             flat
-            bordered
             ref="tableRef"
+            bordered
+            :grid="$q.screen.lt.sm"
             :rows="rows"
             :columns="columns"
-            row-key="id"
             v-model:pagination="pagination"
             v-model:selected="selected"
             :loading="loading"
@@ -20,6 +18,121 @@
             selection="multiple"
             class="posts-table"
         >
+            <template v-slot:header-cell="props">
+                <q-th :props="props">
+                    <label :for="props.col.label" class="font-bold text-sm">
+                        {{ props.col.label }}
+                    </label>
+                </q-th>
+            </template>
+            <template v-slot:body-cell="props">
+                <q-td :props="props" class="font-bold">
+                    <div>{{ props.value }}</div>
+                </q-td>
+            </template>
+            <template v-slot:body-cell-title="props">
+                <q-td :props="props">
+                    <div class="font-bold table-likes-columns">{{ props.value }}</div>
+                    <div class="q-table-label">
+                        Likes : {{ props.row.likes }}
+                    </div>
+                </q-td>
+            </template>
+            <template v-slot:body-cell-popularity="props">
+                <q-td :props="props">
+                    <div class="flex gap-2">
+                        <div><span class="q-table-label">Score </span></div>
+
+                        <div>
+                            <q-badge
+                                color="positive"
+                                style="font-weight: bold"
+                                class="capitalize p-2 rounded"
+                                :label="
+                                    props.row.popularity_percentage + '%'
+                                "
+                            />
+                        </div>
+
+                        <div>
+                            <q-badge
+                                color="positive"
+                                style="font-weight: bold"
+                                class="capitalize p-2 rounded"
+                                :label="props.row.popularity_grade"
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <q-linear-progress
+                            rounded
+                            size="15px"
+                            :value="parseFloat(props.value)"
+                            class="q-mt-sm rounded q-table-custom-progress-bar"
+                        />
+                    </div>
+                </q-td>
+            </template>
+            <template v-slot:body-cell-status="props">
+                <q-td :props="props">
+                    <div class="flex">
+                        <div>
+                            <q-btn-dropdown
+                                color="transparent"
+                                class="text-black font-bold"
+                                dropdown-icon="expand_more"
+                            >
+                                <template v-slot:label>
+                                    <div
+                                        class="row items-center no-wrap font-bold"
+                                    >
+                                        Edit
+                                    </div>
+                                </template>
+                                <q-list class="q-table-edit-dropdown-list">
+                                    <q-item clickable>
+                                        <q-item-section>
+                                            <q-icon name="visibility" />
+                                        </q-item-section>
+                                        <q-item-section>
+                                            <q-item-label
+                                                >View</q-item-label
+                                            >
+                                        </q-item-section>
+                                    </q-item>
+
+                                    <q-item clickable>
+                                        <q-item-section>
+                                            <q-icon name="edit" />
+                                        </q-item-section>
+                                        <q-item-section>
+                                            <q-item-label
+                                                >Edit</q-item-label
+                                            >
+                                        </q-item-section>
+                                    </q-item>
+
+                                    <q-item
+                                        clickable
+                                        @click="
+                                            handlePostDelete(props.row.id)
+                                        "
+                                    >
+                                        <q-item-section>
+                                            <q-icon name="delete" />
+                                        </q-item-section>
+                                        <q-item-section>
+                                            <q-item-label
+                                                >Delete</q-item-label
+                                            >
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </q-btn-dropdown>
+                        </div>
+                    </div>
+                </q-td>
+            </template>
         </q-table>
         <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
     </div>
@@ -52,10 +165,6 @@ export default {
             rowsNumber: null,
         });
         const selected = ref([]);
-
-        const attributeData = ref('');
-        const sortableData = ref('');
-
         const payload = ref({});
 
         const postTablePageAdminStore = usePostTablePageAdminStore();
@@ -134,8 +243,6 @@ export default {
             };
 
             payload.rowsPerPage = response.meta.per_page;
-            payload.attribute = attributeData;
-            payload.sortable = sortableData;
 
             // turn off the loading
             loading.value = false;
@@ -170,8 +277,6 @@ export default {
             onRequest,
             selected,
             fetchPagination,
-            attributeData,
-            sortableData,
             handlePostKeywords,
             getSelectedString() {
                 console.log(selected.value);
@@ -185,3 +290,10 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+    .table-likes-columns{
+        max-width: 250px;
+        text-wrap: wrap;
+    }
+</style>

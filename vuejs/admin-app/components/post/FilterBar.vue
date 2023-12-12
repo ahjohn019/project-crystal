@@ -7,7 +7,7 @@
                 </template>
             </q-input>
         </div>
-        <div class="col col-md-2 col-lg-1">
+        <div class="col col-md-2 col-lg-1 text-center">
             <q-btn-dropdown
                 label="Filters"
                 class="filter-posts-bar"
@@ -34,7 +34,7 @@
                 </q-list>
             </q-btn-dropdown>
         </div>
-        <div class="col col-md-2 col-lg-1">
+        <div class="col col-md-2 col-lg-1 text-center">
             <q-btn-dropdown
                 class="filter-posts-bar"
                 dropdown-icon="expand_more"
@@ -61,7 +61,7 @@
                 </q-list>
             </q-btn-dropdown>
         </div>
-        <div class="col col-md-2 col-lg-1">
+        <div class="col col-md-2 col-lg-1 text-center">
             <q-btn-dropdown
                 class="filter-posts-bar"
                 dropdown-icon="expand_more"
@@ -119,11 +119,6 @@ export default {
 
 .filter-posts-bar .q-btn-dropdown__arrow {
     color: #9a9ab0;
-}
-
-.filter-posts-bar .q-btn__content > span {
-    width: 75px;
-    text-align: left;
 }
 
 .filter-posts-search-bar .q-field__control {

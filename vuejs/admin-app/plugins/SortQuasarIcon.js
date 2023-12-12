@@ -21,14 +21,15 @@ export default {
 
                 const getObjectIconElement = { ...iconElements.value };
 
-                for (const element in iconElements.value) {
-                    if (getObjectIconElement[element].length > 0) {
-                        getObjectIconElement[element][0].innerHTML =
-                            'expand_more';
-                        getObjectIconElement[element][0].style.fontSize =
-                            '24px';
+                for (const element of Object.keys(iconElements.value)) {
+                    const iconElement = getObjectIconElement[element];
+                    if (iconElement.length > 0) {
+                        iconElement.forEach(item => {
+                            item.innerHTML = 'expand_more';
+                            item.style.fontSize = '24px';
+                        });
                     }
-                }
+                }                
             },
         });
     },

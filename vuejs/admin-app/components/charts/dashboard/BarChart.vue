@@ -8,7 +8,6 @@
         <div class="row">
             <BarChartInfo />
             <div
-                style="height: 40vh"
                 class="dashboard-bar-chat-graphs col bg-white p-4 rounded-bl-lg md:rounded-bl-none rounded-br-lg"
             >
                 <Bar
