@@ -28,7 +28,7 @@ class ListFormRequest extends FormRequest
             "searchable" => ["nullable"],
             "foreign_model" => ["nullable"],
             "attribute" => ["nullable"],
-            "sortable" => ["nullable"],
+            "sortable" => ["nullable"]
         ];
     }
 }

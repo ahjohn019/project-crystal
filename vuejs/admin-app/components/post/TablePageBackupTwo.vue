@@ -1,19 +1,23 @@
 <template>
+    <FilterBar @postKeywords="handlePostKeywords" />
     <div class="row mt-5">
+        <input type="hidden" :value="attributeData" />
+        <input type="hidden" :value="sortableData" />
         <div class="col">
             <q-table
                 flat
                 bordered
                 :rows="rows"
                 :columns="columns"
-                row-key="name"
                 :selected-rows-label="getSelectedString"
                 selection="multiple"
                 v-model:selected="selected"
+                v-model:pagination="pagination"
+                binary-state-sort
                 class="posts-table"
             >
                 <template v-slot:header-cell="props">
-                    <q-th :props="props">
+                    <q-th :props="props" @click="handleTableHeaderClick">
                         <label :for="props.col.label" class="font-bold text-sm">
                             {{ props.col.label }}
                         </label>
@@ -24,10 +28,12 @@
                         <div>{{ props.value }}</div>
                     </q-td>
                 </template>
-                <template v-slot:body-cell-name="props">
+                <template v-slot:body-cell-title="props">
                     <q-td :props="props">
                         <div class="font-bold">{{ props.value }}</div>
-                        <div class="q-table-label">Likes : 10</div>
+                        <div class="q-table-label">
+                            Likes : {{ props.row.likes }}
+                        </div>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-popularity="props">
@@ -40,7 +46,9 @@
                                     color="positive"
                                     style="font-weight: bold"
                                     class="capitalize p-2 rounded"
-                                    :label="props.value"
+                                    :label="
+                                        props.row.popularity_percentage + '%'
+                                    "
                                 />
                             </div>
 
@@ -49,7 +57,7 @@
                                     color="positive"
                                     style="font-weight: bold"
                                     class="capitalize p-2 rounded"
-                                    :label="props.row.percentage"
+                                    :label="props.row.popularity_grade"
                                 />
                             </div>
                         </div>
@@ -57,7 +65,7 @@
                             <q-linear-progress
                                 rounded
                                 size="15px"
-                                :value="props.row.percentage"
+                                :value="parseFloat(props.value)"
                                 class="q-mt-sm rounded q-table-custom-progress-bar"
                             />
                         </div>
@@ -66,9 +74,6 @@
                 <template v-slot:body-cell-status="props">
                     <q-td :props="props">
                         <div class="flex">
-                            <div>
-                                <q-toggle v-model="status[props.row.name]" />
-                            </div>
                             <div>
                                 <q-btn-dropdown
                                     color="transparent"
@@ -105,7 +110,12 @@
                                             </q-item-section>
                                         </q-item>
 
-                                        <q-item clickable>
+                                        <q-item
+                                            clickable
+                                            @click="
+                                                handlePostDelete(props.row.id)
+                                            "
+                                        >
                                             <q-item-section>
                                                 <q-icon name="delete" />
                                             </q-item-section>
@@ -122,6 +132,23 @@
                     </q-td>
                 </template>
             </q-table>
+            <div class="q-pa-lg flex flex-center">
+                <q-pagination
+                    v-model="current"
+                    :max="totalPaginationNumber"
+                    :max-pages="5"
+                    :boundary-numbers="false"
+                    direction-links
+                    boundary-links
+                    icon-first="skip_previous"
+                    icon-last="skip_next"
+                    icon-prev="fast_rewind"
+                    icon-next="fast_forward"
+                    :to-fn="(page) => ({ query: { page } })"
+                    @click="fetchPagination"
+                >
+                </q-pagination>
+            </div>
             <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
         </div>
     </div>
@@ -131,88 +158,141 @@
 import { ref } from 'vue';
 import { usePostTablePageAdminStore } from '@shared_admin/post/postTablePage.js';
 import { useAdminAuthStore } from '@shared_admin/base/auth.js';
-
-const columns = [
-    {
-        name: 'name',
-        align: 'left',
-        label: 'Posts',
-        field: 'name',
-        sortable: true,
-    },
-    {
-        name: 'popularity',
-        align: 'left',
-        label: 'Popularity',
-        field: 'popularity',
-        sortable: true,
-    },
-
-    {
-        name: 'created_at',
-        align: 'left',
-        label: 'Created At',
-        field: 'created_at',
-        sortable: true,
-    },
-    {
-        name: 'status',
-        align: 'left',
-        label: 'Status',
-        field: 'status',
-        sortable: true,
-    },
-];
-
-const rows = [
-    {
-        name: 'Frozen Yogurt',
-        popularity: 'good',
-        like: 20,
-        percentage: 0.5,
-        created_at: '2022-01-22',
-        status: 'active',
-    },
-    {
-        name: 'Ice cream sandwich',
-        popularity: 'good',
-        like: 30,
-        percentage: 0.8,
-        created_at: '2022-01-22',
-        status: 'active',
-    },
-];
+import dayjs from 'dayjs';
+import { useRoute } from 'vue-router';
+import FilterBar from '@admin/components/post/FilterBar.vue';
 
 export default {
+    components: {
+        FilterBar,
+    },
+
     setup() {
+        const current = ref(1);
         const selected = ref([]);
         const status = ref({});
 
-        // const postTablePageAdminStore = usePostTablePageAdminStore();
-        // const adminAuthStore = useAdminAuthStore();
-        // const getAuthToken = adminAuthStore.fetchSessionToken();
+        const columns = ref([]);
+        const rows = ref([]);
 
-        // const response = postTablePageAdminStore.fetchPostList(getAuthToken);
+        const postTablePageAdminStore = usePostTablePageAdminStore();
+        const adminAuthStore = useAdminAuthStore();
+        const getAuthToken = adminAuthStore.fetchSessionToken();
+        const route = useRoute();
 
-        // const fetchPostList = response.data;
+        const attributeData = ref('');
+        const sortableData = ref('');
 
-        rows.forEach((row) => {
-            status.value[row.name] = true;
-            row.percentage = (row.percentage * 100).toFixed(2) + '%';
+        const totalPaginationNumber = ref(0);
+
+        const pagination = ref({
+            rowsPerPage: 0,
         });
+
+        const postPayload = ref({});
+
+        const handlePostDelete = async (id) => {
+            const response = await postTablePageAdminStore.deletePost(
+                getAuthToken,
+                id
+            );
+            console.log(response);
+        };
+
+        const handlePostKeywords = (keywords) => {
+            postPayload.value = {
+                ...postPayload.value,
+                keyword: keywords,
+                searchable: ['title', 'content'],
+                page: 1,
+            };
+
+            fetchPostList(null, postPayload.value);
+            current.value = 1;
+        };
+
+        const fetchPagination = async (e) => {
+            const paginationPage = route.query.page;
+
+            postPayload.value = {
+                ...postPayload.value,
+                attribute: attributeData.value,
+                sortable: sortableData.value,
+                page: paginationPage,
+            };
+
+            fetchPostList(paginationPage, postPayload.value);
+            current.value = parseInt(paginationPage);
+        };
+
+        const handleTableHeaderClick = async (e) => {
+            const fetchTableHeader =
+                postTablePageAdminStore.handleTableHeaderFunction(e);
+
+            attributeData.value = fetchTableHeader.attribute;
+            sortableData.value = fetchTableHeader.sortable;
+
+            fetchPostList(null, fetchTableHeader);
+            current.value = 1;
+        };
+
+        const fetchPostList = async (
+            paginationPage = null,
+            fetchPayload = null
+        ) => {
+            try {
+                const fetchColumnList =
+                    postTablePageAdminStore.fetchPostColumns();
+
+                const response = await postTablePageAdminStore.fetchPostList(
+                    getAuthToken,
+                    paginationPage,
+                    fetchPayload
+                );
+
+                columns.value = fetchColumnList;
+                totalPaginationNumber.value = response.meta.last_page;
+                pagination.value.rowsPerPage = response.meta.per_page;
+
+                const updatedData = response.data.map((item) => {
+                    return {
+                        ...item,
+                        created_at: dayjs(item.created_at).format(
+                            'YYYY-MM-DD HH:mm:ss'
+                        ),
+                    };
+                });
+
+                rows.value = updatedData;
+
+                return response;
+            } catch (error) {
+                console.error('Error fetching post list:', error);
+            }
+        };
+
+        fetchPostList();
 
         return {
             selected,
             columns,
             rows,
-            // fetchPostList,
             status,
+            current,
+            attributeData,
+            sortableData,
+            totalPaginationNumber,
+            pagination,
+            fetchPagination,
+            handleTableHeaderClick,
+            handlePostKeywords,
+            handlePostDelete,
             getSelectedString() {
                 return selected.value.length === 0
                     ? ''
                     : `${selected.value.length} record${
                           selected.value.length > 1 ? 's' : ''
-                      } selected of ${rows.length}`;
+                      } selected of ${rows.value.length}`;
             },
         };
     },
@@ -234,5 +314,9 @@ export default {
 
 .q-table-edit-dropdown-list .q-item__section--main + .q-item__section--main {
     margin: 0 !important;
+}
+
+.posts-table .q-table__bottom .q-table__control:nth-of-type(3) {
+    display: none;
 }
 </style>

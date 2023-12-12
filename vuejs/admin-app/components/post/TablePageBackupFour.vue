@@ -86,9 +86,6 @@ export default {
                 keyword: keywords,
                 searchable: ['title', 'content'],
                 page: 1,
-                attribute: 'title',
-                sortable: 'asc',
-                paginate: 15,
             };
 
             fetchServer(null, payload.value);
@@ -96,8 +93,8 @@ export default {
 
         const fetchServer = async (paginate, payload) => {
             const { page, rowsPerPage, sortBy, descending } = paginate ?? {
-                page: 1,
-                rowsPerPage: 15,
+                page: null,
+                rowsPerPage: null,
                 sortBy: null,
                 descending: null,
             };

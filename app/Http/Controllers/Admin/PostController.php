@@ -25,7 +25,7 @@ class PostController extends Controller
             ->with('user')
             ->searchable($payload, ['user' => 'name', 'category' => 'name'])
             ->orderBy($postAttribute, $postSortable)
-            ->paginate(15);
+            ->paginate($payload['paginate'] ?? 15);
 
         $result = PostResource::collection($posts)->response()->getData();
 
