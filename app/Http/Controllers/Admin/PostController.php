@@ -54,7 +54,7 @@ class PostController extends Controller
 
     public function show($id)
     {
-        $posts = Post::where('id', $id)->firstOrThrowError();
+        $posts = Post::where('id', $id)->with('category', 'user')->firstOrThrowError();
 
         return self::successResponse('Post Show Successfully', $posts);
     }

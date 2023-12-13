@@ -3,7 +3,7 @@
         <div class="row items-center mx-4 md:mx-10">
             <div class="col-2 col-lg-1 text-sm md:text-2xl lg:text-center ml-4">
                 <router-link to="/">
-                    <img :src="mainLogo" alt="" width="100" class="mx-auto" />
+                    <img :src="mainLogo" alt="" width="75" class="mx-auto" />
                 </router-link>
             </div>
             <div class="col col-lg-9 col-md-5 nav-profile-details">

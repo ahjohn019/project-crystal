@@ -90,13 +90,13 @@
                                     </div>
                                 </template>
                                 <q-list class="q-table-edit-dropdown-list">
-                                    <q-item clickable>
+                                    <q-item clickable :to="'/posts/view/'+ props.row.id ">
                                         <q-item-section>
                                             <q-icon name="visibility" />
                                         </q-item-section>
                                         <q-item-section>
                                             <q-item-label
-                                                >View</q-item-label
+                                                >View </q-item-label
                                             >
                                         </q-item-section>
                                     </q-item>

@@ -32,6 +32,20 @@ export const usePostTablePageAdminStore = defineStore('post_table_admin', {
             }
         },
 
+        async fetchPostView(authToken, id){
+            const config = {
+                headers: { Authorization: `Bearer ${authToken}` },
+            };
+
+            try {
+                const response = await axios.get(prefix + 'show/' + id, config);
+                return response.data.data;
+            } catch (error) {
+                console.error('Error:', error);
+                throw error;
+            }
+        },
+
         async createPost(authToken, payload = null) {
             const config = {
                 headers: { Authorization: `Bearer ${authToken}` },
