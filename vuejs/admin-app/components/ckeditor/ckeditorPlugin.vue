@@ -1,9 +1,9 @@
 <template>
     <ckeditor
         :editor="editor"
-        :value="modelValue"
-        @input="$emit('update:modelValue', $event)"
+        v-model="editorData"
         :config="editorConfig"
+        @input="handleDescriptionsData"
     ></ckeditor>
 </template>
 
@@ -27,14 +27,25 @@ import { Indent, IndentBlock } from '@ckeditor/ckeditor5-indent';
 import { List } from '@ckeditor/ckeditor5-list';
 import { Table, TableToolbar } from '@ckeditor/ckeditor5-table';
 
+import { ref } from 'vue';
+
 export default {
     props: {
-        modelValue: String,
+        descriptions: String,
     },
-    setup() {
+    setup(props, { emit }) {
+        const editorData = ref('');
+
+        // editorData.value = props.descriptions;
+
+        const handleDescriptionsData = () => {
+            emit('updateDescriptionsData', editorData.value);
+        };
+
         return {
             editor: ClassicEditor,
-            editorData: '<p>Content of the editor.</p>',
+            editorData,
+            handleDescriptionsData,
             editorConfig: {
                 plugins: [
                     Essentials,

@@ -26,7 +26,10 @@
             <div class="col-12">
                 <div class="post-information-title">Descriptions</div>
                 <div class="col-12">
-                    <CkeditorPlugin v-model="postFormPayload.descriptions" />
+                    <CkeditorPlugin
+                        :descriptions="descriptions"
+                        @updateDescriptionsData="updateDescriptions"
+                    />
                 </div>
                 <div class="col-12 text-red-700">
                     {{ errors.descriptions }}
@@ -91,6 +94,8 @@ export default {
             category_id: { label: 'News', value: 1 },
         });
 
+        const descriptions = ref('aaa');
+
         const model = ref(null);
         const options = ref([]);
         const errors = ref({
@@ -117,6 +122,10 @@ export default {
 
         const updateParentFiles = (files) => {
             postFormPayload.value.images = files;
+        };
+
+        const updateDescriptions = (value) => {
+            postFormPayload.value.descriptions = value;
         };
 
         const updatePostFormData = async () => {
@@ -151,9 +160,11 @@ export default {
             postFormPayload,
             updatePostFormData,
             updateParentFiles,
+            updateDescriptions,
             model,
             options,
             errors,
+            descriptions,
         };
     },
 };
