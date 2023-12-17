@@ -29,7 +29,10 @@ const routes = [
                 component: PostDashboard.PostPageForm,
                 meta: { requiresAuth: true },
                 name: 'posts.form',
-                props: (route) => ({ type: route.query.type }),
+                props: (route) => ({
+                    type: route.query.type,
+                    id: route.query.id,
+                }),
             },
             {
                 path: 'view/:id',

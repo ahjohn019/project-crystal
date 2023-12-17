@@ -32,7 +32,9 @@
             </template>
             <template v-slot:body-cell-title="props">
                 <q-td :props="props">
-                    <div class="font-bold table-likes-columns">{{ props.value }}</div>
+                    <div class="font-bold table-likes-columns">
+                        {{ props.value }}
+                    </div>
                     <div class="q-table-label">
                         Likes : {{ props.row.likes }}
                     </div>
@@ -48,9 +50,7 @@
                                 color="positive"
                                 style="font-weight: bold"
                                 class="capitalize p-2 rounded"
-                                :label="
-                                    props.row.popularity_percentage + '%'
-                                "
+                                :label="props.row.popularity_percentage + '%'"
                             />
                         </div>
 
@@ -90,41 +90,45 @@
                                     </div>
                                 </template>
                                 <q-list class="q-table-edit-dropdown-list">
-                                    <q-item clickable :to="'/posts/view/'+ props.row.id ">
+                                    <q-item
+                                        clickable
+                                        :to="'/posts/view/' + props.row.id"
+                                    >
                                         <q-item-section>
                                             <q-icon name="visibility" />
                                         </q-item-section>
                                         <q-item-section>
-                                            <q-item-label
-                                                >View </q-item-label
-                                            >
-                                        </q-item-section>
-                                    </q-item>
-
-                                    <q-item clickable>
-                                        <q-item-section>
-                                            <q-icon name="edit" />
-                                        </q-item-section>
-                                        <q-item-section>
-                                            <q-item-label
-                                                >Edit</q-item-label
-                                            >
+                                            <q-item-label>View </q-item-label>
                                         </q-item-section>
                                     </q-item>
 
                                     <q-item
                                         clickable
-                                        @click="
-                                            handlePostDelete(props.row.id)
-                                        "
+                                        :to="{
+                                            name: 'posts.form',
+                                            query: {
+                                                type: 'edit',
+                                                id: props.row.id,
+                                            },
+                                        }"
+                                    >
+                                        <q-item-section>
+                                            <q-icon name="edit" />
+                                        </q-item-section>
+                                        <q-item-section>
+                                            <q-item-label>Edit</q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+
+                                    <q-item
+                                        clickable
+                                        @click="handlePostDelete(props.row.id)"
                                     >
                                         <q-item-section>
                                             <q-icon name="delete" />
                                         </q-item-section>
                                         <q-item-section>
-                                            <q-item-label
-                                                >Delete</q-item-label
-                                            >
+                                            <q-item-label>Delete</q-item-label>
                                         </q-item-section>
                                     </q-item>
                                 </q-list>
@@ -132,6 +136,13 @@
                         </div>
                     </div>
                 </q-td>
+            </template>
+
+            <template v-slot:item="props">
+                <TableResponsive
+                    :property="props"
+                    @postDelete="responsivePostDelete"
+                />
             </template>
         </q-table>
         <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
@@ -143,11 +154,14 @@ import { ref, onMounted } from 'vue';
 import { usePostTablePageAdminStore } from '@shared_admin/post/postTablePage.js';
 import { useAdminAuthStore } from '@shared_admin/base/auth.js';
 import FilterBar from '@admin/components/post/FilterBar.vue';
+import TableResponsive from './TableResponsive.vue';
+
 import dayjs from 'dayjs';
 
 export default {
     components: {
         FilterBar,
+        TableResponsive,
     },
 
     setup() {
@@ -263,6 +277,21 @@ export default {
             return response;
         };
 
+        // responsive for delete post ui
+        const responsivePostDelete = async (value) => {
+            handlePostDelete(value);
+        };
+
+        // Delete Post Call API Function
+        const handlePostDelete = async (id) => {
+            const response = await postTablePageAdminStore.deletePost(
+                getAuthToken,
+                id
+            );
+
+            return response;
+        };
+
         onMounted(() => {
             tableRef.value.requestServerInteraction();
         });
@@ -278,6 +307,8 @@ export default {
             selected,
             fetchPagination,
             handlePostKeywords,
+            handlePostDelete,
+            responsivePostDelete,
             getSelectedString() {
                 console.log(selected.value);
                 return selected.value.length === 0
@@ -292,8 +323,8 @@ export default {
 </script>
 
 <style scoped>
-    .table-likes-columns{
-        max-width: 250px;
-        text-wrap: wrap;
-    }
+.table-likes-columns {
+    max-width: 250px;
+    text-wrap: wrap;
+}
 </style>
